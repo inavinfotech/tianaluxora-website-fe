@@ -1,31 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
-
-:root {
-  font-family: "Outfit", sans-serif;
-  color-scheme: dark;
-}
-
 body {
   margin: 0;
   padding: 0;
-  background-color: #030712;
-  color: #f3f4f6;
-}
-
-/* Custom subtle animation for the background gradient */
-@keyframes gradient-move {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-move 15s ease infinite;
+  box-sizing: border-box;
 }
