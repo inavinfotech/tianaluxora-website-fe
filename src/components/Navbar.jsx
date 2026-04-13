@@ -1,9 +1,20 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { navLinks } from "../data/navigation";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (user) {
+      logout();
+    } else {
+      navigate('/login');
+    }
+  };
 
   // Prevent scroll when mobile menu is open
   useEffect(() => {
@@ -20,7 +31,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-[100]">
-        <Link to="/" className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-[110]">Tiana Luxora</Link>
+        <Link to="/" className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110">Tiana Luxora</Link>
       
       {/* Desktop Menu */}
       <div className="hidden lg:flex gap-8">
@@ -50,6 +61,24 @@ const Navbar = () => {
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
           </button>
+          
+          <div className="relative group flex items-center">
+            {user ? (
+              <div className="flex flex-col items-center cursor-pointer relative">
+                <Link to="/profile" className="text-xs uppercase tracking-wider text-accent font-medium mb-1 hover:text-[#d49942] transition-colors">
+                  {(user.full_name || user.email || 'U').split(' ')[0]}
+                </Link>
+                <button onClick={handleAuthClick} className="text-[10px] uppercase text-primary/60 hover:text-red-400 absolute -bottom-4">Logout</button>
+              </div>
+            ) : (
+              <button onClick={handleAuthClick} className="text-primary flex items-center justify-center hover:-translate-y-0.5 hover:text-accent transition-custom" title="Login">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Hamburger Menu Icon */}
@@ -104,7 +133,7 @@ const Navbar = () => {
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
           </button>
-          <button className="text-primary scale-125">
+          <button onClick={() => { setIsOpen(false); user ? navigate('/profile') : navigate('/login'); }} className={`scale-125 ${user ? 'text-accent' : 'text-primary'}`}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>

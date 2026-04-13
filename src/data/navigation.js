@@ -1,6 +1,6 @@
 export const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'Shop', path: '/products' },
+  { name: 'Shop', path: '/shop' },
   { name: 'Collections', path: '/collections' },
   { name: 'About', path: '#' },
   { name: 'Blog', path: '#' },
@@ -10,7 +10,7 @@ export const navLinks = [
 export const footerLinks = {
   quickLinks: [
     { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/products' },
+    { name: 'Shop', path: '/shop' },
     { name: 'Collections', path: '/collections' },
     { name: 'Best Sellers', path: '#' },
     { name: 'About Us', path: '#' },
