@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import PerfumeModel from "./PerfumeModel";
 
 const HeroSection = () => {
-  // const is3dactive = false;
-  const is3dactive = true;
+  // Control 3D Model visibility via .env variable
+  const is3dactive = import.meta.env.VITE_ENABLE_3D_MODEL === 'true';
 
   return (
     <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-[70vh] animate-fade-in text-center lg:text-left py-8 lg:py-0">

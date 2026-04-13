@@ -30,8 +30,8 @@ export const footerLinks = {
     { name: 'Why Choose Us', path: '#' },
   ],
   contactInfo: {
-    email: 'info@tianaluxora.com',
-    phone: '+91 98765 43210',
+    email: import.meta.env.VITE_CONTACT_EMAIL || 'info@tianaluxora.com',
+    phone: import.meta.env.VITE_CONTACT_PHONE || '+91 98765 43210',
   },
   social: [
     // Add social links if needed
