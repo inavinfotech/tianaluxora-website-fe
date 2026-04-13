@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { navLinks } from "../data/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   return (
-    <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-50">
-      <Link to="/" className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold z-[100]">Tiana Luxora</Link>
+    <>
+      <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-[100]">
+        <Link to="/" className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-[110]">Tiana Luxora</Link>
       
       {/* Desktop Menu */}
       <div className="hidden lg:flex gap-8">
@@ -41,7 +54,7 @@ const Navbar = () => {
 
         {/* Hamburger Menu Icon */}
         <button 
-          className="lg:hidden text-primary z-[100]"
+          className="lg:hidden text-primary relative z-[110]"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
@@ -59,9 +72,11 @@ const Navbar = () => {
         </button>
       </div>
 
+      </nav>
+
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 bg-[#fff5f0] z-[90] transition-transform duration-500 lg:hidden flex flex-col items-center justify-center gap-8 ${
+        className={`fixed inset-0 bg-[#fff5f0] z-[90] transition-transform duration-500 lg:hidden flex flex-col items-center justify-center pt-12 gap-8 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -97,7 +112,7 @@ const Navbar = () => {
           </button>
         </div>
       </div>
-    </nav>
+    </>
   );
 };
 
