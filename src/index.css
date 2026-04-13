@@ -1,5 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3d1a1a;
+  --color-accent: #d48c6a;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Poppins", sans-serif;
+  --transition-custom: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --animate-fade-in: fadeIn 1s ease-out forwards;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  --primary: #3d1a1a;
+  --accent: #d48c6a;
+  --bg-gradient: linear-gradient(135deg, #fff5f0 0%, #ffe4d6 100%);
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Poppins", sans-serif;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  font-family: var(--font-sans);
+  color: var(--primary);
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff5f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+  border: 2px solid #fff5f0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Firefox support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) #fff5f0;
+}
+
+h1,
+h2,
+h3,
+.brand {
+  font-family: var(--font-serif);
+  font-weight: 700;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Center Model */
+.model-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.model-container:active {
+  cursor: grabbing;
+}
+
+.model-shadow {
+  position: absolute;
+  bottom: 10%;
+  width: 60%;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.1) 0%,
+    transparent 70%
+  );
+  z-index: -1;
+}
+
+/* Lenis Smooth Scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
