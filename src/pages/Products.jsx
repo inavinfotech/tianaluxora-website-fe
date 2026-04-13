@@ -11,7 +11,7 @@ const Products = () => {
     return <div className="text-center py-20 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="py-20">
+    <div className="py-6">
       <h1 className="text-[3rem] text-center mb-12">All Products</h1>
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {products.map((product) => (
