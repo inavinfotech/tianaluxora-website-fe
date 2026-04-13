@@ -1,25 +1,15 @@
 import React from "react";
 import ProductCard from "../components/utils/ProductCard";
-
-const products = [
-  {
-    id: 1,
-    name: "Tiana Luxora Essence",
-    price: "Rs 999",
-    image: "/images/small-bottle.webp",
-    tag: "Best Seller",
-  },
-  {
-    id: 2,
-    name: "Tiana Luxora Essence",
-    price: "Rs 999",
-    image: "/images/small-bottle.webp",
-    tag: "Best Seller",
-  },
-  // Add more products as needed
-];
+import { useProducts } from "../contexts/ProductContext";
 
 const Products = () => {
+  const { products, loading, error } = useProducts();
+
+  if (loading)
+    return <div className="text-center py-20">Loading products...</div>;
+  if (error)
+    return <div className="text-center py-20 text-red-500">Error: {error}</div>;
+
   return (
     <div className="py-20">
       <h1 className="text-[3rem] text-center mb-12">All Products</h1>
