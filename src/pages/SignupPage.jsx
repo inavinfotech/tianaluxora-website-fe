@@ -51,7 +51,7 @@ const SignupPage = () => {
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
+              className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-all"
               placeholder="John Doe"
             />
           </div>
@@ -64,7 +64,7 @@ const SignupPage = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
+              className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-all"
               placeholder="you@example.com"
             />
           </div>
@@ -77,7 +77,7 @@ const SignupPage = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
+              className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-all"
               placeholder="••••••••"
             />
           </div>
@@ -85,7 +85,7 @@ const SignupPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 bg-[var(--accent)] text-black font-medium rounded-xl hover:bg-[#d49942] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+            className="w-full py-3 px-4 bg-(--accent) text-black font-medium rounded-xl hover:bg-[#d49942] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
           >
             {loading ? "Creating..." : "Create Account"}
           </button>
@@ -93,10 +93,7 @@ const SignupPage = () => {
 
         <p className="mt-8 text-center text-sm text-primary/60">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-[var(--accent)] hover:underline ml-1"
-          >
+          <Link to="/login" className="text-(--accent) hover:underline ml-1">
             Sign In
           </Link>
         </p>

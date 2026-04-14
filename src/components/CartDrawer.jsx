@@ -82,7 +82,7 @@ const CartDrawer = () => {
   if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] overflow-hidden">
+    <div className="fixed inset-0 z-200 overflow-hidden">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
@@ -145,7 +145,7 @@ const CartDrawer = () => {
                     key={item.id}
                     className="flex gap-4 p-4 border border-gray-100 rounded-lg group hover:border-accent/30 transition-colors"
                   >
-                    <div className="w-20 h-24 bg-gray-50 rounded flex-shrink-0 overflow-hidden">
+                    <div className="w-20 h-24 bg-gray-50 rounded shrink-0 overflow-hidden">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -238,7 +238,7 @@ const CartDrawer = () => {
                     ? "bg-green-700 text-white"
                     : orderStatus === "error"
                       ? "bg-[#8b2d2d] text-white hover:bg-[#a83a3a]"
-                      : "bg-[#3d1a1a] text-white hover:bg-[#d48c6a]"
+                      : "bg-primary text-white hover:bg-accent"
                 } disabled:opacity-70 disabled:cursor-not-allowed`}
               >
                 <span className="relative z-10">
@@ -253,7 +253,7 @@ const CartDrawer = () => {
                           : "Login to Checkout"}
                 </span>
                 {!(isProcessing || orderStatus) && (
-                  <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 )}
               </button>
 

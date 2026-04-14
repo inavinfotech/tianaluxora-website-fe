@@ -55,7 +55,7 @@ const LoginPage = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[var(--color-primary)]/80 mb-2">
+            <label className="block text-sm font-medium text-primary/80 mb-2">
               Password
             </label>
             <input

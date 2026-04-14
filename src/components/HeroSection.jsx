@@ -7,7 +7,7 @@ const HeroSection = () => {
 
   return (
     <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-[70vh] animate-fade-in text-center lg:text-left py-8 lg:py-0">
-      <div className="flex flex-col gap-6 md:gap-8 items-center lg:items-start order-1 lg:order-none">
+      <div className="flex flex-col gap-6 md:gap-8 items-center lg:items-start order-1 lg:order-0">
         <h1 className="text-[2.2rem] md:text-[3rem] leading-[1.1] text-primary mb-2 md:mb-4 font-serif font-bold">
           Luxury That Speaks Before You Do
         </h1>
@@ -19,7 +19,7 @@ const HeroSection = () => {
         </p>
         <Link
           to="/collections"
-          className="bg-[#f7d7c4] text-primary px-8 md:px-10 py-[1rem] md:py-[1.2rem] rounded-[50px] font-medium text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.2)] transition-custom hover:-translate-y-[5px] hover:shadow-[0_15px_40px_rgba(212,140,106,0.3)] hover:bg-[#f5ccb5]"
+          className="bg-[#f7d7c4] text-primary px-8 md:px-10 py-4 md:py-5 rounded-[50px] font-medium text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.2)] transition-custom hover:-translate-y-[5px] hover:shadow-[0_15px_40px_rgba(212,140,106,0.3)] hover:bg-[#f5ccb5]"
         >
           Explore Collection <span>→</span>
         </Link>
@@ -28,7 +28,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="order-2 lg:order-none w-full">
+      <div className="order-2 lg:order-0 w-full">
         {is3dactive ? (
           <div className="h-[450px] md:h-[500px] lg:h-[600px] relative flex justify-center items-center">
             <PerfumeModel />
@@ -44,7 +44,7 @@ const HeroSection = () => {
         )}
       </div>
 
-      <div className="flex justify-center lg:justify-end order-3 lg:order-none max-lg:hidden">
+      <div className="flex justify-center lg:justify-end order-3 lg:order-0 max-lg:hidden">
         <div className="max-w-[320px] flex flex-col gap-4 md:gap-6 items-center lg:items-start">
           <h2 className="text-[1.6rem] md:text-[2rem] leading-[1.2] font-serif font-bold">
             Discover Signature Fragrances at Your Fingertips

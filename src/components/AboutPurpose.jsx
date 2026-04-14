@@ -41,7 +41,7 @@ const AboutPurpose = () => {
                 variant={button.variant}
                 className={
                   button.variant === "secondary"
-                    ? "bg-primary/50! text-accent! shadow-sm"
+                    ? "bg-primary! shadow-sm"
                     : ""
                 }
               >
