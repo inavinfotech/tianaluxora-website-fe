@@ -32,12 +32,12 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-[100]">
+      <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-100">
         <Link
           to="/"
           className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110"
         >
-          Tiana Luxora
+          Tiana Luxora<sup>TM</sup>
         </Link>
 
         {/* Desktop Menu */}
@@ -131,7 +131,7 @@ const Navbar = () => {
 
           {/* Hamburger Menu Icon */}
           <button
-            className="lg:hidden text-primary relative z-[110]"
+            className="lg:hidden text-primary relative z-110"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
           >
@@ -161,7 +161,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-[#fff5f0] z-[90] transition-transform duration-500 lg:hidden flex flex-col items-center justify-center pt-12 gap-8 ${
+        className={`fixed inset-0 bg-[#fff5f0] z-90 transition-transform duration-500 lg:hidden flex flex-col items-center justify-center pt-12 gap-8 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

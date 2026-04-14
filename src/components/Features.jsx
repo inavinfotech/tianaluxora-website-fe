@@ -5,7 +5,9 @@ const Features = () => {
   return (
     <section className="py-8 md:py-12 animate-fade-in">
       <div className="text-center mb-8 md:mb-10">
-        <h2 className="text-[1.8rem] md:text-[2.2rem] mb-2 text-primary font-serif font-bold">Why Choose Tiana Luxora</h2>
+        <h2 className="text-[1.8rem] md:text-[2.2rem] mb-2 text-primary font-serif font-bold">
+          Why Choose Tiana Luxora<sup>TM</sup>
+        </h2>
         <p className="text-[0.9rem] md:text-[1rem] text-[rgba(61,26,26,0.7)] max-w-[500px] mx-auto">
           Crafted with precision, designed for a luxurious experience
         </p>
@@ -21,8 +23,12 @@ const Features = () => {
               {feature.icon}
             </div>
             <div>
-              <h3 className="text-[1.1rem] font-serif font-bold mb-2">{feature.title}</h3>
-              <p className="text-[0.9rem] text-[rgba(61,26,26,0.7)] leading-relaxed">{feature.description}</p>
+              <h3 className="text-[1.1rem] font-serif font-bold mb-2">
+                {feature.title}
+              </h3>
+              <p className="text-[0.9rem] text-[rgba(61,26,26,0.7)] leading-relaxed">
+                {feature.description}
+              </p>
             </div>
           </div>
         ))}

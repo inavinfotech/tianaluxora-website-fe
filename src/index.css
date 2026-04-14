@@ -124,3 +124,10 @@ html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+sup {
+  font-size: 0.5em;
+  margin-left: 1px;
+  opacity: 0.8;
+  font-weight: 400;
+}

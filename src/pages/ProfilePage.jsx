@@ -90,7 +90,7 @@ const ProfilePage = () => {
                     My Profile
                   </h2>
                   <p className="text-sm text-primary/60">
-                    Manage your Tiana Luxora account
+                    Manage your Tiana Luxora<sup>TM</sup> account
                   </p>
                 </div>
 

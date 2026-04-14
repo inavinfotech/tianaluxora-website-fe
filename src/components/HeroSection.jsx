@@ -3,7 +3,7 @@ import PerfumeModel from "./PerfumeModel";
 
 const HeroSection = () => {
   // Control 3D Model visibility via .env variable
-  const is3dactive = import.meta.env.VITE_ENABLE_3D_MODEL === 'true';
+  const is3dactive = import.meta.env.VITE_ENABLE_3D_MODEL === "true";
 
   return (
     <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-[70vh] animate-fade-in text-center lg:text-left py-8 lg:py-0">
@@ -12,11 +12,15 @@ const HeroSection = () => {
           Luxury That Speaks Before You Do
         </h1>
         <p className="text-[1rem] md:text-[1.1rem] text-[rgba(61,26,26,0.8)] max-w-[400px]">
-          Tiana Luxora blends rare notes into <br className="hidden md:block" /> unforgettable fragrances
+          Tiana Luxora<sup>TM</sup> blends rare notes into{" "}
+          <br className="hidden md:block" /> unforgettable fragrances
           <br className="hidden md:block" />
           made for modern elegance.
         </p>
-        <Link to="/collections" className="bg-[#f7d7c4] text-primary px-8 md:px-10 py-[1rem] md:py-[1.2rem] rounded-[50px] font-medium text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.2)] transition-custom hover:-translate-y-[5px] hover:shadow-[0_15px_40px_rgba(212,140,106,0.3)] hover:bg-[#f5ccb5]">
+        <Link
+          to="/collections"
+          className="bg-[#f7d7c4] text-primary px-8 md:px-10 py-[1rem] md:py-[1.2rem] rounded-[50px] font-medium text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.2)] transition-custom hover:-translate-y-[5px] hover:shadow-[0_15px_40px_rgba(212,140,106,0.3)] hover:bg-[#f5ccb5]"
+        >
           Explore Collection <span>→</span>
         </Link>
         <div className="text-[0.75rem] md:text-[0.9rem] font-medium uppercase tracking-[1px] mt-2 md:mt-4">
@@ -40,7 +44,7 @@ const HeroSection = () => {
         )}
       </div>
 
-      <div className="flex justify-center lg:justify-end order-3 lg:order-none">
+      <div className="flex justify-center lg:justify-end order-3 lg:order-none max-lg:hidden">
         <div className="max-w-[320px] flex flex-col gap-4 md:gap-6 items-center lg:items-start">
           <h2 className="text-[1.6rem] md:text-[2rem] leading-[1.2] font-serif font-bold">
             Discover Signature Fragrances at Your Fingertips
