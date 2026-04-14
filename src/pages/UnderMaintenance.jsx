@@ -53,16 +53,29 @@ const UnderMaintenance = () => {
           </a>
         </div>
 
-        <div className="mt-20 flex items-center justify-center gap-8 opacity-40">
-          <span className="text-[10px] uppercase tracking-[0.3em] font-sans">
-            Elegance
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.3em] font-sans">
-            Craftsmanship
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.3em] font-sans">
-            Luxury
-          </span>
+        <div className="mt-20 flex flex-col items-center justify-center gap-6">
+          <div className="flex items-center gap-8 opacity-40">
+            <span className="text-[10px] uppercase tracking-[0.3em] font-sans">
+              Elegance
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.3em] font-sans">
+              Craftsmanship
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.3em] font-sans">
+              Luxury
+            </span>
+          </div>
+          <div className="text-[10px] font-medium uppercase tracking-[0.3em] text-primary/60 mt-4">
+            Designed & Developed by{" "}
+            <a
+              href="https://inexarum.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-accent transition-colors font-bold"
+            >
+              iNexarum Private Limited
+            </a>
+          </div>
         </div>
       </div>
 

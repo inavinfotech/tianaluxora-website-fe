@@ -146,9 +146,22 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-[rgba(61,26,26,0.05)] pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-[0.85rem] text-[rgba(61,26,26,0.5)]">
-        <p>
-          © 2026 Tiana Luxora<sup>TM</sup>. All rights reserved.
-        </p>
+        <div className="flex flex-col items-center md:items-start gap-1">
+          <p>
+            © 2026 Tiana Luxora<sup>TM</sup>. All rights reserved.
+          </p>
+          <p className="text-[10px] md:text-[11px] font-medium opacity-70">
+            Designed & Developed by{" "}
+            <a
+              href="https://inexarum.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary font-bold hover:text-accent transition-colors"
+            >
+              iNexarum Private Limited
+            </a>
+          </p>
+        </div>
         <div className="flex gap-6">
           {footerLinks.legal.map((link, index) => (
             <Link
