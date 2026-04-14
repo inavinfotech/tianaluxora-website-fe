@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { api } from "../utils/api";
 
 const ProfilePage = () => {
   const { user, loading, logout } = useAuth();
@@ -24,15 +25,7 @@ const ProfilePage = () => {
   const fetchOrders = async () => {
     setOrdersLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:8003/orders/?user_id=${user.user_id}`,
-        {
-          headers: {
-            "X-API-KEY": "tiana_web_key_12345",
-            "X-API-SECRET": "tiana_web_secret_67890",
-          },
-        },
-      );
+      const response = await api.get(`/api/orders/?user_id=${user.user_id}`);
       if (response.ok) {
         const data = await response.json();
         setOrders(data);

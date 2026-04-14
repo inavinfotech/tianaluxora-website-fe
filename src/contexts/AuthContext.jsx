@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -8,20 +8,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if token exists on load
-    const token = localStorage.getItem('token');
-    const email = localStorage.getItem('email');
-    if (token && email) {
-      fetchUser(email);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  const fetchUser = async (email) => {
+  const fetchUser = async (token) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me?email=${encodeURIComponent(email)}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (response.ok) {
         const data = await response.json();
         setUser(data);
@@ -36,52 +32,68 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    // Check if token exists on load
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchUser(token);
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
   const login = async (username, password) => {
     const formData = new URLSearchParams();
-    formData.append('username', username);
-    formData.append('password', password);
+    formData.append("username", username);
+    formData.append("password", password);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
       },
-      body: formData,
-    });
+    );
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('email', username); // user-portal external API needs email to get user
-      await fetchUser(username);
+      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("email", username);
+      await fetchUser(data.access_token);
       return { success: true };
     } else {
       const errorData = await response.json();
-      return { success: false, error: errorData.detail || 'Login failed' };
+      return { success: false, error: errorData.detail || "Login failed" };
     }
   };
 
   const signup = async (email, password, fullName) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, full_name: fullName }),
       },
-      body: JSON.stringify({ email, password, full_name: fullName }),
-    });
+    );
 
     if (response.ok) {
       // Auto login after signup
       return login(email, password);
     } else {
       const errorData = await response.json();
-      return { success: false, error: errorData.detail || 'Signup failed' };
+      return { success: false, error: errorData.detail || "Signup failed" };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
     setUser(null);
   };
 

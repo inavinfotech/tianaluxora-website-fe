@@ -8,10 +8,15 @@ import CollectionsPage from "./pages/CollectionsPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
+import ProductDetail from "./pages/ProductDetail";
 import CartDrawer from "./components/CartDrawer";
+import UnderMaintenance from "./pages/UnderMaintenance";
 
 function App() {
+  const isUnderDevelopment = import.meta.env.VITE_UNDER_DEVELOPMENT === "true";
+
   useEffect(() => {
+    if (isUnderDevelopment) return;
     // Initialize Lenis for smooth scrolling
     const lenis = new Lenis({
       duration: 1.2,
@@ -33,6 +38,10 @@ function App() {
     };
   }, []);
 
+  if (isUnderDevelopment) {
+    return <UnderMaintenance />;
+  }
+
   return (
     <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative overflow-hidden">
       <div className="fixed top-0 left-0 w-full h-full -z-10 opacity-15 pointer-events-none bg-[radial-gradient(circle_at_10%_20%,var(--accent)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,var(--accent)_0%,transparent_40%)] blur-[80px]"></div>
@@ -46,6 +55,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/product/:productId" element={<ProductDetail />} />
         </Routes>
       </main>
     </div>

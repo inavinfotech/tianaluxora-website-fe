@@ -6,9 +6,19 @@ import { useCart } from "../contexts/CartContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
   const { setIsCartOpen, cartCount } = useCart();
   const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      setIsSearchOpen(false);
+      navigate(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+    }
+  };
 
   const handleAuthClick = () => {
     if (user) {
@@ -18,9 +28,9 @@ const Navbar = () => {
     }
   };
 
-  // Prevent scroll when mobile menu is open
+  // Prevent scroll when search or mobile menu is open
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen || isSearchOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -28,7 +38,7 @@ const Navbar = () => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, isSearchOpen]);
 
   return (
     <>
@@ -55,7 +65,10 @@ const Navbar = () => {
 
         <div className="flex items-center gap-4 md:gap-6">
           <div className="hidden md:flex gap-6">
-            <button className="text-primary flex items-center justify-center hover:-translate-y-0.5 hover:text-accent transition-custom">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="text-primary flex items-center justify-center hover:-translate-y-0.5 hover:text-accent transition-custom"
+            >
               <svg
                 width="22"
                 height="22"
@@ -158,6 +171,60 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
+
+      {/* Global Search Overlay */}
+      {isSearchOpen && (
+        <div className="fixed inset-0 bg-white/95 backdrop-blur-md z-[200] animate-fade-in flex items-center justify-center px-6">
+          <button
+            onClick={() => setIsSearchOpen(false)}
+            className="absolute top-10 right-10 text-primary/60 hover:text-accent transition-colors scale-150"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div className="w-full max-w-2xl flex flex-col items-center">
+            <h2 className="font-serif text-3xl mb-12 tracking-wide">
+              Looking for something specific?
+            </h2>
+            <div className="w-full relative group">
+              <input
+                autoFocus
+                type="text"
+                placeholder="Search products, collections..."
+                className="w-full bg-transparent border-b-2 border-primary/10 py-4 text-2xl outline-none focus:border-accent transition-all pl-2"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearch}
+              />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-20 transition-opacity">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+            </div>
+            <p className="mt-6 text-[10px] uppercase tracking-[0.3em] text-primary/40">
+              Press Enter to Search
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu Overlay */}
       <div

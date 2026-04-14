@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { api } from "../utils/api";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { loadRazorpayScript } from "../utils/razorpay";
 
 const CartDrawer = () => {
   const {
@@ -28,6 +30,14 @@ const CartDrawer = () => {
     setIsProcessing(true);
     setOrderStatus(null);
 
+    // 1. Load Razorpay Script
+    const res = await loadRazorpayScript();
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      setIsProcessing(false);
+      return;
+    }
+
     try {
       const orderData = {
         user_id: String(user.user_id),
@@ -39,7 +49,6 @@ const CartDrawer = () => {
         quantity: cartItems.reduce((acc, item) => acc + item.quantity, 0),
         total_amount: cartTotal,
         currency: "INR",
-        application_id: "WILL_BE_SET_BY_OMS", // Header auth handles this
         items: cartItems.map((item) => ({
           product_id: String(item.id),
           product_name: item.name,
@@ -49,32 +58,67 @@ const CartDrawer = () => {
         })),
       };
 
-      const response = await fetch("http://localhost:8003/orders/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": "tiana_web_key_12345",
-          "X-API-SECRET": "tiana_web_secret_67890",
-        },
-        body: JSON.stringify(orderData),
-      });
-
-      if (response.ok) {
-        setOrderStatus("success");
-        setTimeout(() => {
-          clearCart();
-          setIsCartOpen(false);
-          setOrderStatus(null);
-          navigate("/profile"); // Go to profile to see orders
-        }, 2000);
-      } else {
+      // 2. Create Order & Payment Request
+      const response = await api.post("/api/orders/checkout", orderData);
+      if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || "Failed to place order");
+        throw new Error(errorData.detail || "Failed to initiate checkout");
       }
+      const { order, payment } = await response.json();
+
+      // 3. Razorpay Options
+      const options = {
+        key: payment.key_id,
+        amount: payment.amount,
+        currency: payment.currency,
+        name: "Tiana Luxora",
+        description: `Order #${order.id}`,
+        image: "https://tianaluxora.com/logo.png",
+        order_id: payment.razorpay_order_id,
+        handler: async function (response) {
+          // 4. Verify Payment after success
+          try {
+            const verifyRes = await api.post("/api/orders/verify-payment", {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              order_id: order.id,
+            });
+
+            if (verifyRes.ok) {
+              setOrderStatus("success");
+              clearCart();
+              setTimeout(() => {
+                setIsCartOpen(false);
+                setOrderStatus(null);
+                navigate("/profile");
+              }, 2000);
+            } else {
+              setOrderStatus("error");
+            }
+          } catch (err) {
+            setOrderStatus("error");
+          }
+        },
+        prefill: {
+          name: user.full_name,
+          email: user.email,
+        },
+        theme: {
+          color: "#3d1a1a",
+        },
+        modal: {
+          ondismiss: function () {
+            setIsProcessing(false);
+          },
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
     } catch (error) {
       console.error("Checkout error:", error);
       setOrderStatus("error");
-    } finally {
       setIsProcessing(false);
     }
   };

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { api } from "../utils/api";
 
 const ProductContext = createContext();
 
@@ -10,8 +11,7 @@ export const ProductProvider = ({ children }) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
-      const response = await fetch(`${apiUrl}/api/products/`);
+      const response = await api.get("/api/products/");
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
