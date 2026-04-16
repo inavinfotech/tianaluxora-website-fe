@@ -5,6 +5,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { loadRazorpayScript } from "../utils/razorpay";
 
+import { getPath } from "../utils/paths";
+
 const CartDrawer = () => {
   const {
     isCartOpen,
@@ -23,7 +25,7 @@ const CartDrawer = () => {
   const handleCheckout = async () => {
     if (!user) {
       setIsCartOpen(false);
-      navigate("/login");
+      navigate(getPath("/login"));
       return;
     }
 
@@ -91,7 +93,7 @@ const CartDrawer = () => {
               setTimeout(() => {
                 setIsCartOpen(false);
                 setOrderStatus(null);
-                navigate("/profile");
+                navigate(getPath("/profile"));
               }, 2000);
             } else {
               setOrderStatus("error");

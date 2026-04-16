@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -14,9 +14,16 @@ import UnderMaintenance from "./pages/UnderMaintenance";
 
 function App() {
   const isUnderDevelopment = import.meta.env.VITE_UNDER_DEVELOPMENT === "true";
+  const location = useLocation();
 
   useEffect(() => {
-    if (isUnderDevelopment) return;
+    // Only initialize Lenis if we are not on the maintenance page
+    if (
+      isUnderDevelopment &&
+      (location.pathname === "/" || !location.pathname.startsWith("/dev"))
+    )
+      return;
+
     // Initialize Lenis for smooth scrolling
     const lenis = new Lenis({
       duration: 1.2,
@@ -36,10 +43,22 @@ function App() {
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [isUnderDevelopment, location.pathname]);
 
+  const routePrefix = isUnderDevelopment ? "/dev" : "";
+  const getPath = (path) => `${routePrefix}${path === "/" ? "" : path}`;
+
+  // Logic for Under Development mode
   if (isUnderDevelopment) {
-    return <UnderMaintenance />;
+    // If we are at the root or anywhere that isn't /dev, show UnderMaintenance
+    if (location.pathname === "/" || !location.pathname.startsWith("/dev")) {
+      return <UnderMaintenance />;
+    }
+  } else {
+    // If NOT under development, but someone tries to access /dev, redirect them to root
+    if (location.pathname.startsWith("/dev")) {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return (
@@ -49,13 +68,26 @@ function App() {
       <Navbar />
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Products />} />
-          <Route path="/collections" element={<CollectionsPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/product/:productId" element={<ProductDetail />} />
+          <Route path={`${routePrefix}/`} element={<Home />} />
+          <Route path={`${routePrefix}/shop`} element={<Products />} />
+          <Route
+            path={`${routePrefix}/collections`}
+            element={<CollectionsPage />}
+          />
+          <Route path={`${routePrefix}/login`} element={<LoginPage />} />
+          <Route path={`${routePrefix}/signup`} element={<SignupPage />} />
+          <Route path={`${routePrefix}/profile`} element={<ProfilePage />} />
+          <Route
+            path={`${routePrefix}/product/:productId`}
+            element={<ProductDetail />}
+          />
+          {/* Catch all for invalid routes within the app context prefix */}
+          <Route
+            path={`${routePrefix}/*`}
+            element={<Navigate to={getPath("/")} replace />}
+          />
+          {/* Global catch all (redundant due to early return but good for safety) */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
     </div>

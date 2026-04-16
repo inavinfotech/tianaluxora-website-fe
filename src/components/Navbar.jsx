@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { navLinks } from "../data/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
+import { getPath } from "../utils/paths";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,7 @@ const Navbar = () => {
   const handleSearch = (e) => {
     if (e.key === "Enter" && searchQuery.trim()) {
       setIsSearchOpen(false);
-      navigate(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(getPath(`/shop?q=${encodeURIComponent(searchQuery.trim())}`));
       setSearchQuery("");
     }
   };
@@ -24,7 +25,7 @@ const Navbar = () => {
     if (user) {
       logout();
     } else {
-      navigate("/login");
+      navigate(getPath("/login"));
     }
   };
 
@@ -44,7 +45,7 @@ const Navbar = () => {
     <>
       <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-100">
         <Link
-          to="/"
+          to={getPath("/")}
           className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110"
         >
           Tiana Luxora<sup>TM</sup>
@@ -108,7 +109,7 @@ const Navbar = () => {
               {user ? (
                 <div className="flex flex-col items-center cursor-pointer relative">
                   <Link
-                    to="/profile"
+                    to={getPath("/profile")}
                     className="text-xs uppercase tracking-wider text-accent font-medium mb-1 hover:text-[#d49942] transition-colors"
                   >
                     {(user.full_name || user.email || "U").split(" ")[0]}
@@ -281,7 +282,9 @@ const Navbar = () => {
           <button
             onClick={() => {
               setIsOpen(false);
-              user ? navigate("/profile") : navigate("/login");
+              user
+                ? navigate(getPath("/profile"))
+                : navigate(getPath("/login"));
             }}
             className={`scale-125 ${user ? "text-accent" : "text-primary"}`}
           >
