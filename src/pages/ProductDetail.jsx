@@ -62,9 +62,9 @@ const ProductDetail = () => {
         <div className="relative group">
           <div className="aspect-4/5 bg-[rgba(61,26,26,0.03)] rounded-2xl overflow-hidden border border-[rgba(61,26,26,0.05)]">
             <img
-              src={`https://images.unsplash.com/photo-1590333746438-2c1117506290?auto=format&fit=crop&q=80&w=800`}
+              src={product.image}
               alt={product.name}
-              className="w-full h-full object-cover mix-blend-multiply opacity-80 group-hover:scale-105 transition-custom"
+              className="w-full h-full object-contain transition-custom p-8"
             />
           </div>
           <div className="absolute top-6 left-6 flex flex-col gap-2">
