@@ -60,13 +60,13 @@ const CartDrawer = () => {
         })),
       };
 
-      // 2. Create Order & Payment Request
+      // 2. Initiate Checkout (Reserve stock & get payment session)
       const response = await api.post("/api/orders/checkout", orderData);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.detail || "Failed to initiate checkout");
       }
-      const { order, payment } = await response.json();
+      const { payment, reservation_ids } = await response.json();
 
       // 3. Razorpay Options
       const options = {
@@ -74,17 +74,18 @@ const CartDrawer = () => {
         amount: payment.amount,
         currency: payment.currency,
         name: "Tiana Luxora",
-        description: `Order #${order.id}`,
+        description: `Order Payment`,
         image: "https://tianaluxora.com/logo.png",
         order_id: payment.razorpay_order_id,
         handler: async function (response) {
-          // 4. Verify Payment after success
+          // 4. Verify Payment & "Punch" Order after success
           try {
             const verifyRes = await api.post("/api/orders/verify-payment", {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              order_id: order.id,
+              order_data: orderData,
+              reservation_ids: reservation_ids,
             });
 
             if (verifyRes.ok) {
