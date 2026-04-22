@@ -95,6 +95,8 @@ const CartPage = () => {
         currency: "INR",
         items: cartItems.map((item) => ({
           product_id: String(item.id),
+          variant_id: item.variant_id,
+          variant_name: item.selectedSize,
           product_name: item.name,
           quantity: item.quantity,
           unit_price: parseFloat(String(item.price).replace(/[^0-9.]/g, "")),
