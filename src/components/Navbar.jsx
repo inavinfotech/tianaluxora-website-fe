@@ -83,7 +83,7 @@ const Navbar = () => {
               </svg>
             </button>
             <button
-              onClick={() => setIsCartOpen(true)}
+              onClick={() => navigate(getPath("/cart"))}
               className="text-primary flex items-center justify-center hover:-translate-y-0.5 hover:text-accent transition-custom relative"
             >
               <svg
@@ -258,7 +258,10 @@ const Navbar = () => {
             </svg>
           </button>
           <button
-            onClick={() => setIsCartOpen(true)}
+            onClick={() => {
+              setIsOpen(false);
+              navigate(getPath("/cart"));
+            }}
             className="text-primary scale-125 relative"
           >
             <svg

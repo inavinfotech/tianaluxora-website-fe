@@ -7,6 +7,8 @@ import { loadRazorpayScript } from "../utils/razorpay";
 
 import { getPath } from "../utils/paths";
 
+import AddressForm from "./AddressForm";
+
 const CartDrawer = () => {
   const {
     isCartOpen,
@@ -22,10 +24,68 @@ const CartDrawer = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null); // 'success', 'error', null
 
+  // Address related state
+  const [address, setAddress] = useState(null);
+  const [isAddressLoading, setIsAddressLoading] = useState(false);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
+
+  React.useEffect(() => {
+    if (isCartOpen && user) {
+      fetchAddress();
+    }
+  }, [isCartOpen, user]);
+
+  const fetchAddress = async () => {
+    try {
+      setIsAddressLoading(true);
+      const res = await api.get("/api/users/address");
+      if (res.ok) {
+        const data = await res.json();
+        if (data) {
+          setAddress(data);
+          setIsAddressConfirmed(true); // Default to confirmed if exists
+        } else {
+          setAddress(null);
+          setIsAddressConfirmed(false);
+        }
+      } else {
+        setAddress(null);
+        setIsAddressConfirmed(false);
+      }
+    } catch (err) {
+      console.error("Error fetching address:", err);
+    } finally {
+      setIsAddressLoading(false);
+    }
+  };
+
+  const handleAddressSave = async (addressData) => {
+    try {
+      setIsProcessing(true);
+      const res = await api.post("/api/users/address", addressData);
+      if (res.ok) {
+        const data = await res.json();
+        setAddress(data);
+        setIsAddressConfirmed(true);
+        setShowAddressForm(false);
+      }
+    } catch (err) {
+      console.error("Error saving address:", err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleCheckout = async () => {
     if (!user) {
       setIsCartOpen(false);
       navigate(getPath("/login"));
+      return;
+    }
+
+    if (!isAddressConfirmed) {
+      setShowAddressForm(true);
       return;
     }
 
@@ -189,7 +249,7 @@ const CartDrawer = () => {
               <div className="space-y-6">
                 {cartItems.map((item) => (
                   <div
-                    key={item.id}
+                    key={`${item.id}_${item.variant_id || "base"}`}
                     className="flex gap-4 p-4 border border-gray-100 rounded-lg group hover:border-accent/30 transition-colors"
                   >
                     <div className="w-20 h-24 bg-gray-50 rounded shrink-0 overflow-hidden">
@@ -205,7 +265,9 @@ const CartDrawer = () => {
                           {item.name}
                         </h3>
                         <button
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() =>
+                            removeFromCart(item.id, item.variant_id)
+                          }
                           className="text-gray-400 hover:text-red-500 transition-colors"
                         >
                           <svg
@@ -221,13 +283,17 @@ const CartDrawer = () => {
                         </button>
                       </div>
                       <p className="text-sm text-gray-500 mb-3">
-                        {item.tag || "Eau de Parfum"}
+                        {item.selectedSize || item.tag || "Eau de Parfum"}
                       </p>
                       <div className="mt-auto flex items-center justify-between">
                         <div className="flex items-center border border-gray-200 rounded">
                           <button
                             onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
+                              updateQuantity(
+                                item.id,
+                                item.variant_id,
+                                item.quantity - 1,
+                              )
                             }
                             className="p-1 px-2 hover:bg-gray-50 text-gray-500"
                           >
@@ -238,7 +304,11 @@ const CartDrawer = () => {
                           </span>
                           <button
                             onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
+                              updateQuantity(
+                                item.id,
+                                item.variant_id,
+                                item.quantity + 1,
+                              )
                             }
                             className="p-1 px-2 hover:bg-gray-50 text-gray-500"
                           >
@@ -252,6 +322,92 @@ const CartDrawer = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+            {/* Address Section */}
+            {user && (
+              <div className="mt-6 border-t border-gray-100 pt-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xs uppercase font-black text-primary/40 tracking-widest">
+                    Delivery Address
+                  </h3>
+                  {address && !showAddressForm && (
+                    <button
+                      onClick={() => setShowAddressForm(true)}
+                      className="text-[10px] font-bold text-accent hover:underline"
+                    >
+                      Change
+                    </button>
+                  )}
+                </div>
+
+                {isAddressLoading ? (
+                  <div className="py-4 flex justify-center">
+                    <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : showAddressForm ? (
+                  <AddressForm
+                    initialData={address || {}}
+                    onSave={handleAddressSave}
+                    onCancel={address ? () => setShowAddressForm(false) : null}
+                    isProcessing={isProcessing}
+                  />
+                ) : address ? (
+                  <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-100 relative group">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-bold text-primary text-sm">
+                          {address.full_name}
+                        </p>
+                        <p className="text-xs text-primary/60 mt-1">
+                          {address.address_line}
+                        </p>
+                        <p className="text-xs text-primary/60">
+                          {address.city}, {address.state} -{" "}
+                          {address.postal_code}
+                        </p>
+                        <p className="text-xs text-primary/60 mt-1 font-medium">
+                          {address.phone_number}
+                        </p>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        {!isAddressConfirmed ? (
+                          <button
+                            onClick={() => setIsAddressConfirmed(true)}
+                            style={{
+                              backgroundColor: "#d48c6a",
+                              color: "white",
+                            }}
+                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-sm hover:scale-105 transition-transform"
+                          >
+                            Confirm
+                          </button>
+                        ) : (
+                          <span className="flex items-center gap-1 text-[10px] font-bold text-green-600 uppercase tracking-widest">
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                            >
+                              <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                            Confirmed
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowAddressForm(true)}
+                    className="w-full py-4 border-2 border-dashed border-neutral-200 rounded-2xl text-primary/40 font-bold text-[10px] uppercase tracking-widest hover:border-accent/40 hover:text-accent transition-all"
+                  >
+                    + Add Delivery Address
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -279,14 +435,26 @@ const CartDrawer = () => {
 
               <button
                 onClick={handleCheckout}
-                disabled={isProcessing || orderStatus === "success"}
-                className={`w-full py-4 font-bold tracking-widest uppercase transition-all duration-500 relative overflow-hidden group shadow-lg ${
-                  orderStatus === "success"
-                    ? "bg-green-700 text-white"
-                    : orderStatus === "error"
-                      ? "bg-[#8b2d2d] text-white hover:bg-[#a83a3a]"
-                      : "bg-primary text-white hover:bg-accent"
-                } disabled:opacity-70 disabled:cursor-not-allowed`}
+                disabled={
+                  isProcessing ||
+                  orderStatus === "success" ||
+                  (user && !isAddressConfirmed && !showAddressForm)
+                }
+                style={{
+                  backgroundColor:
+                    orderStatus === "success"
+                      ? "#15803d"
+                      : orderStatus === "error"
+                        ? "#812d2d"
+                        : user && !isAddressConfirmed && !showAddressForm
+                          ? "#e5e5e5"
+                          : "#3d1a1a",
+                  color:
+                    user && !isAddressConfirmed && !showAddressForm
+                      ? "#737373"
+                      : "white",
+                }}
+                className={`w-full py-4 font-bold tracking-widest uppercase transition-all duration-500 relative overflow-hidden group shadow-lg disabled:cursor-not-allowed`}
               >
                 <span className="relative z-10">
                   {isProcessing
@@ -296,7 +464,9 @@ const CartDrawer = () => {
                       : orderStatus === "error"
                         ? "Retry Checkout"
                         : user
-                          ? "Punch Order"
+                          ? !isAddressConfirmed
+                            ? "Confirm Address First"
+                            : "Punch Order"
                           : "Login to Checkout"}
                 </span>
                 {!(isProcessing || orderStatus) && (

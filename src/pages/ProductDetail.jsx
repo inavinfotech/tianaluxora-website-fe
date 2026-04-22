@@ -1,14 +1,28 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import api from "../utils/api";
+import {
+  Star,
+  MapPin,
+  ChevronDown,
+  ArrowLeft,
+  Heart,
+  Share2,
+  ShieldCheck,
+  RotateCcw,
+  Truck,
+} from "lucide-react";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -17,6 +31,12 @@ const ProductDetail = () => {
         const response = await api.get(`/api/products/${productId}`);
         const data = await response.json();
         setProduct(data);
+        setSelectedImage(data.image);
+        if (data.real_variants && data.real_variants.length > 0) {
+          setSelectedSize(data.real_variants[0].weight);
+        } else if (data.sizes && data.sizes.length > 0) {
+          setSelectedSize(data.sizes[0]);
+        }
       } catch (error) {
         console.error("Error fetching product:", error);
       } finally {
@@ -25,146 +45,332 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
+    window.scrollTo(0, 0);
   }, [productId]);
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart({ ...product, quantity });
+      const selectedVariant = product.real_variants?.find(
+        (v) => v.weight === selectedSize,
+      );
+      addToCart({
+        ...product,
+        quantity: 1,
+        selectedSize,
+        price: selectedVariant ? selectedVariant.price : product.price,
+        variant_id: selectedVariant?.id,
+        sku: selectedVariant ? selectedVariant.sku : product.sku,
+      });
     }
+  };
+
+  const getDisplayPrice = () => {
+    if (!product) return "";
+    const selectedVariant = product.real_variants?.find(
+      (v) => v.weight === selectedSize,
+    );
+    const price = selectedVariant ? selectedVariant.price : product.price;
+    return typeof price === "number" ? `Rs ${price}` : price;
   };
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4">
-        <h2 className="font-serif text-2xl">Product not found</h2>
+      <div className="min-h-[80vh] flex flex-col items-center justify-center gap-6">
+        <h2 className="font-serif text-3xl text-primary font-bold">
+          Product not found
+        </h2>
         <button
           onClick={() => navigate("/shop")}
-          className="text-accent underline underline-offset-4"
+          className="flex items-center gap-2 group text-accent hover:text-primary transition-colors font-semibold"
         >
-          Back to Shop
+          <ArrowLeft
+            size={20}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
+          Back to Collections
         </button>
       </div>
     );
   }
 
   return (
-    <div className="py-12 animate-fade-in">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
-        {/* Product Image */}
-        <div className="relative group">
-          <div className="aspect-4/5 bg-[rgba(61,26,26,0.03)] rounded-2xl overflow-hidden border border-[rgba(61,26,26,0.05)]">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-contain transition-custom p-8"
-            />
+    <div className="py-2 md:py-4">
+      {/* Breadcrumbs - Reduced margin */}
+      <nav className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-primary/40 mb-4 animate-fade-in">
+        <span
+          className="cursor-pointer hover:text-accent transition-colors"
+          onClick={() => navigate("/")}
+        >
+          Home
+        </span>
+        <span className="text-[8px] opacity-30">/</span>
+        <span
+          className="cursor-pointer hover:text-accent transition-colors"
+          onClick={() => navigate("/shop")}
+        >
+          Shop
+        </span>
+        <span className="text-[8px] opacity-30">/</span>
+        <span className="text-secondary font-bold">{product.name}</span>
+      </nav>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Gallery Section - More compact */}
+        <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-12 gap-3 animate-slide-right">
+          {/* Thumbnails - Showing all available images */}
+          <div className="md:col-span-2 order-2 md:order-1 flex md:flex-col gap-2 h-fit max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+            {(() => {
+              const baseUrl = product.image?.includes("/uploads/")
+                ? product.image.split("/uploads/")[0]
+                : "";
+              const allImages = [
+                product.image,
+                ...(product.thumbnails || []),
+                ...(product.images || []).map((img) =>
+                  img.startsWith("/") && baseUrl ? `${baseUrl}${img}` : img,
+                ),
+              ]
+                .filter(Boolean)
+                .filter((v, i, a) => a.indexOf(v) === i);
+
+              return allImages.map((thumb, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(thumb)}
+                  className={`aspect-square w-full rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 ${
+                    selectedImage === thumb
+                      ? "border-accent ring-1 ring-accent/10 shadow-sm"
+                      : "border-transparent hover:border-accent/30"
+                  }`}
+                >
+                  <img
+                    src={thumb}
+                    alt={`View ${idx}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ));
+            })()}
           </div>
-          <div className="absolute top-6 left-6 flex flex-col gap-2">
-            <span className="bg-white/80 backdrop-blur-sm px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-bold text-primary shadow-sm">
-              New Collection
-            </span>
+
+          {/* Main Image - Smaller padding and aspect ratio */}
+          <div className="md:col-span-10 order-1 md:order-2">
+            <div className="aspect-4/5 md:aspect-square bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-100 flex items-center justify-center relative group">
+              <img
+                src={selectedImage}
+                alt={product.name}
+                className="w-full h-full object-contain p-2 drop-shadow-lg transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg backdrop-blur-md transition-all ${
+                    isWishlisted
+                      ? "bg-rose-500 text-white"
+                      : "bg-white/80 text-primary hover:bg-white"
+                  }`}
+                >
+                  <Heart
+                    size={18}
+                    fill={isWishlisted ? "currentColor" : "none"}
+                  />
+                </button>
+                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md text-primary hover:bg-white flex items-center justify-center shadow-lg transition-all">
+                  <Share2 size={18} />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Product Info */}
-        <div className="flex flex-col justify-center">
-          <nav className="flex gap-2 text-[10px] uppercase tracking-widest text-primary/40 mb-6">
-            <span
-              className="cursor-pointer hover:text-accent"
-              onClick={() => navigate("/")}
-            >
-              Home
-            </span>
-            <span>/</span>
-            <span
-              className="cursor-pointer hover:text-accent"
-              onClick={() => navigate("/shop")}
-            >
-              Shop
-            </span>
-            <span>/</span>
-            <span className="text-primary/80">{product.name}</span>
-          </nav>
-
-          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl mb-4 leading-tight">
-            {product.name}
-          </h1>
-
-          <div className="flex items-center gap-4 mb-8">
-            <span className="text-2xl font-medium text-accent">
-              {product.price}
-            </span>
-            <div className="h-4 w-px bg-primary/10"></div>
-            <span className="text-xs uppercase tracking-widest text-primary/60">
-              Tax Included
-            </span>
-          </div>
-
-          <p className="text-primary/70 leading-relaxed mb-10 max-w-lg">
-            {product.description ||
-              "Indulge in the epitome of craftsmanship with Tiana Luxora's signature fragrance. A balanced blend of rare botanicals and essential oils, designed for the discerning individual who appreciates the finer things in life."}
-          </p>
-
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center border border-[rgba(61,26,26,0.1)] rounded-full px-4 py-2">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-8 h-8 flex items-center justify-center hover:text-accent transition-colors"
-                >
-                  -
-                </button>
-                <span className="w-8 text-center font-medium">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-8 h-8 flex items-center justify-center hover:text-accent transition-colors"
-                >
-                  +
-                </button>
-              </div>
-
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase tracking-widest text-primary/40 mb-1">
-                  Stock Status
+        {/* Info Section - Tighter spacing */}
+        <div className="lg:col-span-6 flex flex-col gap-5 animate-slide-left">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="flex bg-amber-50 px-2 py-0.5 rounded-full items-center gap-1 border border-amber-100">
+                <Star size={12} fill="#d97706" className="text-amber-600" />
+                <span className="text-[10px] font-bold text-amber-900">
+                  {product.rating || "4.8"}
                 </span>
-                <span className="text-xs font-medium text-green-600 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse"></span>
-                  In Stock (Express Delivery)
+              </div>
+              <span className="text-[10px] text-primary/40 font-medium tracking-tight">
+                ({product.reviews || 124} Reviews)
+              </span>
+            </div>
+
+            <h1 className="font-serif text-3xl lg:text-4xl font-bold text-secondary tracking-tight">
+              {product.name}
+            </h1>
+
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-primary">
+                    {getDisplayPrice()}
+                  </span>
+                  <span className="text-base line-through text-primary/20 font-medium">
+                    {product.oldPrice || "Rs 1299"}
+                  </span>
+                </div>
+                <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
+                  {product.discount || "15% OFF"}
                 </span>
               </div>
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Size Selector */}
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary/50">
+                Size
+              </label>
+              <div className="relative">
+                <select
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                  className="w-full bg-neutral-50/50 border border-neutral-100 rounded-xl py-3 px-4 appearance-none font-medium focus:outline-none focus:ring-1 focus:ring-accent/20 cursor-pointer text-sm"
+                >
+                  {(product.sizes || ["50 ml", "100 ml", "250 ml"]).map(
+                    (size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ),
+                  )}
+                </select>
+                <ChevronDown
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none"
+                  size={16}
+                />
+              </div>
+            </div>
+
+            {/* Pincode Check */}
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary/50">
+                Check Delivery
+              </label>
+              <div className="flex border border-neutral-100 rounded-xl overflow-hidden shadow-sm bg-white">
+                <input
+                  type="text"
+                  placeholder="Pincode"
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value)}
+                  className="flex-1 py-3 px-4 outline-none text-xs font-medium w-full"
+                />
+                <button className="px-4 bg-neutral-50 hover:bg-neutral-100 text-[10px] font-bold uppercase tracking-widest text-secondary transition-colors">
+                  Check
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Buttons - More compact */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <button
+              onClick={() => {
+                handleAddToCart();
+                navigate("/checkout");
+              }}
+              className="bg-secondary text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-primary transition-all shadow-lg active:scale-95"
+            >
+              Buy Now
+            </button>
             <button
               onClick={handleAddToCart}
-              className="bg-primary text-white py-4 md:py-5 px-12 rounded-full font-bold uppercase tracking-[0.2em] text-xs hover:bg-accent hover:-translate-y-1 active:scale-95 transition-custom shadow-xl shadow-primary/10 w-full md:w-fit"
+              className="bg-[#E4C59E] text-primary py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95"
             >
-              Add to Cart — Reserve Order
+              Add to Cart
             </button>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-[rgba(61,26,26,0.05)] flex gap-8">
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-widest text-primary/40">
-                Sku
-              </span>
-              <span className="text-xs">{product.sku || "TL-8829-X"}</span>
+          {/* Combined Details & Notes - More compact layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-neutral-50/30 rounded-2xl p-4 border border-neutral-100 max-h-[120px] overflow-y-auto custom-scrollbar">
+              <h4 className="text-secondary font-serif font-bold text-sm mb-2 sticky top-0 bg-neutral-50/30">
+                Description
+              </h4>
+              <p className="text-primary/70 text-[11px] leading-relaxed">
+                {product.description ||
+                  "No description available for this exquisite fragrance."}
+              </p>
             </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-widest text-primary/40">
-                Category
-              </span>
-              <span className="text-xs">Signature Series</span>
+
+            <div className="bg-neutral-50/30 rounded-2xl p-4 border border-neutral-100">
+              <h3 className="text-secondary font-serif font-bold text-sm mb-3">
+                Fragrance Notes
+              </h3>
+              <div className="space-y-3">
+                {[
+                  {
+                    label: "Top",
+                    value:
+                      product.notes?.top?.split(" — ")[0] || "Citrus, Pepper",
+                  },
+                  {
+                    label: "Heart",
+                    value:
+                      product.notes?.heart?.split(" — ")[0] || "Jasmine, Rose",
+                  },
+                  {
+                    label: "Base",
+                    value:
+                      product.notes?.base?.split(" — ")[0] || "Vanilla, Musk",
+                  },
+                ].map((note, idx) => (
+                  <div key={idx} className="flex flex-col">
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-accent mb-0.5">
+                      {note.label}
+                    </span>
+                    <p className="text-[11px] font-medium text-primary">
+                      {note.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Trust Badges - Smaller and tighter */}
+      <div className="mt-8 py-6 border-t border-neutral-100 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          {
+            icon: ShieldCheck,
+            title: "100% Original",
+            sub: "Authenticity Guaranteed",
+          },
+          {
+            icon: RotateCcw,
+            title: "7 Day Return",
+            sub: "Hassle-free Returns",
+          },
+          { icon: Truck, title: "Fast Shipping", sub: "Express Safe Delivery" },
+        ].map((badge, idx) => (
+          <div key={idx} className="flex items-center gap-4 group">
+            <div className="w-10 h-10 rounded-xl bg-neutral-50 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300 shadow-sm border border-neutral-100">
+              <badge.icon size={20} />
+            </div>
+            <div>
+              <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-0.5">
+                {badge.title}
+              </h4>
+              <p className="text-[8px] text-primary/40 uppercase tracking-widest leading-none">
+                {badge.sub}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
