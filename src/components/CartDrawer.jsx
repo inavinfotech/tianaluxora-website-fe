@@ -113,6 +113,8 @@ const CartDrawer = () => {
         currency: "INR",
         items: cartItems.map((item) => ({
           product_id: String(item.id),
+          variant_id: item.variant_id ? String(item.variant_id) : null,
+          variant_name: item.selectedSize || item.tag,
           product_name: item.name,
           quantity: item.quantity,
           unit_price: parseFloat(String(item.price).replace(/[^0-9.]/g, "")),
@@ -168,7 +170,7 @@ const CartDrawer = () => {
           email: user.email,
         },
         theme: {
-          color: "#3d1a1a",
+          color: "#5a3232",
         },
         modal: {
           ondismiss: function () {
@@ -316,7 +318,7 @@ const CartDrawer = () => {
                           </button>
                         </div>
                         <span className="font-semibold text-accent">
-                          {item.price}
+                          ₹{item.price}
                         </span>
                       </div>
                     </div>
@@ -417,7 +419,7 @@ const CartDrawer = () => {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-500">Subtotal</span>
                 <span className="font-medium text-primary">
-                  Rs {cartTotal.toFixed(2)}
+                  ₹{cartTotal.toFixed(2)}
                 </span>
               </div>
               <div className="flex items-center justify-between mb-6">
@@ -429,7 +431,7 @@ const CartDrawer = () => {
               <div className="flex items-center justify-between mb-6 pt-4 border-t border-gray-200">
                 <span className="text-lg font-bold text-primary">Total</span>
                 <span className="text-2xl font-bold text-accent font-serif">
-                  Rs {cartTotal.toFixed(2)}
+                  ₹{cartTotal.toFixed(2)}
                 </span>
               </div>
 
@@ -448,7 +450,7 @@ const CartDrawer = () => {
                         ? "#812d2d"
                         : user && !isAddressConfirmed && !showAddressForm
                           ? "#e5e5e5"
-                          : "#3d1a1a",
+                          : "#5a3232",
                   color:
                     user && !isAddressConfirmed && !showAddressForm
                       ? "#737373"

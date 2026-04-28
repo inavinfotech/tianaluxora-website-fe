@@ -6,7 +6,7 @@ import { aboutContent } from "../data/about";
 const AboutPurpose = () => {
   return (
     <section
-      className="py-10 md:py-12 animate-fade-in bg-cover bg-center rounded-[30px] md:rounded-[40px] px-4 md:px-6 mb-12 overflow-hidden relative"
+      className="py-10 md:py-12 animate-fade-in bg-cover bg-center rounded-[30px] md:rounded-[40px] px-4 md:px-6 mb-8 overflow-hidden relative"
       style={{ backgroundImage: `url('${aboutContent.backgroundImage}')` }}
     >
       <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>
@@ -31,7 +31,7 @@ const AboutPurpose = () => {
           <h2 className="text-[1.8rem] md:text-[2.2rem] leading-[1.1] text-primary font-serif font-bold">
             {aboutContent.title}
           </h2>
-          <p className="text-[0.95rem] md:text-[1rem] text-[rgba(61,26,26,0.7)] leading-relaxed">
+          <p className="text-[0.95rem] md:text-[1rem] text-[rgba(90,50,50,0.7)] leading-relaxed">
             {aboutContent.description}
           </p>
           <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-6 pt-4">
@@ -40,9 +40,7 @@ const AboutPurpose = () => {
                 key={index}
                 variant={button.variant}
                 className={
-                  button.variant === "secondary"
-                    ? "bg-primary! shadow-sm"
-                    : ""
+                  button.variant === "secondary" ? "bg-primary! shadow-sm" : ""
                 }
               >
                 {button.text}

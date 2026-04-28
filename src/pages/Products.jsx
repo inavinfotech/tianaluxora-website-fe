@@ -39,7 +39,7 @@ const Products = () => {
 
   return (
     <div className="py-6 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
         <div>
           <h1 className="font-serif text-[2.5rem] md:text-[3rem] leading-none mb-4">
             {query ? `Search: ${query}` : "All Products"}

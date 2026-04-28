@@ -2,8 +2,8 @@ export const products = [
   {
     id: 1,
     name: "Tiana Luxora™ Essence",
-    price: "Rs 999",
-    oldPrice: "Rs 1299",
+    price: "₹999",
+    oldPrice: "₹1299",
     discount: "15% Off",
     rating: 4.8,
     reviews: 124,
@@ -28,8 +28,8 @@ export const products = [
   {
     id: 2,
     name: "Midnight Bloom",
-    price: "Rs 1499",
-    oldPrice: "Rs 1899",
+    price: "₹1499",
+    oldPrice: "₹1899",
     discount: "20% Off",
     rating: 4.9,
     reviews: 86,
@@ -50,8 +50,8 @@ export const products = [
   {
     id: 3,
     name: "Golden Oud",
-    price: "Rs 2499",
-    oldPrice: "Rs 2999",
+    price: "₹2499",
+    oldPrice: "₹2999",
     discount: "16% Off",
     rating: 5.0,
     reviews: 42,
@@ -72,8 +72,8 @@ export const products = [
   {
     id: 4,
     name: "Oceanic Mist",
-    price: "Rs 899",
-    oldPrice: "Rs 999",
+    price: "₹899",
+    oldPrice: "₹999",
     discount: "10% Off",
     rating: 4.7,
     reviews: 210,

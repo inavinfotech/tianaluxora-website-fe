@@ -43,7 +43,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center py-4 border-b border-[rgba(61,26,26,0.1)] mb-8 animate-fade-in relative z-100">
+      <nav className=" flex justify-between items-center py-4 border-b border-[rgba(90,50,50,0.1)] mb-8 animate-fade-in relative z-100">
         <Link
           to={getPath("/")}
           className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110"

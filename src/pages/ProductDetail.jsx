@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import api from "../utils/api";
+import { getPath } from "../utils/paths";
 import {
   Star,
   MapPin,
@@ -70,7 +71,7 @@ const ProductDetail = () => {
       (v) => v.weight === selectedSize,
     );
     const price = selectedVariant ? selectedVariant.price : product.price;
-    return typeof price === "number" ? `Rs ${price}` : price;
+    return typeof price === "number" ? `₹${price}` : price;
   };
 
   if (loading) {
@@ -88,7 +89,7 @@ const ProductDetail = () => {
           Product not found
         </h2>
         <button
-          onClick={() => navigate("/shop")}
+          onClick={() => navigate(getPath("/shop"))}
           className="flex items-center gap-2 group text-accent hover:text-primary transition-colors font-semibold"
         >
           <ArrowLeft
@@ -107,26 +108,28 @@ const ProductDetail = () => {
       <nav className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-primary/40 mb-4 animate-fade-in">
         <span
           className="cursor-pointer hover:text-accent transition-colors"
-          onClick={() => navigate("/")}
+          onClick={() => navigate(getPath("/"))}
         >
           Home
         </span>
         <span className="text-[8px] opacity-30">/</span>
         <span
           className="cursor-pointer hover:text-accent transition-colors"
-          onClick={() => navigate("/shop")}
+          onClick={() => navigate(getPath("/shop"))}
         >
           Shop
         </span>
         <span className="text-[8px] opacity-30">/</span>
-        <span className="text-secondary font-bold">{product.name}</span>
+        <span className="text-secondary font-bold capitalize">
+          {product.name}
+        </span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Gallery Section - More compact */}
         <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-12 gap-3 animate-slide-right">
           {/* Thumbnails - Showing all available images */}
-          <div className="md:col-span-2 order-2 md:order-1 flex md:flex-col gap-2 h-fit max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+          <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2 h-fit md:max-h-[500px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
             {(() => {
               const baseUrl = product.image?.includes("/uploads/")
                 ? product.image.split("/uploads/")[0]
@@ -145,7 +148,7 @@ const ProductDetail = () => {
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(thumb)}
-                  className={`aspect-square w-full rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 ${
+                  className={`aspect-square w-16 md:w-full rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 ${
                     selectedImage === thumb
                       ? "border-accent ring-1 ring-accent/10 shadow-sm"
                       : "border-transparent hover:border-accent/30"
@@ -163,7 +166,7 @@ const ProductDetail = () => {
 
           {/* Main Image - Smaller padding and aspect ratio */}
           <div className="md:col-span-10 order-1 md:order-2">
-            <div className="aspect-4/5 md:aspect-square bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-100 flex items-center justify-center relative group">
+            <div className="aspect-square md:aspect-square max-h-[400px] md:max-h-none bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-100 flex items-center justify-center relative group">
               <img
                 src={selectedImage}
                 alt={product.name}
@@ -206,7 +209,7 @@ const ProductDetail = () => {
               </span>
             </div>
 
-            <h1 className="font-serif text-3xl lg:text-4xl font-bold text-secondary tracking-tight">
+            <h1 className="font-serif text-3xl lg:text-4xl font-bold text-secondary tracking-tight capitalize">
               {product.name}
             </h1>
 
@@ -217,7 +220,7 @@ const ProductDetail = () => {
                     {getDisplayPrice()}
                   </span>
                   <span className="text-base line-through text-primary/20 font-medium">
-                    {product.oldPrice || "Rs 1299"}
+                    {product.oldPrice || "₹1299"}
                   </span>
                 </div>
                 <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
@@ -279,71 +282,40 @@ const ProductDetail = () => {
             <button
               onClick={() => {
                 handleAddToCart();
-                navigate("/checkout");
+                navigate(getPath("/cart"));
               }}
-              className="bg-secondary text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-primary transition-all shadow-lg active:scale-95"
+              style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:opacity-90 transition-all shadow-lg active:scale-95"
             >
               Buy Now
             </button>
             <button
-              onClick={handleAddToCart}
-              className="bg-[#E4C59E] text-primary py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95"
+              onClick={() => {
+                handleAddToCart();
+                navigate(getPath("/cart"));
+              }}
+              style={{ backgroundColor: "#E4C59E", color: "#5a3232" }}
+              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95"
             >
               Add to Cart
             </button>
           </div>
 
-          {/* Combined Details & Notes - More compact layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="bg-neutral-50/30 rounded-2xl p-4 border border-neutral-100 max-h-[120px] overflow-y-auto custom-scrollbar">
-              <h4 className="text-secondary font-serif font-bold text-sm mb-2 sticky top-0 bg-neutral-50/30">
-                Description
-              </h4>
-              <p className="text-primary/70 text-[11px] leading-relaxed">
-                {product.description ||
-                  "No description available for this exquisite fragrance."}
-              </p>
-            </div>
-
-            <div className="bg-neutral-50/30 rounded-2xl p-4 border border-neutral-100">
-              <h3 className="text-secondary font-serif font-bold text-sm mb-3">
-                Fragrance Notes
-              </h3>
-              <div className="space-y-3">
-                {[
-                  {
-                    label: "Top",
-                    value:
-                      product.notes?.top?.split(" — ")[0] || "Citrus, Pepper",
-                  },
-                  {
-                    label: "Heart",
-                    value:
-                      product.notes?.heart?.split(" — ")[0] || "Jasmine, Rose",
-                  },
-                  {
-                    label: "Base",
-                    value:
-                      product.notes?.base?.split(" — ")[0] || "Vanilla, Musk",
-                  },
-                ].map((note, idx) => (
-                  <div key={idx} className="flex flex-col">
-                    <span className="text-[8px] font-bold uppercase tracking-widest text-accent mb-0.5">
-                      {note.label}
-                    </span>
-                    <p className="text-[11px] font-medium text-primary">
-                      {note.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Description Section - Expanded layout */}
+          <div className="bg-neutral-50/30 rounded-2xl p-6 border border-neutral-100">
+            <h4 className="text-secondary font-serif font-bold text-lg mb-3">
+              Description
+            </h4>
+            <p className="text-primary/70 text-sm leading-relaxed">
+              {product.description ||
+                "No description available for this exquisite product."}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Trust Badges - Smaller and tighter */}
-      <div className="mt-8 py-6 border-t border-neutral-100 grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Trust Badges - Centered on mobile */}
+      <div className="mt-8 py-6 border-t border-neutral-100 grid grid-cols-3 md:grid-cols-3 gap-6">
         {[
           {
             icon: ShieldCheck,
@@ -357,9 +329,12 @@ const ProductDetail = () => {
           },
           { icon: Truck, title: "Fast Shipping", sub: "Express Safe Delivery" },
         ].map((badge, idx) => (
-          <div key={idx} className="flex items-center gap-4 group">
-            <div className="w-10 h-10 rounded-xl bg-neutral-50 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300 shadow-sm border border-neutral-100">
-              <badge.icon size={20} />
+          <div
+            key={idx}
+            className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 group text-center md:text-left"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300 shadow-sm border border-neutral-100">
+              <badge.icon size={22} />
             </div>
             <div>
               <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-0.5">

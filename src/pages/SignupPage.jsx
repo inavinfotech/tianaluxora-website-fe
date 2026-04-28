@@ -26,12 +26,12 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center pt-12 pb-12 px-4 sm:px-6">
+    <div className="min-h-[80vh] flex items-center justify-center pt-8 pb-8 px-4 sm:px-6">
       <div className="w-full max-w-md">
         <h2 className="text-3xl font-light mb-2 text-center text-primary">
           Create Account
         </h2>
-        <p className="text-sm text-center mb-8 text-primary/70">
+        <p className="text-sm text-center mb-6 text-primary/70">
           Join Tiana Luxora<sup>TM</sup>'s exclusive world
         </p>
 
@@ -41,7 +41,7 @@ const SignupPage = () => {
           </div>
         )}
 
-        <form onSubmit={handleSignup} className="space-y-5">
+        <form onSubmit={handleSignup} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-primary/80 mb-2">
               Full Name

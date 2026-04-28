@@ -4,13 +4,13 @@ import { footerLinks } from "../data/navigation";
 
 const Footer = () => {
   return (
-    <footer className="pt-12 md:pt-20 pb-8 md:pb-10 border-t border-[rgba(61,26,26,0.1)] animate-fade-in relative z-10">
+    <footer className="pt-12 md:pt-20 pb-8 md:pb-10 border-t border-[rgba(90,50,50,0.1)] animate-fade-in relative z-10">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
         <div className="col-span-2 md:col-span-3 lg:col-span-1 flex flex-col items-center lg:items-start gap-4 md:gap-6 text-center lg:text-left">
           <h3 className="font-serif text-[1.5rem] md:text-[1.8rem] font-bold text-primary">
             Tiana Luxora<sup>TM</sup>
           </h3>
-          <p className="text-[0.9rem] md:text-[0.95rem] text-[rgba(61,26,26,0.7)] leading-relaxed">
+          <p className="text-[0.9rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] leading-relaxed">
             Elevating your senses, embracing elegance.
           </p>
           <div className="flex flex-col gap-2 md:gap-3">
@@ -19,7 +19,7 @@ const Footer = () => {
             </h4>
             <a
               href={`mailto:${footerLinks.contactInfo.email}`}
-              className="text-[0.85rem] md:text-[0.9rem] text-[rgba(61,26,26,0.8)] hover:text-accent transition-colors flex items-center justify-center lg:justify-start gap-2"
+              className="text-[0.85rem] md:text-[0.9rem] text-[rgba(90,50,50,0.8)] hover:text-accent transition-colors flex items-center justify-center lg:justify-start gap-2"
             >
               <svg
                 width="14"
@@ -38,7 +38,7 @@ const Footer = () => {
             </a>
             <a
               href={`tel:${footerLinks.contactInfo.phone.replace(/\s/g, "")}`}
-              className="text-[0.85rem] md:text-[0.9rem] text-[rgba(61,26,26,0.8)] hover:text-accent transition-colors flex items-center justify-center lg:justify-start gap-2"
+              className="text-[0.85rem] md:text-[0.9rem] text-[rgba(90,50,50,0.8)] hover:text-accent transition-colors flex items-center justify-center lg:justify-start gap-2"
             >
               <svg
                 width="14"
@@ -66,7 +66,7 @@ const Footer = () => {
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.85rem] md:text-[0.95rem] text-[rgba(61,26,26,0.7)] hover:text-accent transition-colors"
+                  className="text-[0.85rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] hover:text-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -84,7 +84,7 @@ const Footer = () => {
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.85rem] md:text-[0.95rem] text-[rgba(61,26,26,0.7)] hover:text-accent transition-colors"
+                  className="text-[0.85rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] hover:text-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -102,7 +102,7 @@ const Footer = () => {
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.85rem] md:text-[0.95rem] text-[rgba(61,26,26,0.7)] hover:text-accent transition-colors"
+                  className="text-[0.85rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] hover:text-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -115,14 +115,14 @@ const Footer = () => {
           <h4 className="font-bold text-primary uppercase tracking-wider text-[0.75rem] md:text-[0.85rem]">
             Newsletter
           </h4>
-          <p className="text-[0.85rem] md:text-[0.9rem] text-[rgba(61,26,26,0.7)]">
+          <p className="text-[0.85rem] md:text-[0.9rem] text-[rgba(90,50,50,0.7)]">
             Join Our Newsletter Subscribe for exclusive updates & offers
           </p>
           <div className="relative mt-1 md:mt-2">
             <input
               type="email"
               placeholder="Your email address"
-              className="w-full bg-white/50 border border-[rgba(61,26,26,0.1)] rounded-full px-5 md:px-6 py-2.5 md:py-3 outline-none focus:border-accent transition-colors text-[0.9rem]"
+              className="w-full bg-white/50 border border-[rgba(90,50,50,0.1)] rounded-full px-5 md:px-6 py-2.5 md:py-3 outline-none focus:border-accent transition-colors text-[0.9rem]"
             />
             <button className="absolute right-1.5 md:right-2 top-1 md:top-1.5 bg-primary text-white p-1.5 md:p-2 rounded-full hover:bg-accent transition-colors">
               <svg
@@ -145,7 +145,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-[rgba(61,26,26,0.05)] pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-[0.85rem] text-[rgba(61,26,26,0.5)]">
+      <div className="border-t border-[rgba(90,50,50,0.05)] pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-[0.85rem] text-[rgba(90,50,50,0.5)]">
         <div className="flex flex-col items-center md:items-start gap-1">
           <p>
             © 2026 Tiana Luxora<sup>TM</sup>. All rights reserved.

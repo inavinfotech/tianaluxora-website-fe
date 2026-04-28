@@ -6,12 +6,12 @@ const HeroSection = () => {
   const is3dactive = import.meta.env.VITE_ENABLE_3D_MODEL === "true";
 
   return (
-    <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-[70vh] animate-fade-in text-center lg:text-left py-8 lg:py-0">
+    <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-[60vh] animate-fade-in text-center lg:text-left py-8 lg:py-0">
       <div className="flex flex-col gap-6 md:gap-8 items-center lg:items-start order-1 lg:order-0">
         <h1 className="text-[2.2rem] md:text-[3rem] leading-[1.1] text-primary mb-2 md:mb-4 font-serif font-bold">
           Luxury That Speaks Before You Do
         </h1>
-        <p className="text-[1rem] md:text-[1.1rem] text-[rgba(61,26,26,0.8)] max-w-[400px]">
+        <p className="text-[1rem] md:text-[1.1rem] text-[rgba(90,50,50,0.8)] max-w-[400px]">
           Tiana Luxora<sup>TM</sup> blends rare notes into{" "}
           <br className="hidden md:block" /> unforgettable fragrances
           <br className="hidden md:block" />
@@ -49,7 +49,7 @@ const HeroSection = () => {
           <h2 className="text-[1.6rem] md:text-[2rem] leading-[1.2] font-serif font-bold">
             Discover Signature Fragrances at Your Fingertips
           </h2>
-          <p className="text-[0.9rem] md:text-[0.95rem] text-[rgba(61,26,26,0.7)]">
+          <p className="text-[0.9rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)]">
             Indulge your senses in a world of elegant and captivating aromas
             crafted for every occasion.
           </p>

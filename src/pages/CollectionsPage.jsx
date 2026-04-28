@@ -31,7 +31,7 @@ const collections = [
 const CollectionsPage = () => {
   return (
     <div className="py-6">
-      <h1 className="text-[3rem] text-center mb-12">Our Collections</h1>
+      <h1 className="text-[3rem] text-center mb-8">Our Collections</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {collections.map((collection) => (
           <CollectionCard key={collection.id} collection={collection} />

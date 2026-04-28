@@ -4,7 +4,7 @@ export const navLinks = [
   { name: "Home", path: getPath("/") },
   { name: "Shop", path: getPath("/shop") },
   { name: "Collections", path: getPath("/collections") },
-  { name: "About", path: "#" },
+  { name: "About", path: getPath("/about") },
   { name: "Blog", path: "#" },
   { name: "Contact", path: "#" },
 ];
@@ -15,7 +15,7 @@ export const footerLinks = {
     { name: "Shop", path: getPath("/shop") },
     { name: "Collections", path: getPath("/collections") },
     { name: "Best Sellers", path: "#" },
-    { name: "About Us", path: "#" },
+    { name: "About Us", path: getPath("/about") },
     { name: "Blog", path: "#" },
     { name: "Contact", path: "#" },
   ],

@@ -5,14 +5,14 @@ import { testimonials } from "../data/testimonials";
 const Testimonials = () => {
   return (
     <section
-      className="py-12 md:py-16 animate-fade-in bg-cover bg-center -mx-4 md:-mx-8 px-4 md:px-8"
+      className="py-8 md:py-12 animate-fade-in bg-cover bg-center -mx-4 md:-mx-8 px-4 md:px-8"
       style={{ backgroundImage: "url('/images/backgrounds/testimonial.webp')" }}
     >
-      <div className="text-center mb-8 md:mb-12">
+      <div className="text-center mb-6 md:mb-8">
         <h2 className="text-[1.8rem] md:text-[2.2rem] mb-2 text-primary font-serif font-bold">
           What Our Customers Say
         </h2>
-        <p className="text-[0.95rem] md:text-[1rem] text-[rgba(61,26,26,0.7)] max-w-[500px] mx-auto">
+        <p className="text-[0.95rem] md:text-[1rem] text-[rgba(90,50,50,0.7)] max-w-[500px] mx-auto">
           Real experiences from those who love Tiana Luxora
         </p>
       </div>
@@ -42,7 +42,7 @@ const Testimonials = () => {
               "{testimonial.quote}"
             </p>
             <div className="flex items-center gap-4 mt-2">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[rgba(61,26,26,0.1)] flex justify-center items-center overflow-hidden">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[rgba(90,50,50,0.1)] flex justify-center items-center overflow-hidden">
                 <div className="w-full h-full bg-[#d1d5db]"></div>
               </div>
               <span className="font-medium text-[0.95rem] md:text-[1rem] text-primary">

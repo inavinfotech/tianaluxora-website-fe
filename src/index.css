@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3d1a1a;
+  --color-primary: #5a3232;
   --color-accent: #d48c6a;
   --font-serif: "Playfair Display", serif;
   --font-sans: "Poppins", sans-serif;
@@ -46,7 +46,7 @@
 }
 
 :root {
-  --primary: #3d1a1a;
+  --primary: #5a3232;
   --accent: #d48c6a;
   --bg-gradient: linear-gradient(135deg, #fff5f0 0%, #ffe4d6 100%);
   --font-serif: "Playfair Display", serif;

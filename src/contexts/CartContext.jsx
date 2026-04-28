@@ -5,20 +5,16 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem("tiana_cart");
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error("Failed to parse cart", e);
-      }
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem("tiana_cart");
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (e) {
+      console.error("Failed to parse cart from localStorage", e);
+      return [];
     }
-  }, []);
+  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Save cart to localStorage on change
   useEffect(() => {

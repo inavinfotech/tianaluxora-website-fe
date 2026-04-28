@@ -25,12 +25,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-24 pb-12 px-4 sm:px-6">
+    <div className="min-h-screen flex items-center justify-center pt-16 pb-8 px-4 sm:px-6">
       <div className="w-full max-w-md">
         <h2 className="text-3xl font-light mb-2 text-center text-primary">
           Welcome Back
         </h2>
-        <p className="text-sm text-center mb-8 text-primary/70">
+        <p className="text-sm text-center mb-6 text-primary/70">
           Sign in to continue exploring Tiana Luxora<sup>TM</sup>
         </p>
 
@@ -40,7 +40,7 @@ const LoginPage = () => {
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-primary/80 mb-2">
               Email Address

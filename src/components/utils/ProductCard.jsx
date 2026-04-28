@@ -1,11 +1,12 @@
 import React from "react";
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import { getPath } from "../../utils/paths";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   return (
     <div className="bg-white/40 backdrop-blur-md rounded-[16px] p-3 flex flex-col items-center gap-2 border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-custom group relative hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
       {product.tag && (
@@ -31,15 +32,15 @@ const ProductCard = ({ product }) => {
           to={getPath(`/product/${product.id}`)}
           className="hover:text-accent transition-colors"
         >
-          <h3 className="text-[0.95rem] font-serif font-bold mb-0.5">
+          <h3 className="text-[0.95rem] font-serif font-bold mb-0.5 capitalize">
             {product.name}
           </h3>
         </Link>
         <p className="text-[0.9rem] font-medium text-accent">
           {product.real_variants && product.real_variants.length > 0
-            ? `From Rs ${Math.min(...product.real_variants.map((v) => v.price))}`
+            ? `From ₹${Math.min(...product.real_variants.map((v) => v.price))}`
             : typeof product.price === "number"
-              ? `Rs ${product.price}`
+              ? `₹${product.price}`
               : product.price}
         </p>
       </div>
@@ -48,13 +49,18 @@ const ProductCard = ({ product }) => {
         {product.real_variants && product.real_variants.length > 0 ? (
           <Link
             to={getPath(`/product/${product.id}`)}
-            className="flex-1 bg-secondary text-white text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold transition-custom"
+            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+            className="flex-1 text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold transition-custom"
           >
             Choose
           </Link>
         ) : (
           <Button
-            onClick={() => addToCart(product)}
+            onClick={() => {
+              addToCart(product);
+              navigate(getPath("/cart"));
+            }}
+            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
             className="flex-1 text-[0.7rem] px-2 py-2 uppercase tracking-widest font-bold"
           >
             Add

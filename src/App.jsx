@@ -12,6 +12,9 @@ import ProductDetail from "./pages/ProductDetail";
 import CartPage from "./pages/CartPage";
 import CartDrawer from "./components/CartDrawer";
 import UnderMaintenance from "./pages/UnderMaintenance";
+import OrdersPage from "./pages/OrdersPage";
+import OrderDetailPage from "./pages/OrderDetailPage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
   const isUnderDevelopment = import.meta.env.VITE_UNDER_DEVELOPMENT === "true";
@@ -76,12 +79,14 @@ function App() {
           />
           <Route path={`${routePrefix}/login`} element={<LoginPage />} />
           <Route path={`${routePrefix}/signup`} element={<SignupPage />} />
-          <Route path={`${routePrefix}/profile`} element={<ProfilePage />} />
+          <Route path={`${routePrefix}/profile/*`} element={<ProfilePage />} />
+          <Route path={`${routePrefix}/about`} element={<AboutPage />} />
           <Route
             path={`${routePrefix}/product/:productId`}
             element={<ProductDetail />}
           />
           <Route path={`${routePrefix}/cart`} element={<CartPage />} />
+
           {/* Catch all for invalid routes within the app context prefix */}
           <Route
             path={`${routePrefix}/*`}

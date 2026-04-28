@@ -93,14 +93,16 @@ const CartPage = () => {
         quantity: cartItems.reduce((acc, item) => acc + item.quantity, 0),
         total_amount: cartTotal,
         currency: "INR",
+        image: cartItems[0]?.image,
         items: cartItems.map((item) => ({
           product_id: String(item.id),
-          variant_id: item.variant_id,
+          variant_id: item.variant_id ? String(item.variant_id) : null,
           variant_name: item.selectedSize,
           product_name: item.name,
           quantity: item.quantity,
           unit_price: parseFloat(String(item.price).replace(/[^0-9.]/g, "")),
           sku: item.sku || `SKU-${item.id}`,
+          image: item.image,
         })),
       };
 
@@ -132,12 +134,12 @@ const CartPage = () => {
             } else {
               setOrderStatus("error");
             }
-          } catch (err) {
+          } catch (e) {
             setOrderStatus("error");
           }
         },
         prefill: { name: user.full_name, email: user.email },
-        theme: { color: "#3d1a1a" },
+        theme: { color: "#5a3232" },
         modal: { ondismiss: () => setIsProcessing(false) },
       };
 
@@ -161,7 +163,7 @@ const CartPage = () => {
         </p>
         <Link
           to={getPath("/shop")}
-          className="bg-[#3d1a1a] text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-[#d48c6a] transition-all"
+          className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all"
         >
           Explore Collection
         </Link>
@@ -170,12 +172,12 @@ const CartPage = () => {
   }
 
   return (
-    <div className="pb-12 animate-fade-in max-w-7xl mx-auto px-4">
-      <h1 className="text-4xl font-serif font-bold text-primary text-center mb-12">
+    <div className="pb-8 animate-fade-in max-w-7xl mx-auto px-4">
+      <h1 className="text-4xl font-serif font-bold text-primary text-center mb-8">
         My Cart
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Cart Items */}
         <div className="lg:col-span-2 space-y-8">
           <div className="flex items-center justify-between border-b border-gray-100 pb-4">
@@ -217,7 +219,7 @@ const CartPage = () => {
                 <div className="flex-1 flex flex-col min-w-0">
                   <div className="flex justify-between items-start">
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-lg font-serif font-bold text-primary truncate">
+                      <h3 className="text-lg font-serif font-bold text-primary truncate capitalize">
                         {item.name}
                       </h3>
                       <p className="text-[10px] text-gray-400 font-medium uppercase tracking-tight">
@@ -226,7 +228,7 @@ const CartPage = () => {
                       </p>
                     </div>
                     <p className="text-sm font-bold text-primary shrink-0 ml-2">
-                      Rs{" "}
+                      ₹
                       {parseFloat(
                         String(item.price).replace(/[^0-9.]/g, ""),
                       ).toLocaleString()}
@@ -314,7 +316,7 @@ const CartPage = () => {
               <div className="flex justify-between items-center text-gray-400 font-medium">
                 <span>Subtotal</span>
                 <span className="text-primary">
-                  Rs {cartTotal.toLocaleString()}
+                  ₹{cartTotal.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between items-center text-gray-500 font-medium">
@@ -326,7 +328,7 @@ const CartPage = () => {
               <div className="flex justify-between items-center text-gray-500 font-medium pt-3 border-t border-gray-50">
                 <span className="text-lg font-bold text-primary">Total</span>
                 <span className="text-2xl font-bold text-accent font-serif">
-                  Rs {cartTotal.toLocaleString()}
+                  ₹{cartTotal.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -374,7 +376,7 @@ const CartPage = () => {
                       {!isAddressConfirmed ? (
                         <button
                           onClick={() => setIsAddressConfirmed(true)}
-                          className="bg-[#d48c6a] text-white px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm hover:scale-105 transition-transform"
+                          className="bg-accent text-white px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm hover:scale-105 transition-transform"
                         >
                           Confirm
                         </button>
@@ -421,7 +423,7 @@ const CartPage = () => {
                       ? "#812d2d"
                       : user && !isAddressConfirmed && !showAddressForm
                         ? "#f5f5f5"
-                        : "#3d1a1a",
+                        : "#5a3232",
                 color:
                   user && !isAddressConfirmed && !showAddressForm
                     ? "#a3a3a3"
@@ -466,7 +468,7 @@ const CartPage = () => {
               Add a personalized message and premium gift wrapping to make your
               purchase extra special.
             </p>
-            <button className="text-[10px] font-black underline uppercase tracking-widest text-[#d48c6a]">
+            <button className="text-[10px] font-black underline uppercase tracking-widest text-accent">
               Add Gift Wrap
             </button>
           </div>
