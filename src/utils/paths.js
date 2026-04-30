@@ -3,6 +3,7 @@ export const routePrefix = isUnderDevelopment ? "/dev" : "";
 
 export const getPath = (path) => {
   if (
+    !path ||
     path.startsWith("http") ||
     path.startsWith("#") ||
     path.startsWith("mailto:") ||
@@ -12,12 +13,17 @@ export const getPath = (path) => {
   }
 
   // Ensure path starts with /
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  let normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  // Special case for root
+  if (normalizedPath === "/") {
+    return routePrefix || "/";
+  }
 
   // Don't prefix if already prefixed
-  if (routePrefix && normalizedPath.startsWith(routePrefix)) {
+  if (routePrefix && (normalizedPath === routePrefix || normalizedPath.startsWith(`${routePrefix}/`))) {
     return normalizedPath;
   }
 
-  return `${routePrefix}${normalizedPath === "/" ? "" : normalizedPath}`;
+  return `${routePrefix}${normalizedPath}`;
 };

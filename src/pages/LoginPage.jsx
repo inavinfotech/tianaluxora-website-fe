@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { getPath } from "../utils/paths";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ const LoginPage = () => {
 
     const result = await login(email, password);
     if (result.success) {
-      navigate("/");
+      navigate(getPath("/"));
     } else {
       setError(result.error);
     }
@@ -79,7 +80,7 @@ const LoginPage = () => {
 
         <p className="mt-8 text-center text-sm text-primary/60">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-(--accent) hover:underline ml-1">
+          <Link to={getPath("/signup")} className="text-(--accent) hover:underline ml-1">
             Sign up
           </Link>
         </p>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { getPath } from "../utils/paths";
 
 const SignupPage = () => {
   const [fullName, setFullName] = useState("");
@@ -18,7 +19,7 @@ const SignupPage = () => {
 
     const result = await signup(email, password, fullName);
     if (result.success) {
-      navigate("/");
+      navigate(getPath("/"));
     } else {
       setError(result.error);
     }
@@ -93,7 +94,7 @@ const SignupPage = () => {
 
         <p className="mt-8 text-center text-sm text-primary/60">
           Already have an account?{" "}
-          <Link to="/login" className="text-(--accent) hover:underline ml-1">
+          <Link to={getPath("/login")} className="text-(--accent) hover:underline ml-1">
             Sign In
           </Link>
         </p>

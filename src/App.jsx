@@ -10,7 +10,6 @@ import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import ProductDetail from "./pages/ProductDetail";
 import CartPage from "./pages/CartPage";
-import CartDrawer from "./components/CartDrawer";
 import UnderMaintenance from "./pages/UnderMaintenance";
 import OrdersPage from "./pages/OrdersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
@@ -22,11 +21,9 @@ function App() {
 
   useEffect(() => {
     // Only initialize Lenis if we are not on the maintenance page
-    if (
-      isUnderDevelopment &&
-      (location.pathname === "/" || !location.pathname.startsWith("/dev"))
-    )
-      return;
+    const shouldShowMaintenance = isUnderDevelopment && !location.pathname.startsWith("/dev");
+    
+    if (shouldShowMaintenance) return;
 
     // Initialize Lenis for smooth scrolling
     const lenis = new Lenis({
@@ -50,12 +47,11 @@ function App() {
   }, [isUnderDevelopment, location.pathname]);
 
   const routePrefix = isUnderDevelopment ? "/dev" : "";
-  const getPath = (path) => `${routePrefix}${path === "/" ? "" : path}`;
 
   // Logic for Under Development mode
   if (isUnderDevelopment) {
     // If we are at the root or anywhere that isn't /dev, show UnderMaintenance
-    if (location.pathname === "/" || !location.pathname.startsWith("/dev")) {
+    if (!location.pathname.startsWith("/dev")) {
       return <UnderMaintenance />;
     }
   } else {
@@ -86,13 +82,16 @@ function App() {
             element={<ProductDetail />}
           />
           <Route path={`${routePrefix}/cart`} element={<CartPage />} />
+          <Route path={`${routePrefix}/orders`} element={<OrdersPage />} />
+          <Route path={`${routePrefix}/order/:orderId`} element={<OrderDetailPage />} />
 
           {/* Catch all for invalid routes within the app context prefix */}
           <Route
             path={`${routePrefix}/*`}
-            element={<Navigate to={getPath("/")} replace />}
+            element={<Navigate to={isUnderDevelopment ? "/dev" : "/"} replace />}
           />
-          {/* Global catch all (redundant due to early return but good for safety) */}
+          
+          {/* Global catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
