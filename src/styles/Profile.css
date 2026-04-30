@@ -1,5 +1,6 @@
 .profile-container {
   padding: 2rem;
+  padding-bottom: 5rem;
   font-family: "Poppins", sans-serif;
   color: #5a3232;
 }
@@ -456,5 +457,129 @@
 @media (max-width: 1024px) {
   .profile-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+    padding-bottom: 4rem;
+  }
+
+  .sidebar-glass-card {
+    padding: 1.5rem;
+    border-radius: 30px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+
+  .profile-name {
+    font-size: 1.25rem;
+  }
+
+  .sidebar-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .nav-item {
+    padding: 0.75rem 1rem;
+    font-size: 12px;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .nav-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-indicator {
+    display: none;
+  }
+
+  .sign-out-button {
+    grid-column: span 2;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  .logout-link {
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .upgrade-card {
+    border-radius: 30px;
+    padding: 1.5rem;
+  }
+
+  .order-list-item {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .order-item-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(90, 50, 50, 0.05);
+  }
+
+  .orders-title {
+    font-size: 1.75rem;
+  }
+
+  .empty-orders-card {
+    padding: 3rem 1.5rem;
+  }
+
+  /* Transaction table responsiveness */
+  .profile-content .overflow-hidden {
+    overflow-x: auto !important;
+  }
+
+  .profile-content table {
+    min-width: 600px;
+  }
+  .profile-content table th,
+  .profile-content table td {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav-item {
+    padding: 0.6rem 0.5rem;
+    font-size: 11px;
+  }
+
+  .order-item-left {
+    gap: 1rem;
+  }
+
+  .order-item-image-box {
+    width: 60px;
+    height: 60px;
+  }
+
+  .order-item-title {
+    font-size: 1rem;
   }
 }

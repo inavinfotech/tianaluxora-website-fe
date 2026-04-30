@@ -431,3 +431,92 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .order-detail-container {
+    padding: 1rem;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .download-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .order-title {
+    font-size: 1.75rem;
+  }
+
+  .glass-card {
+    padding: 1.5rem;
+    border-radius: 30px;
+  }
+
+  .progress-container {
+    padding: 1rem 0;
+  }
+
+  .step-label {
+    display: none;
+  }
+
+  .step-icon-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .step-icon-wrapper svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .item-image-wrapper {
+    width: 80px;
+    height: 80px;
+  }
+
+  .item-name {
+    font-size: 1.1rem;
+  }
+
+  .customer-info-card {
+    padding: 1.5rem;
+    border-radius: 30px;
+  }
+
+  .shipping-address {
+    max-width: 100%;
+  }
+
+  .order-time-card {
+    padding: 1.5rem;
+    border-radius: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-title {
+    font-size: 1.5rem;
+  }
+
+  .header-left {
+    gap: 1rem;
+  }
+
+  .back-button {
+    width: 40px;
+    height: 40px;
+  }
+}
