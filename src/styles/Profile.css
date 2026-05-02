@@ -462,13 +462,13 @@
 
 @media (max-width: 768px) {
   .profile-container {
-    padding: 1rem;
-    padding-bottom: 4rem;
+    padding: 0.75rem;
+    padding-bottom: 3rem;
   }
 
   .sidebar-glass-card {
-    padding: 1.5rem;
-    border-radius: 30px;
+    padding: 1.25rem;
+    border-radius: 24px;
   }
 
   .profile-avatar {
@@ -517,12 +517,12 @@
   }
 
   .upgrade-card {
-    border-radius: 30px;
-    padding: 1.5rem;
+    border-radius: 24px;
+    padding: 1.25rem;
   }
 
   .order-list-item {
-    padding: 1rem;
+    padding: 1rem 0.75rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
@@ -542,7 +542,7 @@
   }
 
   .empty-orders-card {
-    padding: 3rem 1.5rem;
+    padding: 2rem 1rem;
   }
 
   /* Transaction table responsiveness */

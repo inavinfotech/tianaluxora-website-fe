@@ -155,3 +155,61 @@ sup {
   opacity: 0.8;
   font-weight: 400;
 }
+
+/* Global Mobile Optimizations */
+@media (max-width: 768px) {
+  :root {
+    font-size: 14px; /* Scales down all rem-based units by ~12.5% */
+  }
+
+  body {
+    line-height: 1.5; /* Slightly tighter for mobile */
+  }
+
+  /* Reduce global spacing for sections and containers */
+  section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Target common Tailwind spacing patterns */
+  .py-8, .py-10, .py-12, .py-16, .py-20 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .px-8, .px-10, .px-12, .px-16 {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .gap-8, .gap-10, .gap-12, .gap-16 {
+    gap: 1rem !important;
+  }
+
+  .mb-8, .mb-10, .mb-12, .mb-16 {
+    margin-bottom: 1rem !important;
+  }
+
+  .mt-8, .mt-10, .mt-12, .mt-16 {
+    margin-top: 1rem !important;
+  }
+
+  /* App container adjustments */
+  .max-w-\[1400px\] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 13px; /* Further scale down for very small screens */
+  }
+
+  .px-4 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
