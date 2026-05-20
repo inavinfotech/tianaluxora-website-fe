@@ -5,8 +5,8 @@ export const navLinks = [
   { name: "Shop", path: getPath("/shop") },
   { name: "Collections", path: getPath("/collections") },
   { name: "About", path: getPath("/about") },
-  { name: "Blog", path: "#" },
-  { name: "Contact", path: "#" },
+  // { name: "Blog", path: "#" },
+  { name: "Contact", path: getPath("/contact") },
 ];
 
 export const footerLinks = {
@@ -16,8 +16,8 @@ export const footerLinks = {
     { name: "Collections", path: getPath("/collections") },
     { name: "Best Sellers", path: "#" },
     { name: "About Us", path: getPath("/about") },
-    { name: "Blog", path: "#" },
-    { name: "Contact", path: "#" },
+    // { name: "Blog", path: "#" },
+    { name: "Contact", path: getPath("/contact") },
   ],
   customerService: [
     { name: "FAQs", path: "#" },
