@@ -40,7 +40,7 @@ const AdminUsers = () => {
   return (
     <div className="space-y-6 font-sans">
       <div>
-        <h1 className="text-2xl font-serif font-bold text-[#5a3232]">Customer Directory</h1>
+        <h1 className="text-2xl font-sans font-extrabold text-[#5a3232]">Customer Directory</h1>
         <p className="text-xs text-slate-500 font-medium mt-0.5">
           View registered customer profiles from Central User Portal
         </p>

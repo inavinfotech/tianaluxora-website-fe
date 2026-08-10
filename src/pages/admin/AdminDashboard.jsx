@@ -24,6 +24,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTrendTab, setActiveTrendTab] = useState("revenue");
+  const [timeframe, setTimeframe] = useState("weekly");
   const [actionSearch, setActionSearch] = useState("");
 
   useEffect(() => {
@@ -42,16 +43,16 @@ const AdminDashboard = () => {
     <div className="space-y-6 font-sans">
       {/* Store Header */}
       <div>
-        <h1 className="text-2xl font-serif font-bold text-[#5a3232] tracking-tight">Admin Dashboard</h1>
+        <h1 className="text-2xl font-sans font-extrabold text-[#5a3232] tracking-tight">Admin Dashboard</h1>
         <p className="text-xs text-slate-500 font-medium mt-0.5">
           Manage luxury catalog, order fulfillment, sales, and inventory stock
         </p>
       </div>
 
-      {/* ── Store KPI Stat Cards (4 Columns) ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* ── Store KPI Stat Cards (5 Columns) ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {loading ? (
-          [...Array(4)].map((_, i) => (
+          [...Array(5)].map((_, i) => (
             <div
               key={i}
               className="bg-white h-28 rounded-2xl border border-slate-100 animate-pulse"
@@ -61,123 +62,181 @@ const AdminDashboard = () => {
           <>
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOTAL REVENUE</p>
-              <h3 className="text-3xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 ₹{(stats?.total_revenue ?? 0).toLocaleString("en-IN")}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Processed earnings</p>
+              <p className="text-xs text-slate-400 font-medium mt-1">Gross sales earnings</p>
             </div>
 
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOTAL ORDERS</p>
-              <h3 className="text-3xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.total_orders ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Lifetime customer orders</p>
+              <p className="text-xs text-slate-400 font-medium mt-1">Customer transactions</p>
             </div>
 
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CATALOG PRODUCTS</p>
-              <h3 className="text-3xl font-extrabold text-[#5a3232] mt-1.5">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CATALOG ITEMS</p>
+              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.total_products ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Active items</p>
+              <p className="text-xs text-slate-400 font-medium mt-1">Active inventory products</p>
             </div>
 
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PENDING FULFILLMENT</p>
-              <h3 className="text-3xl font-extrabold text-[#5a3232] mt-1.5">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PENDING SHIPPING</p>
+              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.pending_orders ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Orders awaiting shipping</p>
+              <p className="text-xs text-slate-400 font-medium mt-1">Awaiting fulfillment</p>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CUSTOMERS</p>
+              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
+                {stats?.total_users ?? 0}
+              </h3>
+              <p className="text-xs text-slate-400 font-medium mt-1">Registered accounts</p>
             </div>
           </>
         )}
       </div>
 
-      {/* ── Middle Section: Store Trends Overview & Actions Panel ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Store Trends Overview (Span 2) */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-base font-bold text-[#5a3232]">Store Performance</h3>
-            <div className="bg-slate-100 p-1 rounded-xl flex gap-1">
-              <button
-                onClick={() => setActiveTrendTab("revenue")}
-                className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
-                  activeTrendTab === "revenue"
-                    ? "bg-white text-slate-800 shadow-xs"
-                    : "text-slate-500 hover:text-slate-800"
-                }`}
-              >
-                Revenue
-              </button>
-              <button
-                onClick={() => setActiveTrendTab("orders")}
-                className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
-                  activeTrendTab === "orders"
-                    ? "bg-white text-slate-800 shadow-xs"
-                    : "text-slate-500 hover:text-slate-800"
-                }`}
-              >
-                Orders
-              </button>
+      {/* ── Middle Section: Store Performance Trends Chart (Full Width) ── */}
+      <div className="w-full">
+        {/* Store Trends Overview with Interactive Bar Chart */}
+        <div className="w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+              <h3 className="text-base font-bold text-[#5a3232]">Store Performance Trends</h3>
+              <p className="text-xs text-slate-400 font-medium">
+                {timeframe === "weekly" ? "Weekly activity breakdown" : "Monthly activity breakdown"}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Timeframe Toggle: Weekly / Monthly */}
+              <div className="bg-slate-100 p-1 rounded-xl flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setTimeframe("weekly")}
+                  style={{
+                    backgroundColor: timeframe === "weekly" ? "#5a3232" : "transparent",
+                    color: timeframe === "weekly" ? "#ffffff" : "#475569"
+                  }}
+                  className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
+                >
+                  Weekly
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTimeframe("monthly")}
+                  style={{
+                    backgroundColor: timeframe === "monthly" ? "#5a3232" : "transparent",
+                    color: timeframe === "monthly" ? "#ffffff" : "#475569"
+                  }}
+                  className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
+                >
+                  Monthly
+                </button>
+              </div>
+
+              {/* Metric Toggle: Revenue / Orders */}
+              <div className="bg-slate-100 p-1 rounded-xl flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveTrendTab("revenue")}
+                  style={{
+                    backgroundColor: activeTrendTab === "revenue" ? "#5a3232" : "transparent",
+                    color: activeTrendTab === "revenue" ? "#ffffff" : "#475569"
+                  }}
+                  className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
+                >
+                  Revenue
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTrendTab("orders")}
+                  style={{
+                    backgroundColor: activeTrendTab === "orders" ? "#5a3232" : "transparent",
+                    color: activeTrendTab === "orders" ? "#ffffff" : "#475569"
+                  }}
+                  className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
+                >
+                  Orders
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="bg-[#faf7f5] rounded-xl p-12 text-center border border-slate-100 flex-1 min-h-[180px] flex flex-col items-center justify-center">
-            {stats && stats.total_orders > 0 ? (
-              <div className="space-y-1">
-                <p className="text-2xl font-extrabold text-[#5a3232]">
-                  {activeTrendTab === "revenue"
-                    ? `₹${(stats.total_revenue || 0).toLocaleString("en-IN")}`
-                    : `${stats.total_orders} Total Orders`}
-                </p>
-                <p className="text-xs text-slate-500 font-medium">
-                  {activeTrendTab === "revenue"
-                    ? "Total gross revenue generated across all completed purchases"
-                    : "Total purchase transactions placed by customers"}
-                </p>
+          {/* Interactive Bar Chart */}
+          <div className="bg-[#faf7f5] rounded-2xl p-6 border border-slate-100 flex flex-col justify-end min-h-[220px]">
+            {stats ? (
+              <div className="space-y-4">
+                <div className="flex items-end justify-between gap-2 sm:gap-3 h-36 pt-4">
+                  {(() => {
+                    const trendData = stats.trends?.[timeframe] || (timeframe === "weekly" ? {
+                      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                      revenue: [0, 0, 0, 0, 0, 0, 0],
+                      orders: [0, 0, 0, 0, 0, 0, 0]
+                    } : {
+                      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                      revenue: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      orders: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    });
+
+                    const labels = trendData.labels || [];
+                    const dataList = activeTrendTab === "revenue"
+                      ? (trendData.revenue || [])
+                      : (trendData.orders || []);
+                    const maxVal = Math.max(...dataList, 1);
+
+                    return labels.map((label, idx) => {
+                      const val = dataList[idx] || 0;
+                      const heightPercent = val > 0 ? Math.max(18, Math.round((val / maxVal) * 100)) : 0;
+
+                      return (
+                        <div key={label} className="flex-1 flex flex-col items-center gap-2 group relative">
+                          {/* Tooltip */}
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded shadow-md pointer-events-none z-10 whitespace-nowrap">
+                            {activeTrendTab === "revenue" ? `₹${val.toLocaleString("en-IN")}` : `${val} orders`}
+                          </div>
+
+                          {/* Bar Container */}
+                          <div className="w-full max-w-[36px] bg-slate-200/80 rounded-t-xl flex items-end h-28 overflow-hidden">
+                            {val > 0 ? (
+                              <div
+                                style={{
+                                  height: `${heightPercent}%`,
+                                  minHeight: "14px",
+                                  backgroundColor: activeTrendTab === "revenue" ? "#5a3232" : "#d48c6a"
+                                }}
+                                className="w-full rounded-t-xl transition-all duration-700 hover:brightness-125 shadow-sm"
+                              />
+                            ) : (
+                              <div className="w-full h-1 bg-slate-300/50 rounded-full my-1" />
+                            )}
+                          </div>
+
+                          <span className="text-[10px] font-bold text-slate-400 uppercase">{label}</span>
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
+
+                <div className="flex justify-between items-center border-t border-slate-200/60 pt-3 text-xs font-semibold text-slate-500">
+                  <span>{timeframe === "weekly" ? "Gross Weekly Volume" : "Gross Monthly Volume"}</span>
+                  <span className="font-extrabold text-[#5a3232]">
+                    {activeTrendTab === "revenue"
+                      ? `₹${(stats.total_revenue || 0).toLocaleString("en-IN")}`
+                      : `${stats.total_orders || 0} Total Orders`}
+                  </span>
+                </div>
               </div>
             ) : (
-              <p className="text-slate-400 text-sm italic">No recorded sales stats yet</p>
+              <div className="p-8 text-center text-slate-400 text-xs italic">Loading performance metrics...</div>
             )}
-          </div>
-        </div>
-
-        {/* Store Quick Actions Panel */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between space-y-4">
-          <h3 className="text-base font-bold text-[#5a3232]">Quick Actions Panel</h3>
-
-          <div className="bg-[#faf7f5] p-4 rounded-xl border border-slate-100 space-y-3">
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              SEARCH CATALOG
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search items or orders..."
-                value={actionSearch}
-                onChange={(e) => setActionSearch(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs placeholder:text-slate-400 font-medium outline-none focus:border-[#5a3232]"
-              />
-            </div>
-            <Link
-              to="/admin/products"
-              style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
-              className="w-full flex items-center justify-center gap-1.5 font-bold rounded-xl py-2.5 text-xs transition-all shadow-xs hover:opacity-95"
-            >
-              <Plus size={15} /> Add New Product
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              to="/admin/orders"
-              style={{ backgroundColor: "#2b1616", color: "#ffffff" }}
-              className="w-full flex items-center justify-center gap-1.5 font-bold rounded-xl py-2.5 text-xs transition-all shadow-xs hover:opacity-95"
-            >
-              <ShoppingBag size={15} /> Manage Orders & Status
-            </Link>
           </div>
         </div>
       </div>
@@ -185,10 +244,10 @@ const AdminDashboard = () => {
       {/* ── Bottom Section: Recent Store Orders & Low Stock Alerts ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Customer Orders */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-base font-bold text-[#5a3232] flex items-center gap-2">
-              <ShoppingBag size={18} className="text-[#5a3232]" />
+        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
+          <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-2">
+            <h3 className="text-sm font-bold text-[#5a3232] flex items-center gap-2">
+              <ShoppingBag size={17} className="text-[#5a3232]" />
               Recent Customer Orders
             </h3>
             <Link
@@ -199,40 +258,38 @@ const AdminDashboard = () => {
             </Link>
           </div>
 
-          <div className="bg-[#faf7f5] rounded-xl p-4 border border-slate-100 flex-1 min-h-[140px]">
+          <div className="divide-y divide-slate-100 flex-1">
             {stats?.recent_orders && stats.recent_orders.length > 0 ? (
-              <div className="space-y-2.5">
-                {stats.recent_orders.map((o) => {
-                  const st = (o.status || "pending").toLowerCase();
-                  return (
-                    <div
-                      key={o.id || o.order_id}
-                      className="bg-white p-3.5 rounded-xl border border-slate-100 flex items-center justify-between hover:border-slate-300 transition-colors"
-                    >
-                      <div>
-                        <p className="text-xs font-bold text-[#5a3232]">
-                          Order #{String(o.id || o.order_id).slice(-8).toUpperCase()}
-                        </p>
-                        <p className="text-[10px] text-slate-400 mt-0.5">
-                          {o.created_at ? new Date(o.created_at).toLocaleDateString() : "Recent"} • {o.items?.length || o.quantity || 1} item(s)
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs font-bold text-[#5a3232]">
-                          ₹{(o.total_amount || 0).toLocaleString("en-IN")}
-                        </p>
-                        <span
-                          className={`inline-block text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border mt-0.5 ${
-                            STATUS_BADGES[st] || STATUS_BADGES.pending
-                          }`}
-                        >
-                          {st}
-                        </span>
-                      </div>
+              stats.recent_orders.map((o) => {
+                const st = (o.status || "pending").toLowerCase();
+                return (
+                  <div
+                    key={o.id || o.order_id}
+                    className="py-3 flex items-center justify-between hover:bg-slate-50/60 px-2 rounded-xl transition-colors"
+                  >
+                    <div>
+                      <p className="text-xs font-bold text-[#5a3232]">
+                        Order #{String(o.id || o.order_id).slice(-8).toUpperCase()}
+                      </p>
+                      <p className="text-[10px] text-slate-400 mt-0.5">
+                        {o.created_at ? new Date(o.created_at).toLocaleDateString() : "Recent"} • {o.items?.length || o.quantity || 1} item(s)
+                      </p>
                     </div>
-                  );
-                })}
-              </div>
+                    <div className="text-right">
+                      <p className="text-xs font-bold text-[#5a3232]">
+                        ₹{(o.total_amount || 0).toLocaleString("en-IN")}
+                      </p>
+                      <span
+                        className={`inline-block text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border mt-0.5 ${
+                          STATUS_BADGES[st] || STATUS_BADGES.pending
+                        }`}
+                      >
+                        {st}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })
             ) : (
               <div className="p-8 text-center text-slate-400 text-xs italic">
                 No recent customer orders found
@@ -242,10 +299,10 @@ const AdminDashboard = () => {
         </div>
 
         {/* Low Stock Warnings */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-base font-bold text-[#5a3232] flex items-center gap-2">
-              <AlertTriangle size={18} className="text-amber-500" />
+        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
+          <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-2">
+            <h3 className="text-sm font-bold text-[#5a3232] flex items-center gap-2">
+              <AlertTriangle size={17} className="text-amber-500" />
               Inventory Stock Warnings
             </h3>
             <Link
@@ -256,27 +313,27 @@ const AdminDashboard = () => {
             </Link>
           </div>
 
-          <div className="space-y-2.5 flex-1">
+          <div className="divide-y divide-slate-100 flex-1">
             {stats?.low_stock_products && stats.low_stock_products.length > 0 ? (
               stats.low_stock_products.map((p) => (
                 <div
                   key={p.id}
-                  className="bg-white p-3.5 rounded-xl border border-slate-100 flex items-center justify-between"
+                  className="py-3 flex items-center justify-between hover:bg-slate-50/60 px-2 rounded-xl transition-colors"
                 >
                   <div>
                     <p className="text-xs font-bold text-[#5a3232]">{p.name || p.title}</p>
                     <p className="text-[10px] text-slate-400 mt-0.5">SKU: {p.sku || "N/A"}</p>
                   </div>
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">
-                    {p.stock} remaining
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                      {p.stock} remaining
+                    </span>
+                  </div>
                 </div>
               ))
             ) : (
-              <div className="bg-[#faf7f5] rounded-xl p-8 text-center border border-slate-100 flex-1 flex items-center justify-center">
-                <p className="text-xs font-bold text-emerald-700 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-200">
-                  ✓ All products have adequate inventory stock.
-                </p>
+              <div className="p-8 text-center text-slate-400 text-xs italic">
+                All catalog inventory items are sufficiently stocked
               </div>
             )}
           </div>

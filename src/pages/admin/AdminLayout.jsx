@@ -66,12 +66,12 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#faf7f5] font-sans text-slate-900 w-full relative">
+    <div className="admin-portal flex flex-col md:flex-row min-h-screen bg-[#faf7f5] font-sans text-slate-900 w-full relative">
       {/* Mobile Header Bar */}
       <div className="md:hidden w-full bg-[#5a3232] text-white px-4 py-3 flex justify-between items-center fixed top-0 left-0 z-50 border-b border-white/10 shadow-sm">
         <div className="flex items-center gap-2.5">
           <div>
-            <span className="text-xs font-serif font-extrabold tracking-wider text-white block">
+            <span className="text-xs font-sans font-black tracking-wider text-white block">
               TIANA LUXORA
             </span>
             <span className="text-[9px] font-bold text-[#d4a373] tracking-widest uppercase">
@@ -104,25 +104,12 @@ const AdminLayout = () => {
         {/* Brand Header */}
         <div className="p-4 border-b border-white/10 flex items-center gap-2.5">
           <div>
-            <h2 className="text-sm font-serif font-extrabold tracking-wider text-white">
+            <h2 className="text-sm font-sans font-black tracking-wider text-white">
               TIANA LUXORA
             </h2>
             <p className="text-[9px] font-bold text-[#d4a373] tracking-widest uppercase mt-0.5">
               Admin Panel
             </p>
-          </div>
-        </div>
-
-        {/* User Info Badge */}
-        <div className="mx-3 mt-3 mb-1 p-2.5 rounded-xl bg-white/10 border border-white/10 flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full bg-[#d4a373] text-[#5a3232] font-bold text-xs flex items-center justify-center border border-white/10">
-            {(user.full_name || user.email || "A")[0].toUpperCase()}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-white truncate">
-              {user.full_name || "Admin User"}
-            </p>
-            <p className="text-[10px] text-slate-300 truncate">{user.email}</p>
           </div>
         </div>
 
@@ -148,27 +135,32 @@ const AdminLayout = () => {
           ))}
         </nav>
 
-        {/* Storefront Link & Logout */}
-        <div className="p-3 border-t border-white/10 space-y-2">
-          <a
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white/10 hover:bg-white/20 text-slate-200 rounded-lg text-xs font-semibold transition-all border border-white/10"
-          >
-            <Store size={15} />
-            View Storefront
-          </a>
-          <button
-            onClick={() => {
-              logout();
-              navigate("/admin/login");
-            }}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-500/10 text-red-300 border border-red-500/20 rounded-lg text-xs font-bold hover:bg-red-500 hover:text-white transition-all cursor-pointer"
-          >
-            <LogOut size={15} />
-            Logout
-          </button>
+        {/* Bottom Left: Compact User Profile & Logout Icon Button */}
+        <div className="p-3 border-t border-white/10">
+          <div className="p-2.5 rounded-xl bg-white/10 border border-white/10 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+              <div className="w-8 h-8 rounded-full bg-[#d4a373] text-[#5a3232] font-bold text-xs flex items-center justify-center border border-white/10 flex-shrink-0">
+                {(user.full_name || user.email || "A")[0].toUpperCase()}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-white truncate leading-tight">
+                  {user.full_name || "System Administrator"}
+                </p>
+                <p className="text-[10px] text-slate-300 truncate mt-0.5">{user.email}</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                logout();
+                navigate("/admin/login");
+              }}
+              title="Logout"
+              className="p-2 text-red-300 hover:text-white bg-red-500/10 hover:bg-red-500 rounded-lg transition-all cursor-pointer flex-shrink-0 border border-red-500/20"
+            >
+              <LogOut size={16} />
+            </button>
+          </div>
         </div>
       </aside>
 
