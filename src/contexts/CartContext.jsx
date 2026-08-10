@@ -22,6 +22,14 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   const addToCart = (product) => {
+    if (!product) return;
+    const stock = product.stock ?? product.quantity ?? product.stock_quantity;
+    const reserved = product.reserved ?? 0;
+    if (stock !== undefined && stock !== null && stock - reserved <= 0) {
+      console.warn("Cannot add out-of-stock item to cart");
+      return;
+    }
+
     setCartItems((prev) => {
       const existingItem = prev.find(
         (item) =>

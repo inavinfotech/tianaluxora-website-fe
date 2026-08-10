@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 import ProductCard from "./utils/ProductCard";
+import ProductSkeleton from "./utils/ProductSkeleton";
 import { useProducts } from "../contexts/ProductContext";
 
 const BestSellers = () => {
   const { products, loading, error } = useProducts();
-
-  if (loading)
-    return <div className="text-center py-10">Loading products...</div>;
-  if (error)
-    return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
   return (
     <section className="py-8 md:py-12 animate-fade-in">
@@ -22,11 +18,19 @@ const BestSellers = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {products.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {error ? (
+        <div className="text-center py-10 text-red-500">Error: {error}</div>
+      ) : (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {loading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <ProductSkeleton key={index} />
+              ))
+            : products.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+        </div>
+      )}
 
       <div className="flex justify-center mt-6">
         <Link

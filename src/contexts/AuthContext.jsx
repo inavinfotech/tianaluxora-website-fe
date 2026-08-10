@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -11,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async (token) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/me`,
+        `${API_BASE_URL}/api/auth/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,7 +34,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Check if token exists on load
     const token = localStorage.getItem("token");
     if (token) {
       fetchUser(token);
@@ -42,52 +42,90 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (username, password) => {
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("password", password);
+  const formatError = (errorData, fallback) => {
+    if (!errorData || !errorData.detail) return fallback;
+    const detail = errorData.detail;
+    if (typeof detail === "string") return detail;
+    if (Array.isArray(detail)) {
+      return detail
+        .map((err) => {
+          if (err && typeof err === "object") {
+            const field = err.loc && Array.isArray(err.loc) ? err.loc[err.loc.length - 1] : "";
+            return field ? `${field}: ${err.msg || "Invalid value"}` : (err.msg || JSON.stringify(err));
+          }
+          return String(err);
+        })
+        .join("; ");
+    }
+    if (typeof detail === "object") {
+      return detail.msg || JSON.stringify(detail);
+    }
+    return fallback;
+  };
 
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/auth/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+  const login = async (email, password) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
         },
-        body: formData,
-      },
-    );
+      );
 
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("email", username);
-      await fetchUser(data.access_token);
-      return { success: true };
-    } else {
-      const errorData = await response.json();
-      return { success: false, error: errorData.detail || "Login failed" };
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("email", email);
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          await fetchUser(data.access_token);
+        }
+        return { success: true };
+      } else {
+        const errorData = await response.json();
+        return { success: false, error: formatError(errorData, "Login failed") };
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      return { success: false, error: "Network or server error occurred" };
     }
   };
 
   const signup = async (email, password, fullName) => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/auth/signup`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password, full_name: fullName }),
         },
-        body: JSON.stringify({ email, password, full_name: fullName }),
-      },
-    );
+      );
 
-    if (response.ok) {
-      // Auto login after signup
-      return login(email, password);
-    } else {
-      const errorData = await response.json();
-      return { success: false, error: errorData.detail || "Signup failed" };
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("email", email);
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          await fetchUser(data.access_token);
+        }
+        return { success: true };
+      } else {
+        const errorData = await response.json();
+        return { success: false, error: formatError(errorData, "Signup failed") };
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      return { success: false, error: "Network or server error occurred" };
     }
   };
 

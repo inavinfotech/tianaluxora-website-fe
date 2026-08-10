@@ -16,14 +16,24 @@ import OrderDetailPage from "./pages/OrderDetailPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 
+// Admin Imports
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminUsers from "./pages/admin/AdminUsers";
+
 function App() {
   const isUnderDevelopment = import.meta.env.VITE_UNDER_DEVELOPMENT === "true";
   const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   useEffect(() => {
+    if (isAdminRoute) return;
+
     // Only initialize Lenis if we are not on the maintenance page
     const shouldShowMaintenance = isUnderDevelopment && !location.pathname.startsWith("/dev");
-    
     if (shouldShowMaintenance) return;
 
     // Initialize Lenis for smooth scrolling
@@ -45,22 +55,36 @@ function App() {
     return () => {
       lenis.destroy();
     };
-  }, [isUnderDevelopment, location.pathname]);
+  }, [isUnderDevelopment, location.pathname, isAdminRoute]);
 
-  const routePrefix = isUnderDevelopment ? "/dev" : "";
+  // Admin routes bypass under maintenance check and default storefront layout
+  if (isAdminRoute) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
+        <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
+      </Routes>
+    );
+  }
 
-  // Logic for Under Development mode
+  // Logic for Under Development mode for storefront
   if (isUnderDevelopment) {
-    // If we are at the root or anywhere that isn't /dev, show UnderMaintenance
     if (!location.pathname.startsWith("/dev")) {
       return <UnderMaintenance />;
     }
   } else {
-    // If NOT under development, but someone tries to access /dev, redirect them to root
     if (location.pathname.startsWith("/dev")) {
       return <Navigate to="/" replace />;
     }
   }
+
+  const routePrefix = isUnderDevelopment ? "/dev" : "";
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative overflow-hidden">
@@ -92,7 +116,7 @@ function App() {
             path={`${routePrefix}/*`}
             element={<Navigate to={isUnderDevelopment ? "/dev" : "/"} replace />}
           />
-          
+
           {/* Global catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

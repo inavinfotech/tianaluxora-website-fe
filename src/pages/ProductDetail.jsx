@@ -13,7 +13,105 @@ import {
   ShieldCheck,
   RotateCcw,
   Truck,
+  Check,
+  Tag,
 } from "lucide-react";
+
+export const formatVariantTitle = (v) => {
+  if (!v) return "Standard Item";
+  const parts = [];
+  if (
+    v.attributes &&
+    typeof v.attributes === "object" &&
+    Object.keys(v.attributes).length > 0
+  ) {
+    Object.entries(v.attributes).forEach(([k, val]) => {
+      if (val) parts.push(`${k}: ${val}`);
+    });
+  }
+  if (parts.length === 0) {
+    if (v.color) parts.push(`Color: ${v.color}`);
+    if (v.size) parts.push(`Size: ${v.size}`);
+    if (v.weight) parts.push(`Weight: ${v.weight}`);
+  }
+  return parts.length > 0
+    ? parts.join(" / ")
+    : v.weight || v.size || v.name || "Variant";
+};
+
+const getColorSwatch = (colorName) => {
+  if (!colorName || typeof colorName !== "string") return null;
+  const name = colorName.trim().toLowerCase();
+
+  const colorMap = {
+    red: "#dc2626",
+    green: "#16a34a",
+    blue: "#2563eb",
+    white: "#ffffff",
+    black: "#111827",
+    yellow: "#eab308",
+    purple: "#9333ea",
+    pink: "#ec4899",
+    orange: "#f97316",
+    gray: "#4b5563",
+    grey: "#4b5563",
+    navy: "#1e3a8a",
+    brown: "#78350f",
+    gold: "#d97706",
+    silver: "#94a3b8",
+    cyan: "#06b6d4",
+    teal: "#0d9488",
+    lime: "#65a30d",
+    indigo: "#4f46e5",
+    cream: "#fef3c7",
+    beige: "#f5f5dc",
+    maroon: "#800000",
+    amber: "#d97706",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    violet: "#8b5cf6",
+    ruby: "#e11d48",
+    charcoal: "#374151",
+    bronze: "#cd7f32",
+    peach: "#ffdab9",
+    ivory: "#fffff0",
+    plum: "#dda0dd",
+    coral: "#ff7f50",
+    burgundy: "#800020",
+    lavender: "#e6e6fa",
+    magenta: "#ff00ff",
+  };
+
+  for (const [k, v] of Object.entries(colorMap)) {
+    if (name.includes(k)) {
+      return {
+        hex: v,
+        isLight:
+          v === "#ffffff" ||
+          v === "#fef3c7" ||
+          v === "#f5f5dc" ||
+          v === "#fffff0" ||
+          v === "#e6e6fa" ||
+          v === "#ffdab9" ||
+          name.includes("white") ||
+          name.includes("yellow") ||
+          name.includes("cream") ||
+          name.includes("ivory") ||
+          name.includes("beige"),
+      };
+    }
+  }
+
+  if (
+    name.startsWith("#") ||
+    name.startsWith("rgb") ||
+    name.startsWith("hsl")
+  ) {
+    return { hex: colorName, isLight: false };
+  }
+
+  return { hex: colorName, isLight: false };
+};
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -21,10 +119,93 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedVariant, setSelectedVariant] = useState(null);
   const [pincode, setPincode] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const { addToCart } = useCart();
+
+  const isUuidOrId = (str) => {
+    if (typeof str !== "string") return false;
+    return (
+      str.length > 20 ||
+      str.includes("INV-") ||
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str)
+    );
+  };
+
+  const variantsList = React.useMemo(() => {
+    if (!product) return [];
+    return product.real_variants || product.variants || [];
+  }, [product]);
+
+  const attributeGroups = React.useMemo(() => {
+    if (!product) return [];
+
+    if (
+      product.variant_types &&
+      Array.isArray(product.variant_types) &&
+      product.variant_types.length > 0
+    ) {
+      return product.variant_types.map((vt) => ({
+        name: vt.name,
+        options: vt.options || [],
+      }));
+    }
+
+    const map = {};
+    if (variantsList.length > 0) {
+      variantsList.forEach((v) => {
+        if (
+          v.attributes &&
+          typeof v.attributes === "object" &&
+          Object.keys(v.attributes).length > 0
+        ) {
+          Object.entries(v.attributes).forEach(([k, val]) => {
+            if (val && typeof val === "string" && !isUuidOrId(val)) {
+              if (!map[k]) map[k] = [];
+              if (!map[k].includes(val)) map[k].push(val);
+            }
+          });
+        } else {
+          if (v.color && !isUuidOrId(v.color)) {
+            if (!map["Color"]) map["Color"] = [];
+            if (!map["Color"].includes(v.color)) map["Color"].push(v.color);
+          }
+          if (v.size && !isUuidOrId(v.size)) {
+            if (!map["Size"]) map["Size"] = [];
+            if (!map["Size"].includes(v.size)) map["Size"].push(v.size);
+          }
+          if (v.weight && !isUuidOrId(v.weight)) {
+            if (!map["Size"]) map["Size"] = [];
+            if (!map["Size"].includes(v.weight)) map["Size"].push(v.weight);
+          }
+        }
+      });
+    }
+
+    if (
+      Object.keys(map).length === 0 &&
+      product.sizes &&
+      Array.isArray(product.sizes) &&
+      product.sizes.length > 0
+    ) {
+      const cleanSizes = product.sizes.filter(
+        (s) => s && typeof s === "string" && !isUuidOrId(s),
+      );
+      if (cleanSizes.length > 0) {
+        map["Size"] = Array.from(new Set(cleanSizes));
+      }
+    }
+
+    if (Object.keys(map).length === 0) {
+      map["Size"] = ["50 ml", "100 ml", "250 ml"];
+    }
+
+    return Object.entries(map).map(([name, options]) => ({
+      name,
+      options,
+    }));
+  }, [product, variantsList]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,10 +214,10 @@ const ProductDetail = () => {
         const data = await response.json();
         setProduct(data);
         setSelectedImage(data.image);
-        if (data.real_variants && data.real_variants.length > 0) {
-          setSelectedSize(data.real_variants[0].weight);
-        } else if (data.sizes && data.sizes.length > 0) {
-          setSelectedSize(data.sizes[0]);
+
+        const list = data.real_variants || data.variants || [];
+        if (list.length > 0) {
+          setSelectedVariant(list[0]);
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -49,28 +230,113 @@ const ProductDetail = () => {
     window.scrollTo(0, 0);
   }, [productId]);
 
-  const handleAddToCart = () => {
+  const getSelectedAttrValue = (attrName) => {
+    if (!selectedVariant) return "";
+    if (selectedVariant.attributes && selectedVariant.attributes[attrName]) {
+      return selectedVariant.attributes[attrName];
+    }
+    if (attrName.toLowerCase() === "color") return selectedVariant.color || "";
+    if (attrName.toLowerCase() === "size") return selectedVariant.size || "";
+    if (attrName.toLowerCase() === "weight") return selectedVariant.weight || "";
+    return "";
+  };
+
+  const handleSelectAttributeOption = (attrName, optionVal) => {
+    const currentAttrs = {};
+    if (selectedVariant?.attributes) {
+      Object.assign(currentAttrs, selectedVariant.attributes);
+    } else {
+      if (selectedVariant?.color) currentAttrs["Color"] = selectedVariant.color;
+      if (selectedVariant?.size) currentAttrs["Size"] = selectedVariant.size;
+      if (selectedVariant?.weight) currentAttrs["Weight"] = selectedVariant.weight;
+    }
+
+    const updatedAttrs = {
+      ...currentAttrs,
+      [attrName]: optionVal,
+    };
+
+    let match = variantsList.find((v) => {
+      const vAttrs = v.attributes || {
+        Color: v.color,
+        Size: v.size,
+        Weight: v.weight,
+      };
+      return Object.entries(updatedAttrs).every(([k, val]) => vAttrs[k] === val);
+    });
+
+    if (!match) {
+      match = variantsList.find((v) => {
+        const vAttrs = v.attributes || {
+          Color: v.color,
+          Size: v.size,
+          Weight: v.weight,
+        };
+        return vAttrs[attrName] === optionVal;
+      });
+    }
+
+    if (match) {
+      setSelectedVariant(match);
+      if (match.image) {
+        setSelectedImage(match.image);
+      } else if (match.images && match.images[0]) {
+        setSelectedImage(match.images[0]);
+      }
+    }
+  };
+
+  const getAvailableStock = (variant) => {
+    if (variant) {
+      const stock = variant.stock ?? variant.quantity ?? variant.stock_quantity;
+      const reserved = variant.reserved ?? 0;
+      if (stock !== undefined && stock !== null) {
+        return Math.max(0, stock - reserved);
+      }
+    }
     if (product) {
-      const selectedVariant = product.real_variants?.find(
-        (v) => v.weight === selectedSize,
-      );
+      const prodStock = product.stock_quantity ?? product.stock ?? product.quantity;
+      const prodReserved = product.reserved ?? 0;
+      if (prodStock !== undefined && prodStock !== null) {
+        return Math.max(0, prodStock - prodReserved);
+      }
+    }
+    return 999;
+  };
+
+  const activeVariant = selectedVariant || variantsList[0];
+  const availableStock = getAvailableStock(activeVariant);
+  const isOutOfStock = availableStock <= 0;
+
+  const handleAddToCart = () => {
+    if (isOutOfStock) return;
+    if (product) {
+      const activePrice =
+        activeVariant && activeVariant.price != null
+          ? activeVariant.price
+          : product.price;
+
       addToCart({
         ...product,
         quantity: 1,
-        selectedSize,
-        price: selectedVariant ? selectedVariant.price : product.price,
-        variant_id: selectedVariant?.id,
-        sku: selectedVariant ? selectedVariant.sku : product.sku,
+        selectedSize: activeVariant
+          ? formatVariantTitle(activeVariant)
+          : "Standard Item",
+        price: activePrice,
+        variant_id: activeVariant?.id || null,
+        sku: activeVariant?.sku || product.sku,
+        variant_attributes: activeVariant?.attributes || null,
       });
     }
   };
 
   const getDisplayPrice = () => {
     if (!product) return "";
-    const selectedVariant = product.real_variants?.find(
-      (v) => v.weight === selectedSize,
-    );
-    const price = selectedVariant ? selectedVariant.price : product.price;
+    const activeVariant = selectedVariant || variantsList[0];
+    const price =
+      activeVariant && activeVariant.price != null
+        ? activeVariant.price
+        : product.price;
     return typeof price === "number" ? `₹${price}` : price;
   };
 
@@ -214,7 +480,7 @@ const ProductDetail = () => {
             </h1>
 
             <div className="flex items-center gap-4">
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-1.5">
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl font-bold text-primary">
                     {getDisplayPrice()}
@@ -223,37 +489,108 @@ const ProductDetail = () => {
                     {product.oldPrice || "₹1299"}
                   </span>
                 </div>
-                <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
-                  {product.discount || "15% OFF"}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
+                    {product.discount || "15% OFF"}
+                  </span>
+                  {isOutOfStock ? (
+                    <span className="text-[10px] w-fit font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded uppercase tracking-wider border border-red-200">
+                      Out of Stock
+                    </span>
+                  ) : (
+                    <span className="text-[10px] w-fit font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded uppercase tracking-wider border border-emerald-200">
+                      In Stock ({availableStock} available)
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Size Selector */}
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary/50">
-                Size
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                  className="w-full bg-neutral-50/50 border border-neutral-100 rounded-xl py-3 px-4 appearance-none font-medium focus:outline-none focus:ring-1 focus:ring-accent/20 cursor-pointer text-sm"
-                >
-                  {(product.sizes || ["50 ml", "100 ml", "250 ml"]).map(
-                    (size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ),
-                  )}
-                </select>
-                <ChevronDown
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none"
-                  size={16}
-                />
+          {/* Variant Option Pills & Pincode Section */}
+          <div className="space-y-4">
+            {/* Variant Option Pills */}
+            <div className="space-y-4 bg-white/40 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-neutral-100 shadow-sm">
+              <div className="flex items-center justify-between border-b border-primary/5 pb-2.5">
+                <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary/70 font-bold flex items-center gap-1.5">
+                  <Tag size={13} className="text-accent" /> Available Variants
+                </h3>
+                <span className="text-[10px] font-bold text-primary bg-[#f7d7c4]/60 px-2.5 py-1 rounded-lg border border-accent/20">
+                  {selectedVariant ? formatVariantTitle(selectedVariant) : "Default"} — {getDisplayPrice()}
+                </span>
+              </div>
+
+              <div className="space-y-4 pt-1">
+                {attributeGroups.map((group) => {
+                  const selectedVal = getSelectedAttrValue(group.name);
+                  const isColorGroup =
+                    group.name.toLowerCase().includes("color") ||
+                    group.name.toLowerCase().includes("shade") ||
+                    group.name.toLowerCase().includes("tone");
+
+                  return (
+                    <div key={group.name} className="space-y-2">
+                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70 flex items-center gap-2">
+                        <span>{group.name}:</span>
+                        <span className="text-accent font-black">
+                          {selectedVal || "Select option"}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2.5">
+                        {group.options.map((opt) => {
+                          const isSelected = selectedVal === opt;
+                          const swatch = isColorGroup ? getColorSwatch(opt) : null;
+
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => handleSelectAttributeOption(group.name, opt)}
+                              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border cursor-pointer select-none ${
+                                isSelected
+                                  ? "scale-[1.02] shadow-md"
+                                  : "hover:border-accent"
+                              }`}
+                              style={{
+                                backgroundColor: isSelected ? "#5a3232" : "#ffffff",
+                                color: isSelected ? "#ffffff" : "#5a3232",
+                                borderColor: isSelected ? "#5a3232" : "rgba(90, 50, 50, 0.2)",
+                              }}
+                            >
+                              {/* Checkbox Icon */}
+                              <div
+                                className="w-4 h-4 rounded border flex items-center justify-center transition-colors shrink-0"
+                                style={{
+                                  backgroundColor: isSelected ? "#ffffff" : "#f9fafb",
+                                  borderColor: isSelected ? "#ffffff" : "rgba(90, 50, 50, 0.3)",
+                                  color: isSelected ? "#5a3232" : "transparent",
+                                }}
+                              >
+                                <Check size={11} strokeWidth={3.5} />
+                              </div>
+
+                              {/* Color Swatch Circle */}
+                              {swatch && (
+                                <span
+                                  className="w-4 h-4 rounded-full border shrink-0 inline-block shadow-xs"
+                                  style={{
+                                    backgroundColor: swatch.hex,
+                                    borderColor: swatch.isLight
+                                      ? "rgba(0,0,0,0.25)"
+                                      : "transparent",
+                                  }}
+                                />
+                              )}
+
+                              <span>{opt}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -280,24 +617,36 @@ const ProductDetail = () => {
           {/* CTA Buttons - More compact */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <button
+              disabled={isOutOfStock}
               onClick={() => {
+                if (isOutOfStock) return;
                 handleAddToCart();
                 navigate(getPath("/cart"));
               }}
-              style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
-              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:opacity-90 transition-all shadow-lg active:scale-95"
+              style={{
+                backgroundColor: isOutOfStock ? "#e5e7eb" : "#5a3232",
+                color: isOutOfStock ? "#9ca3af" : "#ffffff",
+                cursor: isOutOfStock ? "not-allowed" : "pointer",
+              }}
+              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-lg active:scale-95 disabled:shadow-none disabled:transform-none"
             >
-              Buy Now
+              {isOutOfStock ? "Out of Stock" : "Buy Now"}
             </button>
             <button
+              disabled={isOutOfStock}
               onClick={() => {
+                if (isOutOfStock) return;
                 handleAddToCart();
                 navigate(getPath("/cart"));
               }}
-              style={{ backgroundColor: "#E4C59E", color: "#5a3232" }}
-              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95"
+              style={{
+                backgroundColor: isOutOfStock ? "#f3f4f6" : "#E4C59E",
+                color: isOutOfStock ? "#9ca3af" : "#5a3232",
+                cursor: isOutOfStock ? "not-allowed" : "pointer",
+              }}
+              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 disabled:shadow-none disabled:transform-none border border-neutral-200"
             >
-              Add to Cart
+              {isOutOfStock ? "Out of Stock" : "Add to Cart"}
             </button>
           </div>
 

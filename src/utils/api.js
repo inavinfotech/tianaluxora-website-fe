@@ -1,3 +1,7 @@
+/**
+ * Centralized API client — all backend requests go through here.
+ * Base URL loaded from environment variable.
+ */
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const getHeaders = () => {
@@ -5,7 +9,7 @@ const getHeaders = () => {
   const headers = {
     "Content-Type": "application/json",
   };
-  if (token) {
+  if (token && token !== "null" && token !== "undefined") {
     headers["Authorization"] = `Bearer ${token}`;
   }
   return headers;

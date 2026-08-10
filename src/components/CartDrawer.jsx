@@ -23,6 +23,7 @@ const CartDrawer = () => {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null); // 'success', 'error', null
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Address related state
   const [address, setAddress] = useState(null);
@@ -39,7 +40,7 @@ const CartDrawer = () => {
   const fetchAddress = async () => {
     try {
       setIsAddressLoading(true);
-      const res = await api.get("/api/users/address");
+      const res = await api.get("/api/auth/me/address");
       if (res.ok) {
         const data = await res.json();
         if (data) {
@@ -63,7 +64,7 @@ const CartDrawer = () => {
   const handleAddressSave = async (addressData) => {
     try {
       setIsProcessing(true);
-      const res = await api.post("/api/users/address", addressData);
+      const res = await api.post("/api/auth/me/address", addressData);
       if (res.ok) {
         const data = await res.json();
         setAddress(data);
@@ -111,21 +112,28 @@ const CartDrawer = () => {
         quantity: cartItems.reduce((acc, item) => acc + item.quantity, 0),
         total_amount: cartTotal,
         currency: "INR",
-        items: cartItems.map((item) => ({
-          product_id: String(item.id),
-          variant_id: item.variant_id ? String(item.variant_id) : null,
-          variant_name: item.selectedSize || item.tag,
-          product_name: item.name,
-          quantity: item.quantity,
-          unit_price: parseFloat(String(item.price).replace(/[^0-9.]/g, "")),
-          sku: item.sku || `SKU-${item.id}`,
-        })),
+        items: cartItems.map((item) => {
+          const itemPrice = parseFloat(String(item.price).replace(/[^0-9.]/g, "")) || 0;
+          return {
+            product_id: String(item.id),
+            variant_id: item.variant_id ? String(item.variant_id) : null,
+            variant_name: item.selectedSize || item.tag,
+            product_name: item.name,
+            name: item.name,
+            quantity: item.quantity,
+            unit_price: itemPrice,
+            price: itemPrice,
+            sku: item.sku || `SKU-${item.id}`,
+            image: item.image,
+          };
+        }),
       };
 
+      setErrorMessage("");
       // 2. Initiate Checkout (Reserve stock & get payment session)
       const response = await api.post("/api/orders/checkout", orderData);
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.detail || "Failed to initiate checkout");
       }
       const { payment, reservation_ids } = await response.json();
@@ -160,9 +168,11 @@ const CartDrawer = () => {
               }, 2000);
             } else {
               setOrderStatus("error");
+              setErrorMessage("Payment verification failed");
             }
           } catch (err) {
             setOrderStatus("error");
+            setErrorMessage("Payment verification failed");
           }
         },
         prefill: {
@@ -184,6 +194,7 @@ const CartDrawer = () => {
     } catch (error) {
       console.error("Checkout error:", error);
       setOrderStatus("error");
+      setErrorMessage(error.message || "Failed to initiate checkout");
       setIsProcessing(false);
     }
   };
@@ -434,6 +445,18 @@ const CartDrawer = () => {
                   ₹{cartTotal.toFixed(2)}
                 </span>
               </div>
+
+              {orderStatus === "error" && errorMessage && (
+                <div className="p-3 mb-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center justify-between animate-fade-in">
+                  <span>{errorMessage}</span>
+                  <button
+                    onClick={() => setOrderStatus(null)}
+                    className="text-red-500 hover:text-red-700 font-bold ml-2"
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
 
               <button
                 onClick={handleCheckout}

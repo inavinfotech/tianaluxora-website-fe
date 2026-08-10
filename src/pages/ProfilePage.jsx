@@ -59,7 +59,7 @@ const ProfilePage = () => {
   const fetchAddress = async () => {
     try {
       setAddressLoading(true);
-      const res = await api.get("/api/users/address");
+      const res = await api.get("/api/auth/me/address");
       if (res.ok) {
         const data = await res.json();
         setAddress(data);
@@ -74,7 +74,7 @@ const ProfilePage = () => {
   const handleSaveAddress = async (formData) => {
     try {
       setAddressLoading(true);
-      const res = await api.post("/api/users/address", formData);
+      const res = await api.post("/api/auth/me/address", formData);
       if (res.ok) {
         const data = await res.json();
         setAddress(data);
@@ -105,35 +105,14 @@ const ProfilePage = () => {
   const fetchTransactions = async () => {
     try {
       setPaymentsLoading(true);
-      // Simulate fetching transaction history
-      setTimeout(() => {
-        setTransactions([
-          {
-            id: "TXN-882190",
-            date: "2026-04-12",
-            amount: 12500,
-            method: "UPI",
-            status: "Success",
-          },
-          {
-            id: "TXN-882185",
-            date: "2026-03-28",
-            amount: 4800,
-            method: "Credit Card (•••• 4242)",
-            status: "Success",
-          },
-          {
-            id: "TXN-881902",
-            date: "2026-03-15",
-            amount: 8900,
-            method: "Debit Card (•••• 1092)",
-            status: "Success",
-          },
-        ]);
-        setPaymentsLoading(false);
-      }, 800);
+      const res = await api.get("/api/orders/");
+      if (res.ok) {
+        const data = await res.json();
+        setTransactions(data);
+      }
     } catch (err) {
       console.error("Error fetching transactions:", err);
+    } finally {
       setPaymentsLoading(false);
     }
   };
@@ -142,12 +121,10 @@ const ProfilePage = () => {
     e.preventDefault();
     try {
       setOrdersLoading(true);
-      const res = await api.post("/api/users/profile", profileFormData);
+      const res = await api.put("/api/auth/profile", profileFormData);
       if (res.ok) {
-        // We need to refresh user data from AuthContext ideally, or just update local state if possible
-        // For now, let's just exit edit mode and hope for the best, or suggest a reload
         setIsEditingProfile(false);
-        window.location.reload(); // Quickest way to sync AuthContext user
+        window.location.reload();
       }
     } catch (err) {
       console.error("Failed to update profile:", err);

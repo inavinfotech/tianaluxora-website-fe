@@ -15,6 +15,7 @@ const CartPage = () => {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Address state
   const [address, setAddress] = useState(null);
@@ -31,7 +32,7 @@ const CartPage = () => {
   const fetchAddress = async () => {
     try {
       setIsAddressLoading(true);
-      const res = await api.get("/api/users/address");
+      const res = await api.get("/api/auth/me/address");
       if (res.ok) {
         const data = await res.json();
         if (data) {
@@ -49,7 +50,7 @@ const CartPage = () => {
   const handleAddressSave = async (addressData) => {
     try {
       setIsProcessing(true);
-      const res = await api.post("/api/users/address", addressData);
+      const res = await api.post("/api/auth/me/address", addressData);
       if (res.ok) {
         const data = await res.json();
         setAddress(data);
@@ -94,20 +95,29 @@ const CartPage = () => {
         total_amount: cartTotal,
         currency: "INR",
         image: cartItems[0]?.image,
-        items: cartItems.map((item) => ({
-          product_id: String(item.id),
-          variant_id: item.variant_id ? String(item.variant_id) : null,
-          variant_name: item.selectedSize,
-          product_name: item.name,
-          quantity: item.quantity,
-          unit_price: parseFloat(String(item.price).replace(/[^0-9.]/g, "")),
-          sku: item.sku || `SKU-${item.id}`,
-          image: item.image,
-        })),
+        items: cartItems.map((item) => {
+          const itemPrice = parseFloat(String(item.price).replace(/[^0-9.]/g, "")) || 0;
+          return {
+            product_id: String(item.id),
+            variant_id: item.variant_id ? String(item.variant_id) : null,
+            variant_name: item.selectedSize,
+            product_name: item.name,
+            name: item.name,
+            quantity: item.quantity,
+            unit_price: itemPrice,
+            price: itemPrice,
+            sku: item.sku || `SKU-${item.id}`,
+            image: item.image,
+          };
+        }),
       };
 
+      setErrorMessage("");
       const response = await api.post("/api/orders/checkout", orderData);
-      if (!response.ok) throw new Error("Checkout initiation failed");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || "Checkout initiation failed");
+      }
 
       const { payment, reservation_ids } = await response.json();
 
@@ -133,9 +143,11 @@ const CartPage = () => {
               setTimeout(() => navigate(getPath("/profile")), 2000);
             } else {
               setOrderStatus("error");
+              setErrorMessage("Payment verification failed");
             }
           } catch (e) {
             setOrderStatus("error");
+            setErrorMessage("Payment verification failed");
           }
         },
         prefill: { name: user.full_name, email: user.email },
@@ -147,6 +159,7 @@ const CartPage = () => {
     } catch (error) {
       console.error(error);
       setOrderStatus("error");
+      setErrorMessage(error.message || "Checkout initiation failed");
       setIsProcessing(false);
     }
   };
@@ -405,6 +418,18 @@ const CartPage = () => {
                     + Add Address
                   </button>
                 )}
+              </div>
+            )}
+
+            {orderStatus === "error" && errorMessage && (
+              <div className="p-4 mb-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center justify-between animate-fade-in">
+                <span>{errorMessage}</span>
+                <button
+                  onClick={() => setOrderStatus(null)}
+                  className="text-red-500 hover:text-red-700 font-bold ml-2"
+                >
+                  ✕
+                </button>
               </div>
             )}
 

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import ProductCard from "../components/utils/ProductCard";
+import ProductSkeleton from "../components/utils/ProductSkeleton";
 import { useProducts } from "../contexts/ProductContext";
 
 const Products = () => {
@@ -23,20 +24,6 @@ const Products = () => {
     );
   }, [products, query]);
 
-  if (loading)
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="text-center py-20 text-red-500 font-serif">
-        Error: {error}
-      </div>
-    );
-
   return (
     <div className="py-6 animate-fade-in">
       <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
@@ -45,7 +32,9 @@ const Products = () => {
             {query ? `Search: ${query}` : "All Products"}
           </h1>
           <p className="text-[10px] uppercase tracking-[0.3em] text-primary/40">
-            {filteredProducts.length} Exquisite Items Found
+            {loading
+              ? "Loading products..."
+              : `${filteredProducts.length} Exquisite Items Found`}
           </p>
         </div>
 
@@ -59,7 +48,17 @@ const Products = () => {
         )}
       </div>
 
-      {filteredProducts.length > 0 ? (
+      {error ? (
+        <div className="text-center py-20 text-red-500 font-serif">
+          Error: {error}
+        </div>
+      ) : loading ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+          {Array.from({ length: 8 }).map((_, idx) => (
+            <ProductSkeleton key={idx} />
+          ))}
+        </div>
+      ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
