@@ -6,39 +6,40 @@ const HeroSection = () => {
   const is3dactive = import.meta.env.VITE_ENABLE_3D_MODEL === "true";
 
   return (
-    <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-[60vh] animate-fade-in text-center lg:text-left py-8 lg:py-0">
+    <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-0 lg:min-h-[calc(100vh-80px)] animate-fade-in text-center lg:text-left py-6 lg:py-0">
       <div className="flex flex-col gap-6 md:gap-8 items-center lg:items-start order-1 lg:order-0">
-        <h1 className="text-[2.2rem] md:text-[3rem] leading-[1.1] text-primary mb-2 md:mb-4 font-serif font-bold">
-          Luxury That Speaks Before You Do
+        <h1 className="text-[2.5rem] sm:text-[2.75rem] md:text-[3rem] leading-[1.12] text-primary font-serif font-bold">
+          Luxury That Speaks <br className="block sm:hidden" /> Before You Do
         </h1>
-        <p className="text-[1rem] md:text-[1.1rem] text-[rgba(90,50,50,0.8)] max-w-[400px]">
-          Tiana Luxora<sup>TM</sup> blends rare notes into{" "}
-          <br className="hidden md:block" /> unforgettable fragrances
-          <br className="hidden md:block" />
-          made for modern elegance.
+        <p className="text-[1.05rem] md:text-[1.1rem] text-[rgba(90,50,50,0.8)] max-w-[420px]">
+          Tiana Luxora<sup>TM</sup> blends rare notes into unforgettable fragrances made for modern elegance.
         </p>
         <Link
           to="/collections"
-          className="bg-[#f7d7c4] text-primary px-8 md:px-10 py-4 md:py-5 rounded-[50px] font-medium text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.2)] transition-custom hover:-translate-y-[5px] hover:shadow-[0_15px_40px_rgba(212,140,106,0.3)] hover:bg-[#f5ccb5]"
+          className="relative overflow-hidden group bg-[#f7d7c4] text-primary px-8 md:px-10 py-4 md:py-5 rounded-[50px] font-bold text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(212,140,106,0.5)] hover:bg-[#f5ccb5] my-1 cursor-pointer border border-white/50"
         >
-          Explore Collection <span>→</span>
+          {/* Continuous Shimmer Light Sheen */}
+          <span className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none animate-btn-shine" />
+
+          <span className="relative z-10">Explore Collection</span>
+          <span className="relative z-10 group-hover:translate-x-1.5 transition-transform duration-300">→</span>
         </Link>
-        <div className="text-[0.75rem] md:text-[0.9rem] font-medium uppercase tracking-[1px] mt-2 md:mt-4">
+        <div className="text-[0.75rem] md:text-[0.9rem] font-medium uppercase tracking-[1px] text-[rgba(90,50,50,0.7)] mt-1 mb-2">
           100% Authentic — Guaranteed Luxury
         </div>
       </div>
 
-      <div className="order-2 lg:order-0 w-full">
+      <div className="order-2 lg:order-0 w-full flex justify-center mt-6 lg:mt-0">
         {is3dactive ? (
-          <div className="h-[450px] md:h-[500px] lg:h-[600px] relative flex justify-center items-center">
+          <div className="h-[320px] sm:h-[420px] md:h-[500px] lg:h-[600px] w-full relative flex justify-center items-center">
             <PerfumeModel />
           </div>
         ) : (
-          <div className="h-[300px] md:h-[400px] lg:h-[500px] relative flex justify-center items-center">
+          <div className="w-full h-auto max-h-[380px] sm:max-h-[450px] lg:h-[500px] relative flex justify-center items-center px-0">
             <img
               src="/images/big-bottle.webp"
               alt="Miniature Perfume Bottle"
-              className="w-full h-full object-contain transition-transform"
+              className="w-full h-auto max-h-full object-contain transition-transform"
             />
           </div>
         )}

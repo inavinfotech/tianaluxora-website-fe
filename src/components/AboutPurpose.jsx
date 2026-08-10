@@ -6,7 +6,7 @@ import { aboutContent } from "../data/about";
 const AboutPurpose = () => {
   return (
     <section
-      className="py-10 md:py-12 animate-fade-in bg-cover bg-center rounded-[30px] md:rounded-[40px] px-4 md:px-6 mb-8 overflow-hidden relative"
+      className="py-10 lg:py-16 min-h-0 lg:min-h-[calc(100vh-100px)] flex items-center justify-center animate-fade-in bg-cover bg-center rounded-[24px] md:rounded-[40px] px-4 md:px-8 mb-8 md:mb-12 overflow-hidden relative"
       style={{ backgroundImage: `url('${aboutContent.backgroundImage}')` }}
     >
       <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>

@@ -485,14 +485,18 @@ const ProductDetail = () => {
                   <span className="text-2xl font-bold text-primary">
                     {getDisplayPrice()}
                   </span>
-                  <span className="text-base line-through text-primary/20 font-medium">
-                    {product.oldPrice || "₹1299"}
-                  </span>
+                  {(activeVariant?.oldPrice || (activeVariant?.mrp && activeVariant?.mrp > activeVariant?.price ? `₹${activeVariant.mrp}` : null) || product.oldPrice) && (
+                    <span className="text-base line-through text-primary/40 font-medium">
+                      {activeVariant?.oldPrice || (activeVariant?.mrp ? `₹${activeVariant.mrp}` : product.oldPrice)}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
-                    {product.discount || "15% OFF"}
-                  </span>
+                  {(activeVariant?.discount || product.discount) && (
+                    <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
+                      {activeVariant?.discount || product.discount}
+                    </span>
+                  )}
                   {isOutOfStock ? (
                     <span className="text-[10px] w-fit font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded uppercase tracking-wider border border-red-200">
                       Out of Stock

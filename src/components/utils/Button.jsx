@@ -5,14 +5,15 @@ const Button = ({
   onClick,
   className = "",
   variant = "primary",
+  shine = true,
   ...props
 }) => {
   const baseStyles =
-    "px-6 py-3 rounded-full font-medium transition-custom flex items-center justify-center gap-2";
+    "relative overflow-hidden group px-6 py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-white/40";
   const variants = {
     primary: "bg-[#f7d7c4] text-primary hover:bg-[#f5ccb5]",
     secondary:
-      "bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30",
+      "bg-primary text-white hover:bg-[#4a2828]",
     outline:
       "border border-primary text-primary hover:bg-primary hover:text-white",
   };
@@ -23,7 +24,10 @@ const Button = ({
       className={`${baseStyles} ${variants[variant]} ${className}`}
       {...props}
     >
-      {children}
+      {shine && (
+        <span className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none animate-btn-shine" />
+      )}
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
     </button>
   );
 };

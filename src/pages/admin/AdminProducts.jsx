@@ -36,25 +36,37 @@ const getProductPriceVal = (p) => {
   return 0;
 };
 
-const DEFAULT_PRODUCT_IMAGES = [
-  "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=300&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1541643600914-78b084683601?w=300&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=300&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=300&auto=format&fit=crop&q=80",
-];
-
 const getProductImage = (p) => {
-  const rawImg = p.image_url || p.image || (p.images && p.images[0]) || (p.media && p.media[0] && (p.media[0].url || p.media[0].src));
-  if (rawImg && typeof rawImg === "string" && (rawImg.startsWith("http://") || rawImg.startsWith("https://") || rawImg.startsWith("data:image"))) {
-    return rawImg;
+  if (!p) return "";
+
+  // 1. Direct product image properties
+  let rawImg =
+    p.image ||
+    p.image_url ||
+    (Array.isArray(p.images) && p.images[0]) ||
+    (Array.isArray(p.media) && p.media[0] && (p.media[0].url || p.media[0].src));
+
+  // 2. Fallback to any variant's image if main product image is empty
+  if (!rawImg || (typeof rawImg === "string" && rawImg.trim() === "")) {
+    const variants = p.real_variants || p.variants || [];
+    if (Array.isArray(variants)) {
+      for (const v of variants) {
+        if (!v) continue;
+        const vImg =
+          v.image ||
+          v.image_url ||
+          (Array.isArray(v.images) && v.images[0]) ||
+          (Array.isArray(v.media) && v.media[0] && (v.media[0].url || v.media[0].src));
+        if (vImg && typeof vImg === "string" && vImg.trim() !== "") {
+          rawImg = vImg;
+          break;
+        }
+      }
+    }
   }
-  const idStr = String(p.id || p.name || "0");
-  let charSum = 0;
-  for (let i = 0; i < idStr.length; i++) {
-    charSum += idStr.charCodeAt(i);
-  }
-  const hash = charSum % DEFAULT_PRODUCT_IMAGES.length;
-  return DEFAULT_PRODUCT_IMAGES[hash];
+
+  if (!rawImg || typeof rawImg !== "string") return "";
+  return rawImg.trim();
 };
 
 const formatProductPriceDisplay = (p) => {
@@ -78,6 +90,14 @@ const formatProductPriceDisplay = (p) => {
   }
 
   const rootPrice = getProductPriceVal(p);
+  if (p.discounted_price && p.discounted_price < rootPrice) {
+    return (
+      <div className="flex flex-col">
+        <span className="text-emerald-700 font-bold">₹{p.discounted_price.toLocaleString("en-IN")}</span>
+        <span className="text-[10px] text-slate-400 line-through">MRP ₹{rootPrice.toLocaleString("en-IN")}</span>
+      </div>
+    );
+  }
   return `₹${rootPrice.toLocaleString("en-IN")}`;
 };
 
@@ -169,7 +189,7 @@ const AdminProducts = () => {
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-700">
                 {filteredProducts.map((p) => {
-                  const img = p.image_url || p.image || (p.images && p.images[0]);
+                  const imgUrl = getProductImage(p);
                   const qty = p.quantity ?? p.stock ?? 0;
                   const variants = p.real_variants || p.variants || [];
                   const isExpanded = !!expandedProductIds[p.id];
@@ -180,15 +200,15 @@ const AdminProducts = () => {
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
-                              <img
-                                src={getProductImage(p)}
-                                alt={p.name || "Product"}
-                                onError={(e) => {
-                                  e.currentTarget.onerror = null;
-                                  e.currentTarget.src = DEFAULT_PRODUCT_IMAGES[0];
-                                }}
-                                className="w-full h-full object-cover"
-                              />
+                              {imgUrl ? (
+                                <img
+                                  src={imgUrl}
+                                  alt={p.name || "Product"}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <ImageIcon size={16} className="text-slate-400" />
+                              )}
                             </div>
                             <div>
                               <p className="font-bold text-[#5a3232]">{p.name || p.title}</p>
@@ -258,12 +278,20 @@ const AdminProducts = () => {
                                       const vPrice = parseFloat(String(v.price || v.unit_price || 0).replace(/[^0-9.]/g, "")) || 0;
                                       const vStock = v.stock ?? v.quantity ?? 0;
                                       const vSku = v.sku || v.variant_sku || "N/A";
+                                      const vMrp = v.mrp ? parseFloat(String(v.mrp).replace(/[^0-9.]/g, "")) : null;
 
                                       return (
                                         <tr key={v.id || v.variant_id || vIdx} className="hover:bg-slate-50/60 transition-colors">
                                           <td className="py-2.5 px-3 font-bold text-[#5a3232]">{attrStr}</td>
                                           <td className="py-2.5 px-3 font-mono text-[10px] text-slate-500">{vSku}</td>
-                                          <td className="py-2.5 px-3 font-bold text-slate-700">₹{vPrice.toLocaleString("en-IN")}</td>
+                                          <td className="py-2.5 px-3">
+                                            <div className="flex flex-col">
+                                              <span className="font-bold text-emerald-800">₹{vPrice.toLocaleString("en-IN")}</span>
+                                              {vMrp && vMrp > vPrice && (
+                                                <span className="text-[9px] text-slate-400 line-through">MRP ₹{vMrp.toLocaleString("en-IN")}</span>
+                                              )}
+                                            </div>
+                                          </td>
                                           <td className="py-2.5 px-3">
                                             <span
                                               className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-bold border ${

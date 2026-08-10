@@ -29,6 +29,16 @@ const Navbar = () => {
     }
   };
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Prevent scroll when search or mobile menu is open
   useEffect(() => {
     if (isOpen || isSearchOpen) {
@@ -43,13 +53,20 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className=" flex justify-between items-center py-4 border-b border-[rgba(90,50,50,0.1)] mb-8 animate-fade-in relative z-100">
-        <Link
-          to={getPath("/")}
-          className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110"
-        >
-          Tiana Luxora<sup>TM</sup>
-        </Link>
+      <header
+        className={`fixed top-0 left-0 right-0 z-100 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#faf7f5]/92 backdrop-blur-md shadow-xs border-b border-[rgba(90,50,50,0.12)] py-3"
+            : "bg-[#faf7f5]/80 backdrop-blur-sm border-b border-[rgba(90,50,50,0.08)] py-4"
+        }`}
+      >
+        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 flex justify-between items-center relative z-100">
+          <Link
+            to={getPath("/")}
+            className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110"
+          >
+            Tiana Luxora<sup>TM</sup>
+          </Link>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex gap-8">
@@ -172,6 +189,10 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
+    </header>
+
+    {/* Spacer to prevent page content overlap under fixed header */}
+    <div className="h-16 md:h-20" />
 
       {/* Global Search Overlay */}
       {isSearchOpen && (

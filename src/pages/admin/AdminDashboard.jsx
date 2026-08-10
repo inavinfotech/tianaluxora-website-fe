@@ -49,8 +49,8 @@ const AdminDashboard = () => {
         </p>
       </div>
 
-      {/* ── Store KPI Stat Cards (5 Columns) ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* ── Store KPI Stat Cards (5 Columns, 2 per row on Mobile) ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         {loading ? (
           [...Array(5)].map((_, i) => (
             <div
@@ -60,44 +60,44 @@ const AdminDashboard = () => {
           ))
         ) : (
           <>
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOTAL REVENUE</p>
-              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 ₹{(stats?.total_revenue ?? 0).toLocaleString("en-IN")}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Gross sales earnings</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Gross sales earnings</p>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOTAL ORDERS</p>
-              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.total_orders ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Customer transactions</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Customer transactions</p>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CATALOG ITEMS</p>
-              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.total_products ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Active inventory products</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Active inventory products</p>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PENDING SHIPPING</p>
-              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.pending_orders ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Awaiting fulfillment</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Awaiting fulfillment</p>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs col-span-2 lg:col-span-1">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CUSTOMERS</p>
-              <h3 className="text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
                 {stats?.total_users ?? 0}
               </h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">Registered accounts</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Registered accounts</p>
             </div>
           </>
         )}

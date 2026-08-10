@@ -16,7 +16,7 @@ const CollectionCard = ({ collection }) => {
         <p className="text-white/80 text-[0.9rem] mb-6 line-clamp-2">
           {collection.description}
         </p>
-        <Button variant="text-gold" className="text-[#b8b8b8] w-fit">
+        <Button className="border border-white! text-white! bg-white/20! backdrop-blur-md! hover:bg-white/35! shadow-md! w-fit font-bold">
           Shop Now
         </Button>
       </div>
