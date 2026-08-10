@@ -158,7 +158,8 @@ const AdminProducts = () => {
         </div>
         <button
           onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 bg-[#5a3232] hover:bg-[#482828] text-white font-bold px-4 py-2.5 rounded-2xl text-xs transition-all shadow-md active:scale-95 cursor-pointer"
+          style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+          className="flex items-center justify-center gap-2 font-bold px-4 py-2.5 rounded-2xl text-xs transition-all shadow-md active:scale-95 cursor-pointer hover:opacity-95"
         >
           <Plus size={16} /> Add Product
         </button>
@@ -390,7 +391,8 @@ const AdminProducts = () => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-1/2 py-3 bg-[#5a3232] hover:bg-[#482828] text-white font-bold rounded-2xl transition-all shadow-md disabled:opacity-50"
+                  style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+                  className="w-1/2 py-3 font-bold rounded-2xl transition-all shadow-md disabled:opacity-50 hover:opacity-95"
                 >
                   {saving ? "Saving..." : "Save Product"}
                 </button>

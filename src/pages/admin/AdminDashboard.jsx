@@ -163,7 +163,8 @@ const AdminDashboard = () => {
             </div>
             <Link
               to="/admin/products"
-              className="w-full flex items-center justify-center gap-1.5 bg-[#5a3232] hover:bg-[#482828] text-white font-bold rounded-xl py-2.5 text-xs transition-all shadow-xs"
+              style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+              className="w-full flex items-center justify-center gap-1.5 font-bold rounded-xl py-2.5 text-xs transition-all shadow-xs hover:opacity-95"
             >
               <Plus size={15} /> Add New Product
             </Link>
@@ -172,7 +173,8 @@ const AdminDashboard = () => {
           <div>
             <Link
               to="/admin/orders"
-              className="w-full flex items-center justify-center gap-1.5 bg-[#2b1616] hover:bg-[#1a0c0c] text-white font-bold rounded-xl py-2.5 text-xs transition-all shadow-xs"
+              style={{ backgroundColor: "#2b1616", color: "#ffffff" }}
+              className="w-full flex items-center justify-center gap-1.5 font-bold rounded-xl py-2.5 text-xs transition-all shadow-xs hover:opacity-95"
             >
               <ShoppingBag size={15} /> Manage Orders & Status
             </Link>

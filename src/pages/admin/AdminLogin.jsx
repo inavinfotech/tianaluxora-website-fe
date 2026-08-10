@@ -60,14 +60,23 @@ const AdminLogin = () => {
 
       <div className="w-full max-w-md bg-white border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] rounded-[2rem] overflow-hidden z-10 p-8 relative">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#5a3232]/10 border border-[#5a3232]/20 text-[#5a3232] mb-4 shadow-sm">
+          <div
+            style={{ backgroundColor: "rgba(90, 50, 50, 0.1)", borderColor: "rgba(90, 50, 50, 0.2)", color: "#5a3232" }}
+            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 shadow-sm border"
+          >
             <ShieldCheck size={28} />
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-2xl font-serif font-bold tracking-wide text-[#5a3232]">
+            <span
+              style={{ color: "#5a3232" }}
+              className="text-2xl font-serif font-bold tracking-wide"
+            >
               TIANA LUXORA
             </span>
-            <span className="text-[10px] font-bold text-[#d4a373] tracking-[0.2em] uppercase mt-1">
+            <span
+              style={{ color: "#d4a373" }}
+              className="text-[10px] font-bold tracking-[0.2em] uppercase mt-1"
+            >
               Admin Portal
             </span>
           </div>
@@ -124,7 +133,8 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#5a3232] hover:bg-[#482828] text-white py-3.5 rounded-2xl font-bold transition-all shadow-md text-center text-sm disabled:opacity-50 active:scale-[0.99] mt-3 cursor-pointer"
+            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+            className="w-full py-3.5 rounded-2xl font-bold transition-all shadow-md text-center text-sm disabled:opacity-50 active:scale-[0.99] mt-3 cursor-pointer hover:opacity-95"
           >
             {loading ? "Signing in..." : "Login to Admin Panel"}
           </button>
