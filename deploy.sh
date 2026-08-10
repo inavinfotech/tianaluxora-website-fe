@@ -14,7 +14,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 FE_DIR="${FE_DIR:-/var/www/tianaluxora-website-fe}"
-BRANCH="${BRANCH:-main}"
+BRANCH="${BRANCH:-dev}"
 
 echo -e "${CYAN}========================================================================${NC}"
 echo -e "${CYAN}            Deploying Tianaluxora Website Frontend                     ${NC}"
