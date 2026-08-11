@@ -30,16 +30,16 @@ const ProductCard = ({ product }) => {
 
       <Link
         to={getPath(`/product/${product.id}`)}
-        className="w-full aspect-4/3 flex justify-center items-center py-2 relative overflow-hidden group-hover:scale-105 transition-transform duration-500"
+        className="w-full aspect-square rounded-xl relative overflow-hidden group-hover:scale-105 transition-transform duration-500 bg-neutral-100/50 block"
       >
         <img
           src={product.image}
           alt={product.name}
-          className={`w-2/3 h-full object-contain transition-transform ${
+          className={`w-full h-full object-fill rounded-xl transition-transform ${
             isOutOfStock ? "opacity-60 grayscale-[30%]" : ""
           }`}
         />
-        <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
       </Link>
 
       <div className="text-center">

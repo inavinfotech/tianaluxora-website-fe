@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import Footer from "../components/Footer";
 import { footerLinks } from "../data/navigation";
 
+const customStyles = `
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
+`;
+
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -26,20 +36,28 @@ const ContactPage = () => {
 
   const faqs = [
     {
-      q: "What are your shipping timelines?",
-      a: "We ship within 2–5 business days across India. International orders may take 7–14 business days depending on your location.",
+      q: "What is your return & replacement policy?",
+      a: "Due to personal care & hygiene standards, opened fragrance items are non-returnable. If your order arrives damaged, defective, or missing an item, a replacement will be issued ONLY if reported within 48 hours of delivery. A continuous, unedited Unboxing Video + photo proof is MANDATORY and must be emailed to tianacare6@gmail.com.",
     },
     {
-      q: "Do you offer returns or exchanges?",
-      a: "Yes! We accept returns within 7 days of delivery for unopened products. Please contact us with your order number to initiate a return.",
+      q: "What are the requirements for the Unboxing Video?",
+      a: "The unboxing video must be continuous and unedited, clearly showing the outer box parcel label, the unbroken security seal before opening, and the damaged/defective product inside. Requests without an unedited unboxing video cannot be processed.",
     },
     {
-      q: "Are your fragrances cruelty-free?",
-      a: "Absolutely. All Tiana Luxora products are 100% cruelty-free and never tested on animals.",
+      q: "What are your shipping timelines across India & Internationally?",
+      a: "Domestic orders across India are dispatched within 2–5 business days via premium express couriers. International export consignments take 7–14 business days depending on destination customs clearance.",
     },
     {
-      q: "How can I track my order?",
-      a: "Once your order ships, you'll receive a tracking link via email and SMS. You can also check your order status from your profile page.",
+      q: "How can I place Global B2B Export or Bulk Orders?",
+      a: "We welcome international trade, corporate gifting packages, and overseas dealership inquiries! Please reach out to our dedicated global export concierge team at tianaluxora.global@gmail.com.",
+    },
+    {
+      q: "Is Tiana Luxora™ GST registered and MSME recognized?",
+      a: "Yes! Tiana Luxora™ is a Trademark Registered and MSME-recognized Indian luxury fragrance house. Our official GST Identification Number is 07ADRPA1310K1ZU.",
+    },
+    {
+      q: "Are your fragrances 100% Made in India & Cruelty-Free?",
+      a: "Yes, every bottle is proudly Made in India by skilled Indian artisans and hardworking women, supporting the vision of Viksit Bharat. All products are 100% cruelty-free.",
     },
   ];
 
@@ -396,6 +414,57 @@ const ContactPage = () => {
           </div>
         </div>
 
+        {/* Frequently Asked Questions Section */}
+        <div id="faqs" className="bg-white/40 backdrop-blur-sm rounded-[2rem] border border-accent/10 p-8 md:p-12 shadow-xl shadow-accent/5">
+          <div className="text-center mb-10">
+            <h2 className="font-serif text-3xl md:text-4xl text-primary font-bold">
+              Frequently Asked Questions & Policies
+            </h2>
+            <p className="text-primary/60 text-sm mt-2">
+              Everything you need to know about our shipping, replacements, unboxing video requirements, and global export.
+            </p>
+          </div>
+
+          <div className="space-y-4 max-w-4xl mx-auto">
+            {faqs.map((faq, idx) => (
+              <div
+                key={idx}
+                className="bg-white/80 rounded-2xl border border-primary/10 overflow-hidden shadow-xs transition-all"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full text-left p-5 flex items-center justify-between font-serif font-bold text-primary text-base md:text-lg cursor-pointer hover:text-accent transition-colors"
+                >
+                  <span>{faq.q}</span>
+                  <span className="text-accent text-xl font-bold ml-4">
+                    {openFaq === idx ? "−" : "+"}
+                  </span>
+                </button>
+                {openFaq === idx && (
+                  <div className="px-5 pb-5 text-sm text-[rgba(90,50,50,0.8)] leading-relaxed border-t border-primary/5 pt-3 bg-neutral-50/50">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Business & GST Trust Banner */}
+          <div className="mt-10 pt-6 border-t border-primary/10 text-center text-xs text-primary/70 flex flex-wrap items-center justify-center gap-6 font-medium">
+            <span>
+              <strong>GSTIN:</strong> 07ADRPA1310K1ZU
+            </span>
+            <span>•</span>
+            <span>
+              <strong>Brand Status:</strong> Trademark Registered & MSME Recognized
+            </span>
+            <span>•</span>
+            <span>
+              <strong>Support Email:</strong> tianacare6@gmail.com
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="mt-20">
@@ -403,15 +472,7 @@ const ContactPage = () => {
       </div>
 
       {/* Inline animation for the bounce-slow on location pin */}
-      <style>{`
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-        }
-      `}</style>
+      <style>{customStyles}</style>
     </div>
   );
 };

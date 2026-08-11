@@ -1,23 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { footerLinks } from "../data/navigation";
+import { footerLinks, brandDetails } from "../data/navigation";
 
 const Footer = () => {
   return (
-    <footer className="pt-6 md:pt-16 pb-6 md:pb-10 border-t border-[rgba(90,50,50,0.1)] animate-fade-in relative z-10">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-6 md:gap-12 mb-6 md:mb-16">
+    <footer className="pt-4 md:pt-14 pb-6 md:pb-10 border-t border-[rgba(90,50,50,0.1)] animate-fade-in relative z-10">
+      {/* Official Brand Trust Ribbon */}
+      <div className="border-y border-[#5a3232]/15 py-2.5 px-3 text-center mb-6 md:mb-8 -mx-4 md:-mx-8">
+        <p className="text-[10px] md:text-xs font-bold text-primary uppercase tracking-widest">
+          {brandDetails.badge}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-x-4 sm:gap-x-6 gap-y-6 md:gap-y-8 mb-6 md:mb-12">
         {/* Brand & Contact Header */}
-        <div className="col-span-2 md:col-span-3 lg:col-span-1 flex flex-col items-center lg:items-start gap-2.5 md:gap-6 text-center lg:text-left border-b lg:border-b-0 border-[rgba(90,50,50,0.08)] pb-5 lg:pb-0">
+        <div className="col-span-3 md:col-span-3 lg:col-span-2 flex flex-col items-center lg:items-start gap-2 md:gap-4 text-center lg:text-left border-b lg:border-b-0 border-[rgba(90,50,50,0.08)] pb-4 lg:pb-0">
           <h3 className="font-serif text-[1.35rem] md:text-[1.8rem] font-bold text-primary">
-            Tiana Luxora<sup>TM</sup>
+            {brandDetails.name}
           </h3>
-          <p className="text-[0.8rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] leading-snug">
-            Elevating your senses, embracing elegance.
+          <p className="text-[0.8rem] md:text-[0.92rem] text-primary font-medium italic">
+            "{brandDetails.tagline}"
           </p>
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 mt-1">
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 mt-1 text-[0.75rem] md:text-[0.82rem] w-full">
             <a
               href={`mailto:${footerLinks.contactInfo.email}`}
-              className="text-[0.78rem] md:text-[0.9rem] text-[rgba(90,50,50,0.8)] hover:text-accent transition-colors flex items-center gap-1.5"
+              className="text-[rgba(90,50,50,0.85)] hover:text-accent transition-colors flex items-center gap-1.5 font-medium"
+              title="Customer Care Support"
             >
               <svg
                 width="13"
@@ -26,15 +34,18 @@ const Footer = () => {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
+                className="shrink-0"
               >
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              {footerLinks.contactInfo.email}
+              <span>{footerLinks.contactInfo.email}</span>
             </a>
+
             <a
-              href={`tel:${footerLinks.contactInfo.phone.replace(/\s/g, "")}`}
-              className="text-[0.78rem] md:text-[0.9rem] text-[rgba(90,50,50,0.8)] hover:text-accent transition-colors flex items-center gap-1.5"
+              href={`mailto:${footerLinks.contactInfo.exportEmail}`}
+              className="text-accent hover:text-primary transition-colors flex items-center gap-1.5 font-semibold"
+              title="Global Export & Business Inquiry"
             >
               <svg
                 width="13"
@@ -43,25 +54,28 @@ const Footer = () => {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
+                className="shrink-0"
               >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
               </svg>
-              {footerLinks.contactInfo.phone}
+              <span>{footerLinks.contactInfo.exportEmail}</span>
             </a>
           </div>
         </div>
 
-        {/* Quick Links */}
-        <div className="flex flex-col gap-2.5 md:gap-6">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.7rem] md:text-[0.85rem]">
+        {/* Quick Links (Col 1 of 3 on Mobile) */}
+        <div className="col-span-1 flex flex-col gap-2 md:gap-5">
+          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.68rem] md:text-[0.85rem]">
             Quick Links
           </h4>
-          <ul className="flex flex-col gap-1.5 md:gap-3">
+          <ul className="flex flex-col gap-1.5 md:gap-2.5">
             {footerLinks.quickLinks.map((link, index) => (
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.78rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] hover:text-accent transition-colors"
+                  className="text-[0.75rem] md:text-[0.92rem] text-[rgba(90,50,50,0.75)] hover:text-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -70,17 +84,17 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Customer Service */}
-        <div className="flex flex-col gap-2.5 md:gap-6">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.7rem] md:text-[0.85rem]">
+        {/* Customer Service (Col 2 of 3 on Mobile) */}
+        <div className="col-span-1 flex flex-col gap-2 md:gap-5">
+          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.68rem] md:text-[0.85rem]">
             Customer Service
           </h4>
-          <ul className="flex flex-col gap-1.5 md:gap-3">
+          <ul className="flex flex-col gap-1.5 md:gap-2.5">
             {footerLinks.customerService.map((link, index) => (
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.78rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] hover:text-accent transition-colors"
+                  className="text-[0.75rem] md:text-[0.92rem] text-[rgba(90,50,50,0.75)] hover:text-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -89,17 +103,17 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* About Links */}
-        <div className="col-span-2 sm:col-span-1 flex flex-col gap-2.5 md:gap-6">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.7rem] md:text-[0.85rem]">
+        {/* About Links (Col 3 of 3 on Mobile) */}
+        <div className="col-span-1 flex flex-col gap-2 md:gap-5">
+          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.68rem] md:text-[0.85rem]">
             About
           </h4>
-          <ul className="flex flex-col gap-1.5 md:gap-3">
+          <ul className="flex flex-col gap-1.5 md:gap-2.5">
             {footerLinks.about.map((link, index) => (
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.78rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)] hover:text-accent transition-colors"
+                  className="text-[0.75rem] md:text-[0.92rem] text-[rgba(90,50,50,0.75)] hover:text-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -107,42 +121,10 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-
-        {/* Newsletter */}
-        <div className="col-span-2 md:col-span-3 lg:col-span-1 flex flex-col gap-2.5 md:gap-6">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.7rem] md:text-[0.85rem]">
-            Newsletter
-          </h4>
-          <p className="text-[0.78rem] md:text-[0.9rem] text-[rgba(90,50,50,0.7)]">
-            Subscribe for exclusive updates & offers
-          </p>
-          <div className="relative mt-0.5">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="w-full bg-white/50 border border-[rgba(90,50,50,0.1)] rounded-full px-4 md:px-6 py-2 md:py-3 outline-none focus:border-accent transition-colors text-[0.8rem] md:text-[0.9rem]"
-            />
-            <button className="absolute right-1 md:right-2 top-1 md:top-1.5 bg-primary text-white p-1.5 md:p-2 rounded-full hover:bg-accent transition-colors">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Copyright & Legal Links */}
-      <div className="border-t border-[rgba(90,50,50,0.08)] pt-4 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-[0.75rem] md:text-[0.85rem] text-[rgba(90,50,50,0.6)]">
+      <div className="border-t border-[rgba(90,50,50,0.08)] pt-4 md:pt-6 flex flex-col md:flex-row justify-between items-center gap-2.5 text-[0.75rem] md:text-[0.85rem] text-[rgba(90,50,50,0.6)]">
         <div className="flex flex-col items-center md:items-start gap-0.5 text-center md:text-left">
           <p>
             © 2026 Tiana Luxora<sup>TM</sup>. All rights reserved.
@@ -159,7 +141,7 @@ const Footer = () => {
             </a>
           </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[11px] md:text-xs">
+        <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-[10px] md:text-xs">
           {footerLinks.legal.map((link, index) => (
             <Link
               key={index}

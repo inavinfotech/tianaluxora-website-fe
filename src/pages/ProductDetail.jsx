@@ -210,17 +210,23 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        setLoading(true);
         const response = await api.get(`/api/products/${productId}`);
-        const data = await response.json();
-        setProduct(data);
-        setSelectedImage(data.image);
+        if (response.ok) {
+          const data = await response.json();
+          setProduct(data);
+          setSelectedImage(data.image);
 
-        const list = data.real_variants || data.variants || [];
-        if (list.length > 0) {
-          setSelectedVariant(list[0]);
+          const list = data.real_variants || data.variants || [];
+          if (list.length > 0) {
+            setSelectedVariant(list[0]);
+          }
+        } else {
+          setProduct(null);
         }
       } catch (error) {
-        console.error("Error fetching product:", error);
+        console.error("Error fetching product from backend API:", error);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
@@ -430,13 +436,13 @@ const ProductDetail = () => {
             })()}
           </div>
 
-          {/* Main Image - Smaller padding and aspect ratio */}
+          {/* Main Image */}
           <div className="md:col-span-10 order-1 md:order-2">
-            <div className="aspect-square md:aspect-square max-h-[400px] md:max-h-none bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-100 flex items-center justify-center relative group">
+            <div className="aspect-square w-full rounded-2xl overflow-hidden border border-neutral-100 relative group bg-neutral-100/50">
               <img
                 src={selectedImage}
                 alt={product.name}
-                className="w-full h-full object-contain p-2 drop-shadow-lg transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-fill transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
@@ -654,9 +660,9 @@ const ProductDetail = () => {
             </button>
           </div>
 
-          {/* Description Section - Expanded layout */}
-          <div className="bg-neutral-50/30 rounded-2xl p-6 border border-neutral-100">
-            <h4 className="text-secondary font-serif font-bold text-lg mb-3">
+          {/* Description Section */}
+          <div className="bg-neutral-50/30 rounded-2xl p-6 border border-neutral-100 space-y-3">
+            <h4 className="text-secondary font-serif font-bold text-lg">
               Description
             </h4>
             <p className="text-primary/70 text-sm leading-relaxed">
@@ -664,6 +670,54 @@ const ProductDetail = () => {
                 "No description available for this exquisite product."}
             </p>
           </div>
+
+          {/* Olfactory Notes Pyramid Section */}
+          {product.notes && (
+            <div className="bg-linear-to-b from-[#faf7f5] to-white rounded-2xl p-6 border border-primary/10 shadow-xs space-y-4">
+              <h4 className="text-secondary font-serif font-bold text-lg flex items-center gap-2">
+                <Sparkles size={18} className="text-accent" />
+                Olfactory Notes Pyramid
+              </h4>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                {/* Top Notes */}
+                {product.notes.top && (
+                  <div className="bg-white p-4 rounded-xl border border-primary/5 shadow-xs">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
+                      Top Notes
+                    </span>
+                    <p className="text-xs font-medium text-primary leading-snug">
+                      {product.notes.top}
+                    </p>
+                  </div>
+                )}
+
+                {/* Heart Notes */}
+                {product.notes.heart && (
+                  <div className="bg-white p-4 rounded-xl border border-primary/5 shadow-xs">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary block mb-1">
+                      Heart Notes
+                    </span>
+                    <p className="text-xs font-medium text-primary leading-snug">
+                      {product.notes.heart}
+                    </p>
+                  </div>
+                )}
+
+                {/* Base Notes */}
+                {product.notes.base && (
+                  <div className="bg-white p-4 rounded-xl border border-primary/5 shadow-xs">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
+                      Base Notes
+                    </span>
+                    <p className="text-xs font-medium text-primary leading-snug">
+                      {product.notes.base}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

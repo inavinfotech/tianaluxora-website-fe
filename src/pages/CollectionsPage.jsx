@@ -1,5 +1,6 @@
 import React from "react";
 import CollectionCard from "../components/utils/CollectionCard";
+import Footer from "../components/Footer";
 
 const collections = [
   {
@@ -30,12 +31,20 @@ const collections = [
 
 const CollectionsPage = () => {
   return (
-    <div className="py-6">
-      <h1 className="text-[3rem] text-center mb-8">Our Collections</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {collections.map((collection) => (
-          <CollectionCard key={collection.id} collection={collection} />
-        ))}
+    <div className="py-6 animate-fade-in flex flex-col min-h-screen">
+      <div className="flex-1 max-w-[1200px] mx-auto px-4 w-full">
+        <h1 className="font-serif text-[2.5rem] md:text-[3rem] text-center mb-8">
+          Our Collections
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {collections.map((collection) => (
+            <CollectionCard key={collection.id} collection={collection} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-20">
+        <Footer />
       </div>
     </div>
   );

@@ -11,16 +11,19 @@ export const ProductProvider = ({ children }) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await api.get("/api/products/");
       if (!response.ok) {
-        throw new Error("Failed to fetch products");
+        throw new Error("Failed to fetch products from backend API");
       }
       const data = await response.json();
-      // Data format from inventory portal is { items: [...], total: ... }
-      setProducts(data.items || []);
+      // Data format from backend API is { items: [...], total: ... } or Array
+      const itemsList = Array.isArray(data) ? data : data.items || [];
+      setProducts(itemsList);
     } catch (err) {
       setError(err.message);
-      console.error("Error fetching products:", err);
+      console.error("Error fetching products from backend:", err);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
