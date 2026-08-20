@@ -23,6 +23,65 @@ const CartPage = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
 
+  // Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
+  const [couponError, setCouponError] = useState("");
+  const [couponSuccess, setCouponSuccess] = useState("");
+
+  const discount = appliedCoupon?.discount_amount || 0;
+  const finalTotal = Math.max(0, cartTotal - discount);
+
+  const handleApplyCoupon = async () => {
+    const formattedCode = couponCode.trim().toUpperCase();
+    if (!formattedCode) return;
+    setApplyingCoupon(true);
+    setCouponError("");
+    setCouponSuccess("");
+    try {
+      const res = await api.post("/api/coupons/validate", {
+        code: formattedCode,
+        subtotal: cartTotal,
+        items: cartItems.map((item) => {
+          const itemPrice = parseFloat(String(item.price).replace(/[^0-9.]/g, "")) || 0;
+          return {
+            id: String(item.id),
+            price: itemPrice,
+            quantity: item.quantity,
+          };
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.valid) {
+          setAppliedCoupon({
+            id: data.coupon_id,
+            code: formattedCode,
+            discount_amount: data.discount_amount,
+          });
+          setCouponSuccess(`Coupon '${formattedCode}' applied!`);
+        } else {
+          setCouponError(data.message || "Invalid coupon code");
+        }
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setCouponError(data.detail || "Invalid coupon code");
+      }
+    } catch (err) {
+      setCouponError("Failed to validate coupon");
+    } finally {
+      setApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponSuccess("");
+    setCouponError("");
+  };
+
   useEffect(() => {
     if (user) {
       fetchAddress();
@@ -92,9 +151,11 @@ const CartPage = () => {
             ? `${cartItems[0].name} & more`
             : cartItems[0].name,
         quantity: cartItems.reduce((acc, item) => acc + item.quantity, 0),
-        total_amount: cartTotal,
+        total_amount: finalTotal,
         currency: "INR",
         image: cartItems[0]?.image,
+        coupon_code: appliedCoupon?.code || null,
+        coupon_id: appliedCoupon?.id || null,
         items: cartItems.map((item) => {
           const itemPrice = parseFloat(String(item.price).replace(/[^0-9.]/g, "")) || 0;
           return {
@@ -135,6 +196,8 @@ const CartPage = () => {
               razorpay_signature: response.razorpay_signature,
               order_data: orderData,
               reservation_ids: reservation_ids,
+              coupon_id: appliedCoupon?.id || null,
+              coupon_code: appliedCoupon?.code || null,
             });
 
             if (verifyRes.ok) {
@@ -332,16 +395,85 @@ const CartPage = () => {
                   ₹{cartTotal.toLocaleString()}
                 </span>
               </div>
+
+              {appliedCoupon && (
+                <div className="flex justify-between items-center text-green-600 font-medium">
+                  <span>Discount ({appliedCoupon.code})</span>
+                  <span>-₹{appliedCoupon.discount_amount.toLocaleString()}</span>
+                </div>
+              )}
+
               <div className="flex justify-between items-center text-gray-500 font-medium">
                 <span>Shipping</span>
                 <span className="text-green-600 font-bold uppercase text-[10px] tracking-widest">
                   Free
                 </span>
               </div>
+
+              {/* Promo Code Input */}
+              {user && (
+                <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
+                  <label className="text-[10px] uppercase font-bold tracking-widest text-primary/50">Promo Code</label>
+                  <div className="flex flex-col sm:flex-row items-stretch gap-2 w-full">
+                    <input
+                      type="text"
+                      placeholder="Enter Code (e.g. WELCOME10)"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      disabled={!!appliedCoupon}
+                      className="bg-gray-50 border border-gray-200 focus:bg-white rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent uppercase flex-1 min-w-0 transition-all disabled:opacity-60"
+                    />
+                    {appliedCoupon ? (
+                      <button
+                        type="button"
+                        onClick={handleRemoveCoupon}
+                        style={{ backgroundColor: "#dc2626", color: "#ffffff" }}
+                        className="px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 shadow-md hover:bg-red-700 active:scale-95 flex items-center justify-center gap-1 min-w-[90px]"
+                      >
+                        <span>✕</span>
+                        <span>Remove</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={applyingCoupon || !couponCode.trim()}
+                        style={{
+                          backgroundColor: applyingCoupon || !couponCode.trim() ? "#8c6b6b" : "#5a3232",
+                          color: "#ffffff"
+                        }}
+                        className="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-all cursor-pointer shrink-0 shadow-md hover:opacity-90 active:scale-95 disabled:cursor-not-allowed flex items-center justify-center min-w-[90px]"
+                      >
+                        {applyingCoupon ? (
+                          <span className="flex items-center gap-1">
+                            <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                            Validating...
+                          </span>
+                        ) : (
+                          "Apply"
+                        )}
+                      </button>
+                    )}
+                  </div>
+                  {couponError && (
+                    <div className="flex items-center gap-1.5 text-red-600 bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg text-[11px] font-semibold animate-fade-in">
+                      <span>⚠️</span>
+                      <span>{couponError}</span>
+                    </div>
+                  )}
+                  {couponSuccess && (
+                    <div className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-lg text-[11px] font-semibold animate-fade-in">
+                      <span>✓</span>
+                      <span>{couponSuccess}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <div className="flex justify-between items-center text-gray-500 font-medium pt-3 border-t border-gray-50">
                 <span className="text-lg font-bold text-primary">Total</span>
                 <span className="text-2xl font-bold text-accent font-serif">
-                  ₹{cartTotal.toLocaleString()}
+                  ₹{finalTotal.toLocaleString()}
                 </span>
               </div>
             </div>
