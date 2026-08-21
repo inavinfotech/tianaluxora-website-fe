@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     <div className="space-y-6 font-sans">
       {/* Store Header */}
       <div>
-        <h1 className="text-2xl font-sans font-extrabold text-[#5a3232] tracking-tight">Admin Dashboard</h1>
+        <h1 className="text-2xl font-sans font-extrabold text-[#83254e] tracking-tight">Admin Dashboard</h1>
         <p className="text-xs text-slate-500 font-medium mt-0.5">
           Manage luxury catalog, order fulfillment, sales, and inventory stock
         </p>
@@ -61,7 +61,7 @@ const AdminDashboard = () => {
           <>
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOTAL REVENUE</p>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#83254e] mt-1.5">
                 ₹{(stats?.total_revenue ?? 0).toLocaleString("en-IN")}
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Gross sales earnings</p>
@@ -69,7 +69,7 @@ const AdminDashboard = () => {
 
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOTAL ORDERS</p>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#83254e] mt-1.5">
                 {stats?.total_orders ?? 0}
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Customer transactions</p>
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
 
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CATALOG ITEMS</p>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#83254e] mt-1.5">
                 {stats?.total_products ?? 0}
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Active inventory products</p>
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
 
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PENDING SHIPPING</p>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#83254e] mt-1.5">
                 {stats?.pending_orders ?? 0}
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Awaiting fulfillment</p>
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
 
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-xs col-span-2 lg:col-span-1">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CUSTOMERS</p>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#5a3232] mt-1.5">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#83254e] mt-1.5">
                 {stats?.total_users ?? 0}
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-400 font-medium mt-1">Registered accounts</p>
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
         <div className="w-full bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
-              <h3 className="text-base font-bold text-[#5a3232]">Store Performance Trends</h3>
+              <h3 className="text-base font-bold text-[#83254e]">Store Performance Trends</h3>
               <p className="text-xs text-slate-400 font-medium">
                 {timeframe === "weekly" ? "Weekly activity breakdown" : "Monthly activity breakdown"}
               </p>
@@ -120,7 +120,7 @@ const AdminDashboard = () => {
                   type="button"
                   onClick={() => setTimeframe("weekly")}
                   style={{
-                    backgroundColor: timeframe === "weekly" ? "#5a3232" : "transparent",
+                    backgroundColor: timeframe === "weekly" ? "#83254e" : "transparent",
                     color: timeframe === "weekly" ? "#ffffff" : "#475569"
                   }}
                   className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
                   type="button"
                   onClick={() => setTimeframe("monthly")}
                   style={{
-                    backgroundColor: timeframe === "monthly" ? "#5a3232" : "transparent",
+                    backgroundColor: timeframe === "monthly" ? "#83254e" : "transparent",
                     color: timeframe === "monthly" ? "#ffffff" : "#475569"
                   }}
                   className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
@@ -146,7 +146,7 @@ const AdminDashboard = () => {
                   type="button"
                   onClick={() => setActiveTrendTab("revenue")}
                   style={{
-                    backgroundColor: activeTrendTab === "revenue" ? "#5a3232" : "transparent",
+                    backgroundColor: activeTrendTab === "revenue" ? "#83254e" : "transparent",
                     color: activeTrendTab === "revenue" ? "#ffffff" : "#475569"
                   }}
                   className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
@@ -157,7 +157,7 @@ const AdminDashboard = () => {
                   type="button"
                   onClick={() => setActiveTrendTab("orders")}
                   style={{
-                    backgroundColor: activeTrendTab === "orders" ? "#5a3232" : "transparent",
+                    backgroundColor: activeTrendTab === "orders" ? "#83254e" : "transparent",
                     color: activeTrendTab === "orders" ? "#ffffff" : "#475569"
                   }}
                   className="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-xs"
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Interactive Bar Chart */}
-          <div className="bg-[#faf7f5] rounded-2xl p-6 border border-slate-100 flex flex-col justify-end min-h-[220px]">
+          <div className="bg-[#fcf5f8] rounded-2xl p-6 border border-slate-100 flex flex-col justify-end min-h-[220px]">
             {stats ? (
               <div className="space-y-4">
                 <div className="flex items-end justify-between gap-2 sm:gap-3 h-36 pt-4">
@@ -208,7 +208,7 @@ const AdminDashboard = () => {
                                 style={{
                                   height: `${heightPercent}%`,
                                   minHeight: "14px",
-                                  backgroundColor: activeTrendTab === "revenue" ? "#5a3232" : "#d48c6a"
+                                  backgroundColor: activeTrendTab === "revenue" ? "#83254e" : "#d97398"
                                 }}
                                 className="w-full rounded-t-xl transition-all duration-700 hover:brightness-125 shadow-sm"
                               />
@@ -226,7 +226,7 @@ const AdminDashboard = () => {
 
                 <div className="flex justify-between items-center border-t border-slate-200/60 pt-3 text-xs font-semibold text-slate-500">
                   <span>{timeframe === "weekly" ? "Gross Weekly Volume" : "Gross Monthly Volume"}</span>
-                  <span className="font-extrabold text-[#5a3232]">
+                  <span className="font-extrabold text-[#83254e]">
                     {activeTrendTab === "revenue"
                       ? `₹${(stats.total_revenue || 0).toLocaleString("en-IN")}`
                       : `${stats.total_orders || 0} Total Orders`}
@@ -245,13 +245,13 @@ const AdminDashboard = () => {
         {/* Recent Customer Orders */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
           <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-2">
-            <h3 className="text-sm font-bold text-[#5a3232] flex items-center gap-2">
-              <ShoppingBag size={17} className="text-[#5a3232]" />
+            <h3 className="text-sm font-bold text-[#83254e] flex items-center gap-2">
+              <ShoppingBag size={17} className="text-[#83254e]" />
               Recent Customer Orders
             </h3>
             <Link
               to="/admin/orders"
-              className="text-xs font-bold text-[#5a3232] hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#83254e] hover:underline flex items-center gap-1"
             >
               View All <ChevronRight size={14} />
             </Link>
@@ -267,7 +267,7 @@ const AdminDashboard = () => {
                     className="py-3 flex items-center justify-between hover:bg-slate-50/60 px-2 rounded-xl transition-colors"
                   >
                     <div>
-                      <p className="text-xs font-bold text-[#5a3232]">
+                      <p className="text-xs font-bold text-[#83254e]">
                         Order #{String(o.id || o.order_id).slice(-8).toUpperCase()}
                       </p>
                       <p className="text-[10px] text-slate-400 mt-0.5">
@@ -275,7 +275,7 @@ const AdminDashboard = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs font-bold text-[#5a3232]">
+                      <p className="text-xs font-bold text-[#83254e]">
                         ₹{(o.total_amount || 0).toLocaleString("en-IN")}
                       </p>
                       <span
@@ -300,13 +300,13 @@ const AdminDashboard = () => {
         {/* Low Stock Warnings */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
           <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-2">
-            <h3 className="text-sm font-bold text-[#5a3232] flex items-center gap-2">
+            <h3 className="text-sm font-bold text-[#83254e] flex items-center gap-2">
               <AlertTriangle size={17} className="text-amber-500" />
               Inventory Stock Warnings
             </h3>
             <Link
               to="/admin/products"
-              className="text-xs font-bold text-[#5a3232] hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#83254e] hover:underline flex items-center gap-1"
             >
               Inventory <ChevronRight size={14} />
             </Link>
@@ -320,7 +320,7 @@ const AdminDashboard = () => {
                   className="py-3 flex items-center justify-between hover:bg-slate-50/60 px-2 rounded-xl transition-colors"
                 >
                   <div>
-                    <p className="text-xs font-bold text-[#5a3232]">{p.name || p.title}</p>
+                    <p className="text-xs font-bold text-[#83254e]">{p.name || p.title}</p>
                     <p className="text-[10px] text-slate-400 mt-0.5">SKU: {p.sku || "N/A"}</p>
                   </div>
                   <div className="flex items-center gap-2">

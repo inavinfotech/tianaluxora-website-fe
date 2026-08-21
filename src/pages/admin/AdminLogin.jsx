@@ -55,30 +55,21 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-portal min-h-screen w-full bg-[#faf7f5] flex flex-col items-center justify-center font-sans p-4 relative overflow-hidden text-slate-800">
+    <div className="admin-portal min-h-screen w-full bg-bg-light flex flex-col items-center justify-center font-sans p-4 relative overflow-hidden text-slate-800">
       {/* Background ambient light effects */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#5a3232]/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#d4a373]/10 rounded-full -ml-20 -mb-20 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full -ml-20 -mb-20 blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md bg-white border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] rounded-[2rem] overflow-hidden z-10 p-8 relative">
         <div className="text-center mb-8">
-          <div
-            style={{ backgroundColor: "rgba(90, 50, 50, 0.1)", borderColor: "rgba(90, 50, 50, 0.2)", color: "#5a3232" }}
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 shadow-sm border"
-          >
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 shadow-sm border bg-primary/10 border-primary/20 text-primary">
             <ShieldCheck size={28} />
           </div>
           <div className="flex flex-col items-center">
-            <span
-              style={{ color: "#5a3232" }}
-              className="text-2xl font-serif font-bold tracking-wide"
-            >
+            <span className="text-2xl font-serif font-bold tracking-wide text-primary">
               TIANA LUXORA
             </span>
-            <span
-              style={{ color: "#d4a373" }}
-              className="text-[10px] font-bold tracking-[0.2em] uppercase mt-1"
-            >
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase mt-1 text-accent">
               Admin Portal
             </span>
           </div>
@@ -104,7 +95,7 @@ const AdminLogin = () => {
               placeholder="admin@tianaluxora.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#5a3232] focus:ring-1 focus:ring-[#5a3232] text-slate-800 placeholder-slate-400 font-medium transition-all text-sm shadow-sm"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-800 placeholder-slate-400 font-medium transition-all text-sm shadow-sm"
               required
             />
           </div>
@@ -119,7 +110,7 @@ const AdminLogin = () => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 pr-12 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#5a3232] focus:ring-1 focus:ring-[#5a3232] text-slate-800 placeholder-slate-400 font-medium transition-all text-sm shadow-sm"
+                className="w-full px-4 py-3 pr-12 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-800 placeholder-slate-400 font-medium transition-all text-sm shadow-sm"
                 required
               />
               <button
@@ -135,8 +126,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
-            className="w-full py-3.5 rounded-2xl font-bold transition-all shadow-md text-center text-sm disabled:opacity-50 active:scale-[0.99] mt-3 cursor-pointer hover:opacity-95"
+            className="w-full py-3.5 bg-primary text-white rounded-2xl font-bold transition-all shadow-md text-center text-sm disabled:opacity-50 active:scale-[0.99] mt-3 cursor-pointer hover:opacity-95"
           >
             {loading ? "Signing in..." : "Login to Admin Panel"}
           </button>

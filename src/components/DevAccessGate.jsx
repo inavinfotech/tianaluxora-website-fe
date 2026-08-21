@@ -96,8 +96,7 @@ const DevAccessGate = ({ children }) => {
 
           <button
             type="submit"
-            style={{ backgroundColor: "#5a3232" }}
-            className="w-full py-4 text-white rounded-2xl font-bold uppercase tracking-widest text-xs transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2 group hover:bg-[#4a2828]"
+            className="w-full py-4 bg-primary text-white rounded-2xl font-bold uppercase tracking-widest text-xs transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2 group hover:opacity-90"
           >
             <span>Enter Preview</span>
             <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />

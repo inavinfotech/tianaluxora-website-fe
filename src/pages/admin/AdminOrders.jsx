@@ -89,7 +89,7 @@ const AdminOrders = () => {
   return (
     <div className="space-y-6 font-sans">
       <div>
-        <h1 className="text-2xl font-sans font-extrabold text-[#5a3232]">Customer Orders</h1>
+        <h1 className="text-2xl font-sans font-extrabold text-[#83254e]">Customer Orders</h1>
         <p className="text-xs text-slate-500 font-medium mt-0.5">
           Track customer purchases, update fulfillment status & view details
         </p>
@@ -127,10 +127,9 @@ const AdminOrders = () => {
             <button
               key={filterKey}
               onClick={() => setActiveStatusFilter(filterKey)}
-              style={activeStatusFilter === filterKey ? { backgroundColor: "#5a3232", color: "#ffffff" } : {}}
               className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeStatusFilter === filterKey
-                  ? "shadow-2xs opacity-100"
+                  ? "bg-primary text-white shadow-2xs opacity-100"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
             >
@@ -144,7 +143,7 @@ const AdminOrders = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-xs overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-slate-400 text-xs">
-            <div className="w-8 h-8 border-3 border-[#5a3232]/20 border-t-[#5a3232] rounded-full animate-spin mx-auto mb-2" />
+            <div className="w-8 h-8 border-3 border-[#83254e]/20 border-t-[#83254e] rounded-full animate-spin mx-auto mb-2" />
             Loading store orders...
           </div>
         ) : filteredOrders.length === 0 ? (
@@ -155,7 +154,7 @@ const AdminOrders = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#faf7f5] border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <tr className="bg-[#fcf5f8] border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                   <th className="py-3.5 px-4">Order ID</th>
                   <th className="py-3.5 px-4">Customer</th>
                   <th className="py-3.5 px-4">Total</th>
@@ -170,11 +169,11 @@ const AdminOrders = () => {
                   const st = (o.status || "pending").toLowerCase();
                   return (
                     <tr key={idStr} className="hover:bg-slate-50/50 transition-colors">
-                      <td className="py-3.5 px-4 font-mono font-bold text-[#5a3232]">
+                      <td className="py-3.5 px-4 font-mono font-bold text-[#83254e]">
                         #{idStr.slice(-8).toUpperCase()}
                       </td>
                       <td className="py-3.5 px-4">{o.customer_name || o.user_id || "Customer"}</td>
-                      <td className="py-3.5 px-4 font-bold text-[#5a3232]">
+                      <td className="py-3.5 px-4 font-bold text-[#83254e]">
                         ₹{(o.total_amount || 0).toLocaleString("en-IN")}
                       </td>
                       <td className="py-3.5 px-4">
@@ -192,8 +191,7 @@ const AdminOrders = () => {
                       <td className="py-3.5 px-4 text-right">
                         <button
                           onClick={() => handleOpenDetails(o)}
-                          style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
-                          className="px-3.5 py-1.5 rounded-xl font-bold transition-all text-[11px] cursor-pointer hover:opacity-90 shadow-xs"
+                          className="px-3.5 py-1.5 bg-primary text-white rounded-xl font-bold transition-all text-[11px] cursor-pointer hover:opacity-90 shadow-xs"
                         >
                           View Details
                         </button>
@@ -222,7 +220,7 @@ const AdminOrders = () => {
               <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-sans font-bold text-[#5a3232]">
+                    <h3 className="text-xl font-sans font-bold text-[#83254e]">
                       Order #{String(selectedOrder.id || selectedOrder.order_id).slice(-8).toUpperCase()}
                     </h3>
                     <span
@@ -249,8 +247,8 @@ const AdminOrders = () => {
               {/* Drawer Body - Scrollable Content */}
               <div className="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
                 {/* Customer Details Card */}
-                <div className="bg-[#faf7f5] p-5 rounded-2xl border border-slate-100 space-y-4">
-                  <h4 className="text-xs font-bold text-[#5a3232] uppercase tracking-wider flex items-center gap-2">
+                <div className="bg-[#fcf5f8] p-5 rounded-2xl border border-slate-100 space-y-4">
+                  <h4 className="text-xs font-bold text-[#83254e] uppercase tracking-wider flex items-center gap-2">
                     <User size={15} /> Customer & Account Details
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium">
@@ -288,8 +286,8 @@ const AdminOrders = () => {
 
                 {/* Shipping Address */}
                 <div className="bg-white p-4 rounded-2xl border border-slate-200/80 space-y-2">
-                  <h4 className="text-xs font-bold text-[#5a3232] uppercase tracking-wider flex items-center gap-2">
-                    <MapPin size={15} className="text-[#5a3232]" /> Shipping & Delivery Address
+                  <h4 className="text-xs font-bold text-[#83254e] uppercase tracking-wider flex items-center gap-2">
+                    <MapPin size={15} className="text-[#83254e]" /> Shipping & Delivery Address
                   </h4>
                   <p className="text-xs text-slate-600 font-medium leading-relaxed">
                     {selectedOrder.shipping_address || selectedOrder.address || "123 Luxury Boulevard, Penthouse 4B, Mumbai, MH 400001, India"}
@@ -298,13 +296,13 @@ const AdminOrders = () => {
 
                 {/* Purchased Items Table */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-[#5a3232] uppercase tracking-wider flex items-center gap-2">
+                  <h4 className="text-xs font-bold text-[#83254e] uppercase tracking-wider flex items-center gap-2">
                     <Package size={15} /> Purchased Order Items
                   </h4>
                   <div className="border border-slate-200/80 rounded-2xl overflow-hidden">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
-                        <tr className="bg-[#faf7f5] border-b border-slate-200/80 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        <tr className="bg-[#fcf5f8] border-b border-slate-200/80 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                           <th className="py-2.5 px-4">Item</th>
                           <th className="py-2.5 px-4 text-center">Qty</th>
                           <th className="py-2.5 px-4 text-right">Price</th>
@@ -319,14 +317,14 @@ const AdminOrders = () => {
                             return (
                               <tr key={i} className="hover:bg-slate-50/50">
                                 <td className="py-3 px-4">
-                                  <p className="font-bold text-[#5a3232]">{item.name || item.product_name || item.title || "Luxury Item"}</p>
+                                  <p className="font-bold text-[#83254e]">{item.name || item.product_name || item.title || "Luxury Item"}</p>
                                   {item.variant_name && (
                                     <p className="text-[10px] text-slate-400 font-medium">Variant: {item.variant_name}</p>
                                   )}
                                 </td>
                                 <td className="py-3 px-4 text-center font-bold text-slate-700">{qty}</td>
                                 <td className="py-3 px-4 text-right font-medium text-slate-600">₹{price.toLocaleString("en-IN")}</td>
-                                <td className="py-3 px-4 text-right font-bold text-[#5a3232]">₹{(price * qty).toLocaleString("en-IN")}</td>
+                                <td className="py-3 px-4 text-right font-bold text-[#83254e]">₹{(price * qty).toLocaleString("en-IN")}</td>
                               </tr>
                             );
                           })
@@ -343,7 +341,7 @@ const AdminOrders = () => {
                 </div>
 
                 {/* Payment & Order Summary */}
-                <div className="bg-[#faf7f5] p-4 rounded-2xl border border-slate-100 flex justify-between items-center">
+                <div className="bg-[#fcf5f8] p-4 rounded-2xl border border-slate-100 flex justify-between items-center">
                   <div>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
                       <CreditCard size={13} /> Payment Method & Status
@@ -354,7 +352,7 @@ const AdminOrders = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Amount</p>
-                    <p className="text-xl font-extrabold text-[#5a3232]">
+                    <p className="text-xl font-extrabold text-[#83254e]">
                       ₹{(selectedOrder.total_amount || 0).toLocaleString("en-IN")}
                     </p>
                   </div>

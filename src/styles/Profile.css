@@ -2,7 +2,7 @@
   padding: 2rem;
   padding-bottom: 5rem;
   font-family: "Poppins", sans-serif;
-  color: #5a3232;
+  color: var(--primary);
 }
 
 .profile-layout {
@@ -45,7 +45,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #d48c6a 0%, #f3d1c1 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
   border: 4px solid white;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@
   font-size: 2.5rem;
   font-family: "Playfair Display", serif;
   color: white;
-  box-shadow: 0 10px 25px rgba(212, 140, 106, 0.2);
+  box-shadow: 0 10px 25px rgba(var(--accent-rgb), 0.2);
 }
 
 .badge-icon {
@@ -83,7 +83,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
   margin-top: 0.5rem;
 }
 
@@ -101,28 +101,28 @@
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
-  color: rgba(90, 50, 50, 0.6);
+  color: rgba(var(--primary-rgb), 0.6);
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.6);
-  color: #5a3232;
+  color: var(--primary);
 }
 
 .nav-item.active {
-  background: #5a3232;
+  background: var(--primary);
   color: white;
-  box-shadow: 0 10px 20px rgba(90, 50, 50, 0.2);
+  box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.2);
 }
 
 .nav-item svg {
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
 }
 
 .nav-item.active svg {
-  color: #d48c6a;
+  color: var(--accent);
 }
 
 .nav-indicator {
@@ -130,13 +130,13 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #d48c6a;
+  background: var(--accent);
 }
 
 .sign-out-button {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(90, 50, 50, 0.05);
+  border-top: 1px solid rgba(var(--primary-rgb), 0.05);
 }
 
 .logout-link {
@@ -158,7 +158,7 @@
 }
 
 .upgrade-card {
-  background: #5a3232;
+  background: var(--primary);
   padding: 2rem;
   border-radius: 40px;
   color: white;
@@ -171,7 +171,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #d48c6a;
+  color: var(--accent);
   margin-bottom: 0.75rem;
 }
 
@@ -195,7 +195,7 @@
 }
 
 .upgrade-link:hover {
-  color: #d48c6a;
+  color: var(--accent);
 }
 
 /* Orders Page Listing */
@@ -218,7 +218,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5a3232;
+  color: var(--primary);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -241,7 +241,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
   margin-top: 0.5rem;
 }
 
@@ -273,7 +273,7 @@
   top: 0;
   width: 6px;
   height: 0;
-  background: #d48c6a;
+  background: var(--accent);
   transition: height 0.4s ease;
 }
 
@@ -321,7 +321,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
   display: flex;
   gap: 0.5rem;
 }
@@ -347,7 +347,7 @@
 
 .order-qty-label {
   font-size: 12px;
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
 }
 
 .order-item-right {
@@ -391,7 +391,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #d48c6a;
+  color: var(--accent);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -406,7 +406,7 @@
 .empty-orders-card {
   padding: 5rem;
   border-radius: 40px;
-  border: 2px dashed rgba(90, 50, 50, 0.1);
+  border: 2px dashed rgba(var(--primary-rgb), 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -418,16 +418,16 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: rgba(90, 50, 50, 0.05);
+  background: rgba(var(--primary-rgb), 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(90, 50, 50, 0.2);
+  color: rgba(var(--primary-rgb), 0.2);
 }
 
 .start-shopping-btn {
   padding: 1rem 2.5rem;
-  background: #5a3232;
+  background: var(--primary);
   color: white;
   border-radius: 50px;
   font-size: 11px;
@@ -435,12 +435,12 @@
   text-transform: uppercase;
   letter-spacing: 0.2em;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(90, 50, 50, 0.3);
+  box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.3);
 }
 
 .start-shopping-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(90, 50, 50, 0.4);
+  box-shadow: 0 15px 40px rgba(var(--primary-rgb), 0.4);
 }
 
 @keyframes fadeIn {

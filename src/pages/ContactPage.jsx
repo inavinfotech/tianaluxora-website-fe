@@ -318,7 +318,7 @@ const ContactPage = () => {
           {/* Map / Illustration Side */}
           <div className="bg-white/40 backdrop-blur-sm rounded-[2rem] border border-accent/10 overflow-hidden shadow-xl shadow-accent/5 flex flex-col">
             {/* Decorative Map Placeholder */}
-            <div className="flex-1 relative min-h-[300px] bg-gradient-to-br from-[#fff5f0] to-[#ffe4d6] flex items-center justify-center">
+            <div className="flex-1 relative min-h-[300px] bg-gradient-to-br from-[#fff0f5] to-[#ffe4ec] flex items-center justify-center">
               <div className="absolute inset-0 opacity-[0.04]">
                 {/* Decorative grid pattern */}
                 <svg width="100%" height="100%">
@@ -332,7 +332,7 @@ const ContactPage = () => {
                       <path
                         d="M 40 0 L 0 0 0 40"
                         fill="none"
-                        stroke="var(--primary, #5a3232)"
+                        stroke="var(--primary, #83254e)"
                         strokeWidth="1"
                       />
                     </pattern>
@@ -350,7 +350,7 @@ const ContactPage = () => {
                       height="32"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--accent, #d48c6a)"
+                      stroke="var(--accent, #d97398)"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -452,7 +452,7 @@ const ContactPage = () => {
                   </span>
                 </button>
                 {openFaq === idx && (
-                  <div className="px-5 pb-5 text-sm text-[rgba(90,50,50,0.8)] leading-relaxed border-t border-primary/5 pt-3 bg-neutral-50/50">
+                  <div className="px-5 pb-5 text-sm text-[rgba(131,37,78,0.8)] leading-relaxed border-t border-primary/5 pt-3 bg-neutral-50/50">
                     {faq.a}
                   </div>
                 )}

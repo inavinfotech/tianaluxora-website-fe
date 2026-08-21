@@ -192,7 +192,7 @@ const ProfilePage = () => {
                     : "U"}
                 </div>
                 <div className="badge-icon">
-                  <ShieldCheck size={14} style={{ color: "#d48c6a" }} />
+                  <ShieldCheck size={14} style={{ color: "#d97398" }} />
                 </div>
               </div>
               <h2 className="profile-name">

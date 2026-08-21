@@ -13,7 +13,7 @@ const BestSellers = () => {
         <h2 className="text-[1.8rem] md:text-[2.2rem] mb-2 text-primary font-serif font-bold">
           Our Best Sellers
         </h2>
-        <p className="text-[0.9rem] md:text-[1rem] text-[rgba(90,50,50,0.7)] max-w-[500px] mx-auto">
+        <p className="text-[0.9rem] md:text-[1rem] text-[rgba(131,37,78,0.7)] max-w-[500px] mx-auto">
           Explore our most popular and captivating fragrances that define modern
           elegance.
         </p>

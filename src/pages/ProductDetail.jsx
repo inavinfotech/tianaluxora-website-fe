@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import api from "../utils/api";
 import { getPath } from "../utils/paths";
+import THEME_COLORS, { primaryAlpha } from "../styles/theme";
 import {
   Star,
   MapPin,
@@ -565,9 +566,9 @@ const ProductDetail = () => {
                                   : "hover:border-accent"
                               }`}
                               style={{
-                                backgroundColor: isSelected ? "#5a3232" : "#ffffff",
-                                color: isSelected ? "#ffffff" : "#5a3232",
-                                borderColor: isSelected ? "#5a3232" : "rgba(90, 50, 50, 0.2)",
+                                backgroundColor: isSelected ? THEME_COLORS.primary : "#ffffff",
+                                color: isSelected ? "#ffffff" : THEME_COLORS.primary,
+                                borderColor: isSelected ? THEME_COLORS.primary : primaryAlpha(0.2),
                               }}
                             >
                               {/* Checkbox Icon */}
@@ -575,8 +576,8 @@ const ProductDetail = () => {
                                 className="w-4 h-4 rounded border flex items-center justify-center transition-colors shrink-0"
                                 style={{
                                   backgroundColor: isSelected ? "#ffffff" : "#f9fafb",
-                                  borderColor: isSelected ? "#ffffff" : "rgba(90, 50, 50, 0.3)",
-                                  color: isSelected ? "#5a3232" : "transparent",
+                                  borderColor: isSelected ? "#ffffff" : primaryAlpha(0.3),
+                                  color: isSelected ? THEME_COLORS.primary : "transparent",
                                 }}
                               >
                                 <Check size={11} strokeWidth={3.5} />
@@ -636,7 +637,7 @@ const ProductDetail = () => {
                 navigate(getPath("/cart"));
               }}
               style={{
-                backgroundColor: isOutOfStock ? "#e5e7eb" : "#5a3232",
+                backgroundColor: isOutOfStock ? "#e5e7eb" : THEME_COLORS.primary,
                 color: isOutOfStock ? "#9ca3af" : "#ffffff",
                 cursor: isOutOfStock ? "not-allowed" : "pointer",
               }}
@@ -652,8 +653,8 @@ const ProductDetail = () => {
                 navigate(getPath("/cart"));
               }}
               style={{
-                backgroundColor: isOutOfStock ? "#f3f4f6" : "#E4C59E",
-                color: isOutOfStock ? "#9ca3af" : "#5a3232",
+                backgroundColor: isOutOfStock ? "#f3f4f6" : THEME_COLORS.accentLight,
+                color: isOutOfStock ? "#9ca3af" : THEME_COLORS.primary,
                 cursor: isOutOfStock ? "not-allowed" : "pointer",
               }}
               className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 disabled:shadow-none disabled:transform-none border border-neutral-200"

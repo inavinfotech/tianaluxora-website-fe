@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import THEME_COLORS from "../styles/theme";
 
 const AddressForm = ({ initialData = {}, onSave, onCancel, isProcessing }) => {
   const [formData, setFormData] = useState({
@@ -113,7 +114,7 @@ const AddressForm = ({ initialData = {}, onSave, onCancel, isProcessing }) => {
           type="submit"
           disabled={isProcessing}
           style={{
-            backgroundColor: isProcessing ? "#e5e5e5" : "#5a3232",
+            backgroundColor: isProcessing ? "#e5e5e5" : THEME_COLORS.primary,
             color: isProcessing ? "#737373" : "white",
           }}
           className="flex-1 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:scale-[1.02] transition-all shadow-md disabled:shadow-none disabled:cursor-not-allowed"

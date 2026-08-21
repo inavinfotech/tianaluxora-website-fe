@@ -1,7 +1,7 @@
 .order-detail-container {
   padding: 2rem;
   animation: fadeIn 0.8s ease-out;
-  color: #5a3232;
+  color: var(--primary);
   font-family: "Poppins", sans-serif;
   max-width: 1400px;
   margin: 0 auto;
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5a3232;
+  color: var(--primary);
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
@@ -62,9 +62,9 @@
 .status-badge {
   padding: 0.4rem 1rem;
   border-radius: 20px;
-  background: rgba(212, 140, 106, 0.1);
-  border: 1px solid rgba(212, 140, 106, 0.2);
-  color: #d48c6a;
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  color: var(--accent);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -73,7 +73,7 @@
 
 .order-id-label {
   font-size: 10px;
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   display: flex;
@@ -94,7 +94,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #5a3232;
+  color: var(--primary);
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
@@ -142,7 +142,7 @@
   left: 0;
   height: 2px;
   width: 100%;
-  background: rgba(90, 50, 50, 0.05);
+  background: rgba(var(--primary-rgb), 0.05);
   z-index: 1;
 }
 
@@ -151,7 +151,7 @@
   top: 25px;
   left: 0;
   height: 2px;
-  background: #d48c6a;
+  background: var(--accent);
   z-index: 1;
   transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -170,21 +170,21 @@
   height: 50px;
   border-radius: 50%;
   background: white;
-  border: 2px solid rgba(90, 50, 50, 0.05);
+  border: 2px solid rgba(var(--primary-rgb), 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(90, 50, 50, 0.2);
+  color: rgba(var(--primary-rgb), 0.2);
   transition: all 0.5s ease;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 .step-item.active .step-icon-wrapper {
-  background: #d48c6a;
-  border-color: #d48c6a;
+  background: var(--accent);
+  border-color: var(--accent);
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 10px 25px rgba(212, 140, 106, 0.3);
+  box-shadow: 0 10px 25px rgba(var(--accent-rgb), 0.3);
 }
 
 .step-label {
@@ -192,11 +192,11 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: rgba(90, 50, 50, 0.2);
+  color: rgba(var(--primary-rgb), 0.2);
 }
 
 .step-item.active .step-label {
-  color: #5a3232;
+  color: var(--primary);
 }
 
 /* Order Items */
@@ -213,7 +213,7 @@
   text-transform: uppercase;
   letter-spacing: 0.25em;
   margin-bottom: 2rem;
-  color: #5a3232;
+  color: var(--primary);
 }
 
 .item-card {
@@ -221,14 +221,14 @@
   gap: 2rem;
   align-items: center;
   padding: 1.5rem;
-  background: rgba(90, 50, 50, 0.04);
-  border: 1px solid rgba(90, 50, 50, 0.05);
+  background: rgba(var(--primary-rgb), 0.04);
+  border: 1px solid rgba(var(--primary-rgb), 0.05);
   border-radius: 30px;
   transition: all 0.4s ease;
 }
 
 .item-card:hover {
-  background: rgba(90, 50, 50, 0.08);
+  background: rgba(var(--primary-rgb), 0.08);
   transform: translateY(-5px);
 }
 
@@ -261,7 +261,7 @@
 
 .item-meta {
   font-size: 12px;
-  color: rgba(90, 50, 50, 0.6);
+  color: rgba(var(--primary-rgb), 0.6);
   display: flex;
   gap: 1rem;
 }
@@ -269,7 +269,7 @@
 .item-price {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #d48c6a;
+  color: var(--accent);
   margin-top: 0.5rem;
 }
 
@@ -281,13 +281,13 @@
 }
 
 .customer-info-card {
-  background: #5a3232;
+  background: var(--primary);
   color: white;
   padding: 2.5rem;
   border-radius: 40px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(90, 50, 50, 0.2);
+  box-shadow: 0 30px 60px rgba(var(--primary-rgb), 0.2);
 }
 
 .customer-info-card::after {
@@ -322,7 +322,7 @@
 .shipping-name {
   font-size: 15px;
   font-weight: 800;
-  color: #d48c6a;
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin: 0;
@@ -357,13 +357,13 @@
 }
 
 .summary-label {
-  color: rgba(90, 50, 50, 0.6);
+  color: rgba(var(--primary-rgb), 0.6);
 }
 
 .summary-total {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(90, 50, 50, 0.1);
+  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -407,7 +407,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: rgba(90, 50, 50, 0.4);
+  color: rgba(var(--primary-rgb), 0.4);
 }
 
 .time-value {

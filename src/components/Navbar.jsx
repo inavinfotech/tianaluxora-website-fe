@@ -56,8 +56,8 @@ const Navbar = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-100 transition-all duration-300 ${
           scrolled
-            ? "bg-[#faf7f5]/92 backdrop-blur-md shadow-xs border-b border-[rgba(90,50,50,0.12)] py-3"
-            : "bg-[#faf7f5]/80 backdrop-blur-sm border-b border-[rgba(90,50,50,0.08)] py-4"
+            ? "bg-[#fcf5f8]/92 backdrop-blur-md shadow-xs border-b border-[rgba(131,37,78,0.12)] py-3"
+            : "bg-[#fcf5f8]/80 backdrop-blur-sm border-b border-[rgba(131,37,78,0.08)] py-4"
         }`}
       >
         <nav className="max-w-[1400px] mx-auto px-4 md:px-8 flex justify-between items-center relative z-100">
@@ -250,7 +250,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-[#fff5f0] z-90 transition-transform duration-500 lg:hidden flex flex-col items-center justify-center pt-12 gap-8 ${
+        className={`fixed inset-0 bg-[#fff0f5] z-90 transition-transform duration-500 lg:hidden flex flex-col items-center justify-center pt-12 gap-8 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

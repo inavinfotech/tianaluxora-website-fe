@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
 import { loadRazorpayScript } from "../utils/razorpay";
 import { getPath } from "../utils/paths";
+import THEME_COLORS from "../styles/theme";
 
 export const useCheckout = (onSuccessClose) => {
   const { cartItems, cartTotal, clearCart } = useCart();
@@ -231,7 +232,7 @@ export const useCheckout = (onSuccessClose) => {
           name: user.full_name,
           email: user.email,
         },
-        theme: { color: "#5a3232" },
+        theme: { color: THEME_COLORS.primary },
         modal: {
           ondismiss: () => setIsProcessing(false),
         },

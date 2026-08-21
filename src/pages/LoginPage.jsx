@@ -75,7 +75,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
+            style={{ backgroundColor: "#83254e", color: "#ffffff" }}
             className="w-full py-3.5 px-4 font-bold uppercase tracking-widest text-xs rounded-xl hover:opacity-90 transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {loading ? "Signing in..." : "Sign In"}

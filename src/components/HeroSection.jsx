@@ -12,12 +12,12 @@ const HeroSection = () => {
         <h1 className="text-[2.5rem] sm:text-[2.75rem] md:text-[3rem] leading-[1.12] text-primary font-serif font-bold">
           Luxury That Speaks <br className="block sm:hidden" /> Before You Do
         </h1>
-        <p className="text-[1.05rem] md:text-[1.1rem] text-[rgba(90,50,50,0.8)] max-w-[420px]">
+        <p className="text-[1.05rem] md:text-[1.1rem] text-[rgba(131,37,78,0.8)] max-w-[420px]">
           Tiana Luxora<sup>TM</sup> blends rare notes into unforgettable fragrances made for modern elegance.
         </p>
         <Link
           to={getPath("/collections")}
-          className="relative overflow-hidden group bg-[#f7d7c4] text-primary px-8 md:px-10 py-4 md:py-5 rounded-[50px] font-bold text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(212,140,106,0.5)] hover:bg-[#f5ccb5] my-1 cursor-pointer border border-white/50"
+          className="relative overflow-hidden group bg-[#f7c2d4] text-primary px-8 md:px-10 py-4 md:py-5 rounded-[50px] font-bold text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(217,115,152,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(217,115,152,0.5)] hover:bg-[#f4b8cc] my-1 cursor-pointer border border-white/50"
         >
           {/* Continuous Shimmer Light Sheen */}
           <span className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none animate-btn-shine" />
@@ -25,7 +25,7 @@ const HeroSection = () => {
           <span className="relative z-10">Explore Collection</span>
           <span className="relative z-10 group-hover:translate-x-1.5 transition-transform duration-300">→</span>
         </Link>
-        <div className="text-[0.75rem] md:text-[0.9rem] font-medium uppercase tracking-[1px] text-[rgba(90,50,50,0.7)] mt-1 mb-2">
+        <div className="text-[0.75rem] md:text-[0.9rem] font-medium uppercase tracking-[1px] text-[rgba(131,37,78,0.7)] mt-1 mb-2">
           100% Authentic — Guaranteed Luxury
         </div>
       </div>
@@ -51,7 +51,7 @@ const HeroSection = () => {
           <h2 className="text-[1.6rem] md:text-[2rem] leading-[1.2] font-serif font-bold">
             Discover Signature Fragrances at Your Fingertips
           </h2>
-          <p className="text-[0.9rem] md:text-[0.95rem] text-[rgba(90,50,50,0.7)]">
+          <p className="text-[0.9rem] md:text-[0.95rem] text-[rgba(131,37,78,0.7)]">
             Indulge your senses in a world of elegant and captivating aromas
             crafted for every occasion.
           </p>

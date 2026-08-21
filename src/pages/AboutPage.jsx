@@ -22,11 +22,11 @@ const AboutPage = () => {
         </div>
 
         {/* Founder Spotlight Card */}
-        <div id="founder" className="bg-linear-to-r from-[#5a3232] to-[#4a2828] text-white p-8 md:p-12 rounded-[2.5rem] shadow-xl relative overflow-hidden">
+        <div id="founder" className="bg-linear-to-r from-[#83254e] to-[#6c1e40] text-white p-8 md:p-12 rounded-[2.5rem] shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-accent/20 rounded-full blur-3xl -z-10" />
           <div className="flex flex-col lg:grid lg:grid-cols-3 gap-8 items-center">
             <div className="lg:col-span-2 space-y-4">
-              <span className="text-[#f7d7c4] text-xs font-bold uppercase tracking-widest block">
+              <span className="text-[#f7c2d4] text-xs font-bold uppercase tracking-widest block">
                 FOUNDER SPOTLIGHT
               </span>
               <h2 className="font-serif text-3xl md:text-4xl font-bold">
@@ -43,7 +43,7 @@ const AboutPage = () => {
               </p>
             </div>
             <div className="lg:col-span-1 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 text-center space-y-3">
-              <Sparkles className="w-8 h-8 text-[#f7d7c4] mx-auto" />
+              <Sparkles className="w-8 h-8 text-[#f7c2d4] mx-auto" />
               <h3 className="font-serif font-bold text-lg text-white">Our Vision</h3>
               <p className="text-xs text-white/80 leading-relaxed">
                 Combining global luxury standards with empowerment-driven values to promote Made in India manufacturing and Viksit Bharat.

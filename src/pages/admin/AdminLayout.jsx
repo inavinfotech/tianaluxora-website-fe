@@ -32,8 +32,8 @@ const AdminLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-[#faf7f5] flex flex-col items-center justify-center text-[#5a3232] font-sans">
-        <div className="w-10 h-10 border-4 border-[#5a3232]/20 border-t-[#5a3232] rounded-full animate-spin mb-3"></div>
+      <div className="min-h-screen w-full bg-[#fcf5f8] flex flex-col items-center justify-center text-[#83254e] font-sans">
+        <div className="w-10 h-10 border-4 border-[#83254e]/20 border-t-[#83254e] rounded-full animate-spin mb-3"></div>
         <p className="text-xs font-semibold tracking-wider text-slate-500">Loading Admin Dashboard...</p>
       </div>
     );
@@ -66,15 +66,15 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="admin-portal flex flex-col md:flex-row min-h-screen bg-[#faf7f5] font-sans text-slate-900 w-full relative">
+    <div className="admin-portal flex flex-col md:flex-row min-h-screen bg-[#fcf5f8] font-sans text-slate-900 w-full relative">
       {/* Mobile Header Bar */}
-      <div className="md:hidden w-full bg-[#5a3232] text-white px-4 py-3 flex justify-between items-center fixed top-0 left-0 z-50 border-b border-white/10 shadow-sm">
+      <div className="md:hidden w-full bg-[#83254e] text-white px-4 py-3 flex justify-between items-center fixed top-0 left-0 z-50 border-b border-white/10 shadow-sm">
         <div className="flex items-center gap-2.5">
           <div>
             <span className="text-xs font-sans font-black tracking-wider text-white block">
               TIANA LUXORA
             </span>
-            <span className="text-[9px] font-bold text-[#d4a373] tracking-widest uppercase">
+            <span className="text-[9px] font-bold text-[#d97398] tracking-widest uppercase">
               Admin Panel
             </span>
           </div>
@@ -97,7 +97,7 @@ const AdminLayout = () => {
 
       {/* Sidebar */}
       <aside
-        className={`w-56 bg-[#5a3232] text-white fixed h-screen border-r border-white/5 flex flex-col z-50 transition-transform duration-300 shadow-xl
+        className={`w-56 bg-[#83254e] text-white fixed h-screen border-r border-white/5 flex flex-col z-50 transition-transform duration-300 shadow-xl
           max-md:top-0 max-md:left-0
           ${isSidebarOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full md:translate-x-0"}`}
       >
@@ -107,7 +107,7 @@ const AdminLayout = () => {
             <h2 className="text-sm font-sans font-black tracking-wider text-white">
               TIANA LUXORA
             </h2>
-            <p className="text-[9px] font-bold text-[#d4a373] tracking-widest uppercase mt-0.5">
+            <p className="text-[9px] font-bold text-[#d97398] tracking-widest uppercase mt-0.5">
               Admin Panel
             </p>
           </div>
@@ -124,7 +124,7 @@ const AdminLayout = () => {
               className={({ isActive }) =>
                 `flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-semibold transition-all ${
                   isActive
-                    ? "bg-white/15 text-[#d4a373] border-l-2 border-[#d4a373]"
+                    ? "bg-white/15 text-[#d97398] border-l-2 border-[#d97398]"
                     : "text-slate-200 hover:bg-white/10 hover:text-white"
                 }`
               }
@@ -139,7 +139,7 @@ const AdminLayout = () => {
         <div className="p-3 border-t border-white/10">
           <div className="p-2.5 rounded-xl bg-white/10 border border-white/10 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2.5 min-w-0 flex-1">
-              <div className="w-8 h-8 rounded-full bg-[#d4a373] text-[#5a3232] font-bold text-xs flex items-center justify-center border border-white/10 flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-[#d97398] text-[#83254e] font-bold text-xs flex items-center justify-center border border-white/10 flex-shrink-0">
                 {(user.full_name || user.email || "A")[0].toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">

@@ -4,7 +4,7 @@ import { globalExportData } from "../data/about";
 
 const GlobalExportSection = () => {
   return (
-    <section className="py-12 md:py-16 animate-fade-in bg-linear-to-b from-[#faf7f5] to-white rounded-[24px] md:rounded-[36px] px-6 md:px-12 my-8 border border-[rgba(90,50,50,0.08)] shadow-xs relative overflow-hidden">
+    <section className="py-12 md:py-16 animate-fade-in bg-linear-to-b from-[#fcf5f8] to-white rounded-[24px] md:rounded-[36px] px-6 md:px-12 my-8 border border-[rgba(131,37,78,0.08)] shadow-xs relative overflow-hidden">
       {/* Background Subtle Accent Glow */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-accent/10 rounded-full blur-3xl -z-10 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -z-10 pointer-events-none" />
@@ -20,7 +20,7 @@ const GlobalExportSection = () => {
           {globalExportData.title}
         </h2>
 
-        <p className="text-[0.95rem] md:text-[1.05rem] text-[rgba(90,50,50,0.75)] max-w-[650px] mx-auto mb-10 leading-relaxed font-medium">
+        <p className="text-[0.95rem] md:text-[1.05rem] text-[rgba(131,37,78,0.75)] max-w-[650px] mx-auto mb-10 leading-relaxed font-medium">
           {globalExportData.description}
         </p>
 
@@ -42,7 +42,7 @@ const GlobalExportSection = () => {
                 <h4 className="font-bold text-primary text-[0.95rem] mb-1.5 font-serif">
                   {item.title}
                 </h4>
-                <p className="text-[0.82rem] text-[rgba(90,50,50,0.7)] leading-snug">
+                <p className="text-[0.82rem] text-[rgba(131,37,78,0.7)] leading-snug">
                   {item.desc}
                 </p>
               </div>
@@ -51,7 +51,7 @@ const GlobalExportSection = () => {
         </div>
 
         {/* Global Export Contact Banner */}
-        <div className="bg-[#5a3232] text-white p-6 md:p-8 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md text-left">
+        <div className="bg-primary text-white p-6 md:p-8 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md text-left">
           <div>
             <h3 className="font-serif text-[1.2rem] md:text-[1.4rem] font-bold mb-1">
               Have an International Inquiry?
@@ -62,7 +62,7 @@ const GlobalExportSection = () => {
           </div>
           <a
             href={`mailto:${globalExportData.contactEmail}`}
-            className="relative overflow-hidden group bg-[#f7d7c4] text-primary px-6 md:px-8 py-3.5 rounded-full font-bold text-sm flex items-center gap-2 hover:bg-[#f5ccb5] transition-all shrink-0 cursor-pointer shadow-sm"
+            className="relative overflow-hidden group bg-[#f7c2d4] text-primary px-6 md:px-8 py-3.5 rounded-full font-bold text-sm flex items-center gap-2 hover:bg-[#f4b8cc] transition-all shrink-0 cursor-pointer shadow-sm"
           >
             <Mail size={16} />
             <span>{globalExportData.contactEmail}</span>

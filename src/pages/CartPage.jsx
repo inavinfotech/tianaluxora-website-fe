@@ -266,7 +266,7 @@ const CartPage = () => {
                         onClick={handleApplyCoupon}
                         disabled={applyingCoupon || !couponCode.trim()}
                         style={{
-                          backgroundColor: applyingCoupon || !couponCode.trim() ? "#8c6b6b" : "#5a3232",
+                          backgroundColor: applyingCoupon || !couponCode.trim() ? "#a65377" : "#83254e",
                           color: "#ffffff"
                         }}
                         className="px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-all cursor-pointer shrink-0 shadow-sm hover:opacity-90 active:scale-95 disabled:cursor-not-allowed flex items-center justify-center min-w-[75px]"
@@ -389,7 +389,7 @@ const CartPage = () => {
                       ? "#812d2d"
                       : user && !isAddressConfirmed && !showAddressForm
                         ? "#f5f5f5"
-                        : "#5a3232",
+                        : "#83254e",
                 color:
                   user && !isAddressConfirmed && !showAddressForm
                     ? "#a3a3a3"

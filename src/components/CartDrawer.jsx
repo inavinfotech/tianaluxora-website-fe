@@ -2,6 +2,7 @@ import React from "react";
 import { useCart } from "../contexts/CartContext";
 import AddressForm from "./AddressForm";
 import { useCheckout } from "../hooks/useCheckout";
+import THEME_COLORS from "../styles/theme";
 
 const CartDrawer = () => {
   const {
@@ -227,7 +228,7 @@ const CartDrawer = () => {
                           <button
                             onClick={() => setIsAddressConfirmed(true)}
                             style={{
-                              backgroundColor: "#d48c6a",
+                              backgroundColor: "#d97398",
                               color: "white",
                             }}
                             className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-sm hover:scale-105 transition-transform"
@@ -314,7 +315,7 @@ const CartDrawer = () => {
                         onClick={handleApplyCoupon}
                         disabled={applyingCoupon || !couponCode.trim()}
                         style={{
-                          backgroundColor: applyingCoupon || !couponCode.trim() ? "#8c6b6b" : "#5a3232",
+                          backgroundColor: applyingCoupon || !couponCode.trim() ? THEME_COLORS.disabled : THEME_COLORS.primary,
                           color: "#ffffff"
                         }}
                         className="px-3.5 py-2 rounded-xl text-xs font-bold uppercase transition-all cursor-pointer shrink-0 shadow-sm hover:opacity-90 active:scale-95 disabled:cursor-not-allowed flex items-center justify-center min-w-[70px]"
@@ -372,7 +373,7 @@ const CartDrawer = () => {
                         ? "#812d2d"
                         : user && !isAddressConfirmed && !showAddressForm
                           ? "#e5e5e5"
-                          : "#5a3232",
+                          : THEME_COLORS.primary,
                   color:
                     user && !isAddressConfirmed && !showAddressForm
                       ? "#737373"

@@ -44,7 +44,7 @@ const AboutPurpose = () => {
             <p className="text-[0.88rem] md:text-[0.98rem] text-primary font-semibold italic">
               {aboutContent.tagline}
             </p>
-            <p className="text-[0.92rem] md:text-[0.98rem] text-[rgba(90,50,50,0.75)] leading-relaxed">
+            <p className="text-[0.92rem] md:text-[0.98rem] text-[rgba(131,37,78,0.75)] leading-relaxed">
               {aboutContent.fullStory}
             </p>
 
@@ -74,7 +74,7 @@ const AboutPurpose = () => {
               <h3 className="text-[1.1rem] font-serif font-bold text-primary mb-1">
                 {pillar.title}
               </h3>
-              <p className="text-[0.84rem] text-[rgba(90,50,50,0.75)] leading-relaxed">
+              <p className="text-[0.84rem] text-[rgba(131,37,78,0.75)] leading-relaxed">
                 {pillar.description}
               </p>
             </div>

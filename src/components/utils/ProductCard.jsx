@@ -71,8 +71,7 @@ const ProductCard = ({ product }) => {
         ) : product.real_variants && product.real_variants.length > 0 ? (
           <Link
             to={getPath(`/product/${product.id}`)}
-            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
-            className="flex-1 text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold transition-custom"
+            className="flex-1 bg-primary text-white text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold transition-custom hover:opacity-90"
           >
             Choose
           </Link>
@@ -82,8 +81,7 @@ const ProductCard = ({ product }) => {
               addToCart(product);
               navigate(getPath("/cart"));
             }}
-            style={{ backgroundColor: "#5a3232", color: "#ffffff" }}
-            className="flex-1 text-[0.7rem] px-2 py-2 uppercase tracking-widest font-bold"
+            className="flex-1 bg-primary text-white text-[0.7rem] px-2 py-2 uppercase tracking-widest font-bold hover:opacity-90"
           >
             Add
           </Button>

@@ -40,7 +40,7 @@ const AdminUsers = () => {
   return (
     <div className="space-y-6 font-sans">
       <div>
-        <h1 className="text-2xl font-sans font-extrabold text-[#5a3232]">Customer Directory</h1>
+        <h1 className="text-2xl font-sans font-extrabold text-[#83254e]">Customer Directory</h1>
         <p className="text-xs text-slate-500 font-medium mt-0.5">
           View registered customer profiles from Central User Portal
         </p>
@@ -62,7 +62,7 @@ const AdminUsers = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-xs overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-slate-400 text-xs">
-            <div className="w-8 h-8 border-3 border-[#5a3232]/20 border-t-[#5a3232] rounded-full animate-spin mx-auto mb-2" />
+            <div className="w-8 h-8 border-3 border-[#83254e]/20 border-t-[#83254e] rounded-full animate-spin mx-auto mb-2" />
             Loading customer directory...
           </div>
         ) : filteredUsers.length === 0 ? (
@@ -73,7 +73,7 @@ const AdminUsers = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#faf7f5] border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <tr className="bg-[#fcf5f8] border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                   <th className="py-3.5 px-4">Customer</th>
                   <th className="py-3.5 px-4">Email</th>
                   <th className="py-3.5 px-4">Roles</th>
@@ -87,10 +87,10 @@ const AdminUsers = () => {
                     <tr key={u.user_id || u.email} className="hover:bg-slate-50/50 transition-colors">
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[#5a3232]/10 text-[#5a3232] font-bold text-xs flex items-center justify-center border border-[#5a3232]/20">
+                          <div className="w-8 h-8 rounded-full bg-[#83254e]/10 text-[#83254e] font-bold text-xs flex items-center justify-center border border-[#83254e]/20">
                             {(u.full_name || u.email || "C")[0].toUpperCase()}
                           </div>
-                          <span className="font-bold text-[#5a3232]">{u.full_name || "Customer"}</span>
+                          <span className="font-bold text-[#83254e]">{u.full_name || "Customer"}</span>
                         </div>
                       </td>
                       <td className="py-3.5 px-4 text-slate-500 font-mono text-[11px]">{u.email}</td>

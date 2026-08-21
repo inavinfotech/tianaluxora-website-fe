@@ -37,7 +37,7 @@ const Testimonials = () => {
         <h2 className="text-[1.8rem] md:text-[2.4rem] mb-2 text-primary font-serif font-bold tracking-tight">
           What Our Customers Say
         </h2>
-        <p className="text-[0.95rem] md:text-[1.05rem] text-[rgba(90,50,50,0.75)] max-w-[500px] mx-auto font-medium">
+        <p className="text-[0.95rem] md:text-[1.05rem] text-[rgba(131,37,78,0.75)] max-w-[500px] mx-auto font-medium">
           Real experiences from those who love Tiana Luxora
         </p>
       </div>
@@ -54,7 +54,7 @@ const Testimonials = () => {
         </button>
 
         {/* Testimonial Slide Card */}
-        <div className="bg-white/65 backdrop-blur-lg rounded-[24px] p-8 md:p-10 border border-white/40 shadow-[0_15px_35px_rgba(90,50,50,0.08)] text-center relative transition-all duration-500 min-h-[220px] flex flex-col justify-between items-center">
+        <div className="bg-white/65 backdrop-blur-lg rounded-[24px] p-8 md:p-10 border border-white/40 shadow-[0_15px_35px_rgba(131,37,78,0.08)] text-center relative transition-all duration-500 min-h-[220px] flex flex-col justify-between items-center">
           <Quote className="absolute top-4 left-6 text-primary/10 w-12 h-12 pointer-events-none" />
 
           {/* Star Rating */}
@@ -71,14 +71,14 @@ const Testimonials = () => {
 
           {/* Author Meta */}
           <div className="flex items-center gap-3 mt-6">
-            <div className="w-11 h-11 rounded-full bg-[#5a3232]/10 text-[#5a3232] font-bold text-sm flex justify-center items-center border border-white/40 shadow-xs">
+            <div className="w-11 h-11 rounded-full bg-[#83254e]/10 text-[#83254e] font-bold text-sm flex justify-center items-center border border-white/40 shadow-xs">
               {current.name[0]}
             </div>
             <div className="text-left">
               <h4 className="font-bold text-[0.95rem] md:text-[1rem] text-primary">
                 {current.name}
               </h4>
-              <p className="text-[0.75rem] text-[rgba(90,50,50,0.6)] font-semibold uppercase tracking-wider">
+              <p className="text-[0.75rem] text-[rgba(131,37,78,0.6)] font-semibold uppercase tracking-wider">
                 {current.role || "Verified Buyer"}
               </p>
             </div>
@@ -103,8 +103,8 @@ const Testimonials = () => {
               aria-label={`Go to slide ${idx + 1}`}
               className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                 activeIndex === idx
-                  ? "w-8 bg-[#5a3232]"
-                  : "w-2.5 bg-[#5a3232]/30 hover:bg-[#5a3232]/60"
+                  ? "w-8 bg-[#83254e]"
+                  : "w-2.5 bg-[#83254e]/30 hover:bg-[#83254e]/60"
               }`}
             />
           ))}

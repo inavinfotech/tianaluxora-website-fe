@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #5a3232;
-  --color-accent: #d48c6a;
+  --color-primary: #83254e;
+  --color-accent: #d97398;
+  --color-bg-light: #fcf5f8;
   --font-serif: "Playfair Display", serif;
   --font-sans: "Poppins", sans-serif;
   --transition-custom: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -48,9 +49,21 @@
 }
 
 :root {
-  --primary: #5a3232;
-  --accent: #d48c6a;
-  --bg-gradient: linear-gradient(135deg, #fff5f0 0%, #ffe4d6 100%);
+  --primary: #83254e;
+  --primary-rgb: 131, 37, 78;
+
+  --accent: #d97398;
+  --accent-rgb: 217, 115, 152;
+
+  --bg-gradient: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+  --bg-light: #fcf5f8;
+
+  --accent-light: #f7c2d4;
+  --accent-light-hover: #f4b8cc;
+
+  --disabled: #a65377;
+  --primary-dark: #6c1e40;
+
   --font-serif: "Playfair Display", serif;
   --font-sans: "Poppins", sans-serif;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -71,13 +84,13 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #fff5f0;
+  background: var(--bg-light);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--primary);
   border-radius: 10px;
-  border: 2px solid #fff5f0;
+  border: 2px solid var(--bg-light);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -87,7 +100,7 @@ body {
 /* Firefox support */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--primary) #fff5f0;
+  scrollbar-color: var(--primary) var(--bg-light);
 }
 
 h1,
