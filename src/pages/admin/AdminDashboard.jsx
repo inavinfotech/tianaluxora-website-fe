@@ -25,7 +25,6 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTrendTab, setActiveTrendTab] = useState("revenue");
   const [timeframe, setTimeframe] = useState("weekly");
-  const [actionSearch, setActionSearch] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");

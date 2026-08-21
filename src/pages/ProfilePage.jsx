@@ -574,7 +574,7 @@ const ProfilePage = () => {
                                   {txn.method}
                                 </td>
                                 <td className="px-8 py-4 text-right font-bold">
-                                  ₹{txn.amount.toLocaleString()}
+                                  ₹{(txn.total_amount || txn.amount || 0).toLocaleString()}
                                 </td>
                                 <td className="px-8 py-4 text-right">
                                   <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">

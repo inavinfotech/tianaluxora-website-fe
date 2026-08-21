@@ -72,6 +72,7 @@ const AdminOrders = () => {
       }
     } catch (e) {
       console.error("Failed to fetch order details:", e);
+      setMessage({ type: "error", text: "Failed to fetch order details" });
     }
   };
 

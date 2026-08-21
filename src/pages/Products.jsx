@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import ProductCard from "../components/utils/ProductCard";
 import ProductSkeleton from "../components/utils/ProductSkeleton";
 import { useProducts } from "../contexts/ProductContext";
-import Footer from "../components/Footer";
 
 const Products = () => {
   const { products, loading, error } = useProducts();
@@ -76,10 +75,6 @@ const Products = () => {
             </p>
           </div>
         )}
-      </div>
-
-      <div className="mt-20">
-        <Footer />
       </div>
     </div>
   );

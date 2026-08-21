@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
     : prodStock !== undefined && prodStock !== null && prodStock <= 0;
 
   return (
-    <div className="bg-white/40 backdrop-blur-md rounded-[16px] p-3 flex flex-col items-center gap-2 border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-custom group relative hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
+    <div className="bg-white/80 rounded-[16px] p-3 flex flex-col items-center gap-2 border border-white/40 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-custom group relative hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
       {isOutOfStock ? (
         <span className="absolute top-3 left-3 z-10 bg-red-100 text-red-700 border border-red-200 text-[0.65rem] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
           Out of Stock

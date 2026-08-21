@@ -1,13 +1,7 @@
-import React, { useState } from "react";
-import { api } from "../utils/api";
+import React from "react";
 import { useCart } from "../contexts/CartContext";
-import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { loadRazorpayScript } from "../utils/razorpay";
-
-import { getPath } from "../utils/paths";
-
 import AddressForm from "./AddressForm";
+import { useCheckout } from "../hooks/useCheckout";
 
 const CartDrawer = () => {
   const {
@@ -16,251 +10,33 @@ const CartDrawer = () => {
     cartItems,
     removeFromCart,
     updateQuantity,
-    cartTotal,
-    clearCart,
   } = useCart();
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [orderStatus, setOrderStatus] = useState(null); // 'success', 'error', null
-  const [errorMessage, setErrorMessage] = useState("");
 
-  // Address related state
-  const [address, setAddress] = useState(null);
-  const [isAddressLoading, setIsAddressLoading] = useState(false);
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
-
-  // Coupon state
-  const [couponCode, setCouponCode] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
-  const [applyingCoupon, setApplyingCoupon] = useState(false);
-  const [couponError, setCouponError] = useState("");
-  const [couponSuccess, setCouponSuccess] = useState("");
-
-  const discount = appliedCoupon?.discount_amount || 0;
-  const finalTotal = Math.max(0, cartTotal - discount);
-
-  const handleApplyCoupon = async () => {
-    const formattedCode = couponCode.trim().toUpperCase();
-    if (!formattedCode) return;
-    setApplyingCoupon(true);
-    setCouponError("");
-    setCouponSuccess("");
-    try {
-      const res = await api.post("/api/coupons/validate", {
-        code: formattedCode,
-        subtotal: cartTotal,
-        items: cartItems.map((item) => {
-          const itemPrice = parseFloat(String(item.price).replace(/[^0-9.]/g, "")) || 0;
-          return {
-            id: String(item.id),
-            price: itemPrice,
-            quantity: item.quantity,
-          };
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.valid) {
-          setAppliedCoupon({
-            id: data.coupon_id,
-            code: formattedCode,
-            discount_amount: data.discount_amount,
-          });
-          setCouponSuccess(`Coupon '${formattedCode}' applied!`);
-        } else {
-          setCouponError(data.message || "Invalid coupon code");
-        }
-      } else {
-        const data = await res.json().catch(() => ({}));
-        setCouponError(data.detail || "Invalid coupon code");
-      }
-    } catch (err) {
-      setCouponError("Failed to validate coupon");
-    } finally {
-      setApplyingCoupon(false);
-    }
-  };
-
-  const handleRemoveCoupon = () => {
-    setAppliedCoupon(null);
-    setCouponCode("");
-    setCouponSuccess("");
-    setCouponError("");
-  };
-
-  React.useEffect(() => {
-    if (isCartOpen && user) {
-      fetchAddress();
-    }
-  }, [isCartOpen, user]);
-
-  const fetchAddress = async () => {
-    try {
-      setIsAddressLoading(true);
-      const res = await api.get("/api/auth/me/address");
-      if (res.ok) {
-        const data = await res.json();
-        if (data) {
-          setAddress(data);
-          setIsAddressConfirmed(true); // Default to confirmed if exists
-        } else {
-          setAddress(null);
-          setIsAddressConfirmed(false);
-        }
-      } else {
-        setAddress(null);
-        setIsAddressConfirmed(false);
-      }
-    } catch (err) {
-      console.error("Error fetching address:", err);
-    } finally {
-      setIsAddressLoading(false);
-    }
-  };
-
-  const handleAddressSave = async (addressData) => {
-    try {
-      setIsProcessing(true);
-      const res = await api.post("/api/auth/me/address", addressData);
-      if (res.ok) {
-        const data = await res.json();
-        setAddress(data);
-        setIsAddressConfirmed(true);
-        setShowAddressForm(false);
-      }
-    } catch (err) {
-      console.error("Error saving address:", err);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleCheckout = async () => {
-    if (!user) {
-      setIsCartOpen(false);
-      navigate(getPath("/login"));
-      return;
-    }
-
-    if (!isAddressConfirmed) {
-      setShowAddressForm(true);
-      return;
-    }
-
-    setIsProcessing(true);
-    setOrderStatus(null);
-
-    // 1. Load Razorpay Script
-    const res = await loadRazorpayScript();
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      setIsProcessing(false);
-      return;
-    }
-
-    try {
-      const orderData = {
-        user_id: String(user.user_id),
-        customer_name: user.full_name || user.email,
-        product_name:
-          cartItems.length > 1
-            ? `${cartItems[0].name} & more`
-            : cartItems[0].name,
-        quantity: cartItems.reduce((acc, item) => acc + item.quantity, 0),
-        total_amount: finalTotal,
-        currency: "INR",
-        coupon_code: appliedCoupon?.code || null,
-        coupon_id: appliedCoupon?.id || null,
-        items: cartItems.map((item) => {
-          const itemPrice = parseFloat(String(item.price).replace(/[^0-9.]/g, "")) || 0;
-          return {
-            product_id: String(item.id),
-            variant_id: item.variant_id ? String(item.variant_id) : null,
-            variant_name: item.selectedSize || item.tag,
-            product_name: item.name,
-            name: item.name,
-            quantity: item.quantity,
-            unit_price: itemPrice,
-            price: itemPrice,
-            sku: item.sku || `SKU-${item.id}`,
-            image: item.image,
-          };
-        }),
-      };
-
-      setErrorMessage("");
-      // 2. Initiate Checkout (Reserve stock & get payment session)
-      const response = await api.post("/api/orders/checkout", orderData);
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || "Failed to initiate checkout");
-      }
-      const { payment, reservation_ids } = await response.json();
-
-      // 3. Razorpay Options
-      const options = {
-        key: payment.key_id,
-        amount: payment.amount,
-        currency: payment.currency,
-        name: "Tiana Luxora",
-        description: `Order Payment`,
-        image: "https://tianaluxora.com/logo.png",
-        order_id: payment.razorpay_order_id,
-        handler: async function (response) {
-          // 4. Verify Payment & "Punch" Order after success
-          try {
-            const verifyRes = await api.post("/api/orders/verify-payment", {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              order_data: orderData,
-              reservation_ids: reservation_ids,
-              coupon_id: appliedCoupon?.id || null,
-              coupon_code: appliedCoupon?.code || null,
-            });
-
-            if (verifyRes.ok) {
-              setOrderStatus("success");
-              clearCart();
-              setTimeout(() => {
-                setIsCartOpen(false);
-                setOrderStatus(null);
-                navigate(getPath("/profile"));
-              }, 2000);
-            } else {
-              setOrderStatus("error");
-              setErrorMessage("Payment verification failed");
-            }
-          } catch (err) {
-            setOrderStatus("error");
-            setErrorMessage("Payment verification failed");
-          }
-        },
-        prefill: {
-          name: user.full_name,
-          email: user.email,
-        },
-        theme: {
-          color: "#5a3232",
-        },
-        modal: {
-          ondismiss: function () {
-            setIsProcessing(false);
-          },
-        },
-      };
-
-      const paymentObject = new window.Razorpay(options);
-      paymentObject.open();
-    } catch (error) {
-      console.error("Checkout error:", error);
-      setOrderStatus("error");
-      setErrorMessage(error.message || "Failed to initiate checkout");
-      setIsProcessing(false);
-    }
-  };
+  const {
+    user,
+    cartTotal,
+    appliedCoupon,
+    finalTotal,
+    address,
+    isAddressLoading,
+    showAddressForm,
+    setShowAddressForm,
+    isAddressConfirmed,
+    setIsAddressConfirmed,
+    handleAddressSave,
+    couponCode,
+    setCouponCode,
+    applyingCoupon,
+    couponError,
+    couponSuccess,
+    handleApplyCoupon,
+    handleRemoveCoupon,
+    isProcessing,
+    orderStatus,
+    setOrderStatus,
+    errorMessage,
+    handleCheckout,
+  } = useCheckout(() => setIsCartOpen(false));
 
   if (!isCartOpen) return null;
 
@@ -527,7 +303,7 @@ const CartDrawer = () => {
                         type="button"
                         onClick={handleRemoveCoupon}
                         style={{ backgroundColor: "#dc2626", color: "#ffffff" }}
-                        className="px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 shadow-md hover:bg-red-700 active:scale-95 flex items-center justify-center gap-1 min-w-[80px]"
+                        className="px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 shadow-sm hover:bg-red-700 active:scale-95 flex items-center justify-center gap-1 min-w-[70px]"
                       >
                         <span>✕</span>
                         <span>Remove</span>
@@ -541,7 +317,7 @@ const CartDrawer = () => {
                           backgroundColor: applyingCoupon || !couponCode.trim() ? "#8c6b6b" : "#5a3232",
                           color: "#ffffff"
                         }}
-                        className="px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all cursor-pointer shrink-0 shadow-md hover:opacity-90 active:scale-95 disabled:cursor-not-allowed flex items-center justify-center min-w-[80px]"
+                        className="px-3.5 py-2 rounded-xl text-xs font-bold uppercase transition-all cursor-pointer shrink-0 shadow-sm hover:opacity-90 active:scale-95 disabled:cursor-not-allowed flex items-center justify-center min-w-[70px]"
                       >
                         {applyingCoupon ? "..." : "Apply"}
                       </button>

@@ -1,5 +1,4 @@
 import React from "react";
-import Footer from "../components/Footer";
 import GlobalExportSection from "../components/GlobalExportSection";
 import { aboutContent } from "../data/about";
 import { CheckCircle2, Heart, Award, Sparkles } from "lucide-react";
@@ -86,10 +85,6 @@ const AboutPage = () => {
 
         {/* Global Export Section */}
         <GlobalExportSection />
-      </div>
-
-      <div className="mt-20">
-        <Footer />
       </div>
     </div>
   );

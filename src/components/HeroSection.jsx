@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import PerfumeModel from "./PerfumeModel";
+import { getPath } from "../utils/paths";
 
 const HeroSection = () => {
-  // Control 3D Model visibility via .env variable
-  const is3dactive = import.meta.env.VITE_ENABLE_3D_MODEL === "true";
+  // 3D Model disabled to ensure fast 60FPS page rendering
+  const is3dactive = false;
 
   return (
     <section className="flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] items-center gap-8 lg:gap-8 min-h-0 lg:min-h-[calc(100vh-80px)] animate-fade-in text-center lg:text-left py-6 lg:py-0">
@@ -15,7 +16,7 @@ const HeroSection = () => {
           Tiana Luxora<sup>TM</sup> blends rare notes into unforgettable fragrances made for modern elegance.
         </p>
         <Link
-          to="/collections"
+          to={getPath("/collections")}
           className="relative overflow-hidden group bg-[#f7d7c4] text-primary px-8 md:px-10 py-4 md:py-5 rounded-[50px] font-bold text-[1rem] md:text-[1.1rem] flex items-center gap-[0.8rem] w-fit shadow-[0_10px_30px_rgba(212,140,106,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(212,140,106,0.5)] hover:bg-[#f5ccb5] my-1 cursor-pointer border border-white/50"
         >
           {/* Continuous Shimmer Light Sheen */}
@@ -63,12 +64,12 @@ const HeroSection = () => {
                 className="w-full h-full object-contain transition-transform"
               />
             </div>
-            <a
-              href="#"
+            <Link
+              to={getPath("/shop")}
               className="font-semibold flex items-center gap-2 hover:text-accent transition-custom"
             >
               Shop Now <span>→</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

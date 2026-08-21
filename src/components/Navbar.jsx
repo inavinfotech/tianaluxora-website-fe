@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
-  const { setIsCartOpen, cartCount } = useCart();
+  const { cartCount } = useCart();
   const navigate = useNavigate();
 
   const handleSearch = (e) => {

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Footer from "../components/Footer";
 import { footerLinks } from "../data/navigation";
 
 const customStyles = `
@@ -22,16 +21,26 @@ const ContactPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: integrate with backend API
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+    try {
+      // Simulate or dispatch contact payload
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 5000);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (err) {
+      console.error("Contact form error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const faqs = [
@@ -285,7 +294,8 @@ const ContactPage = () => {
               <button
                 type="submit"
                 id="contact-submit"
-                className="w-full sm:w-auto bg-primary text-white px-10 py-3.5 rounded-full font-medium tracking-wide hover:bg-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/20 active:scale-[0.97] flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto bg-primary text-white px-10 py-3.5 rounded-full font-medium tracking-wide hover:bg-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/20 active:scale-[0.97] flex items-center justify-center gap-2 disabled:opacity-60"
               >
                 <svg
                   width="18"
@@ -300,7 +310,7 @@ const ContactPage = () => {
                   <line x1="22" y1="2" x2="11" y2="13"></line>
                   <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
@@ -465,10 +475,6 @@ const ContactPage = () => {
             </span>
           </div>
         </div>
-      </div>
-
-      <div className="mt-20">
-        <Footer />
       </div>
 
       {/* Inline animation for the bounce-slow on location pin */}

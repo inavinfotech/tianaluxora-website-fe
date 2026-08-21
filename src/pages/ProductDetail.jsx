@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
@@ -15,6 +16,7 @@ import {
   Truck,
   Check,
   Tag,
+  Sparkles,
 } from "lucide-react";
 
 export const formatVariantTitle = (v) => {

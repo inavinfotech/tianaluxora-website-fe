@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { getPath } from "../utils/paths";
 
@@ -9,7 +9,10 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+
+  const from = location.state?.from || getPath("/");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,7 +21,7 @@ const LoginPage = () => {
 
     const result = await login(email, password);
     if (result.success) {
-      navigate(getPath("/"));
+      navigate(from, { replace: true });
     } else {
       setError(result.error);
     }
@@ -83,6 +86,7 @@ const LoginPage = () => {
           Don't have an account?{" "}
           <Link
             to={getPath("/signup")}
+            state={{ from }}
             className="text-accent font-bold hover:underline ml-1"
           >
             Sign up

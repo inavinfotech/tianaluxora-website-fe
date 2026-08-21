@@ -1,6 +1,5 @@
 import React from "react";
 import CollectionCard from "../components/utils/CollectionCard";
-import Footer from "../components/Footer";
 
 const collections = [
   {
@@ -41,10 +40,6 @@ const CollectionsPage = () => {
             <CollectionCard key={collection.id} collection={collection} />
           ))}
         </div>
-      </div>
-
-      <div className="mt-20">
-        <Footer />
       </div>
     </div>
   );

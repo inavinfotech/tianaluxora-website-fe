@@ -39,13 +39,15 @@ const AdminLogin = () => {
               setLoading(false);
               return;
             }
-          } catch (e) {}
+          } catch {
+            // Ignore invalid token payload format
+          }
         }
         navigate("/admin");
       } else {
         setError(res.error || "Invalid email or password");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred during login. Please try again.");
     } finally {
       setLoading(false);

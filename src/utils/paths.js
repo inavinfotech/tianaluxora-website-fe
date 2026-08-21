@@ -1,5 +1,4 @@
-const isUnderDevelopment = import.meta.env.VITE_UNDER_DEVELOPMENT === "true";
-export const routePrefix = isUnderDevelopment ? "/dev" : "";
+export const routePrefix = "";
 
 export const getPath = (path) => {
   if (
@@ -12,18 +11,6 @@ export const getPath = (path) => {
     return path;
   }
 
-  // Ensure path starts with /
-  let normalizedPath = path.startsWith("/") ? path : `/${path}`;
-
-  // Special case for root
-  if (normalizedPath === "/") {
-    return routePrefix || "/";
-  }
-
-  // Don't prefix if already prefixed
-  if (routePrefix && (normalizedPath === routePrefix || normalizedPath.startsWith(`${routePrefix}/`))) {
-    return normalizedPath;
-  }
-
-  return `${routePrefix}${normalizedPath}`;
+  return path.startsWith("/") ? path : `/${path}`;
 };
+

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { getPath } from "../utils/paths";
 
@@ -10,7 +10,10 @@ const SignupPage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { signup } = useAuth();
+
+  const from = location.state?.from || getPath("/");
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -19,7 +22,7 @@ const SignupPage = () => {
 
     const result = await signup(email, password, fullName);
     if (result.success) {
-      navigate(getPath("/"));
+      navigate(from, { replace: true });
     } else {
       setError(result.error);
     }
@@ -97,6 +100,7 @@ const SignupPage = () => {
           Already have an account?{" "}
           <Link
             to={getPath("/login")}
+            state={{ from }}
             className="text-accent font-bold hover:underline ml-1"
           >
             Sign In

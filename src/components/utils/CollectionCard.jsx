@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "./Button";
+import { getPath } from "../../utils/paths";
 
 const CollectionCard = ({ collection }) => {
   return (
@@ -16,9 +18,11 @@ const CollectionCard = ({ collection }) => {
         <p className="text-white/80 text-[0.9rem] mb-6 line-clamp-2">
           {collection.description}
         </p>
-        <Button className="border border-white! text-white! bg-white/20! backdrop-blur-md! hover:bg-white/35! shadow-md! w-fit font-bold">
-          Shop Now
-        </Button>
+        <Link to={getPath("/shop")}>
+          <Button className="border border-white! text-white! bg-white/20! backdrop-blur-md! hover:bg-white/35! shadow-md! w-fit font-bold">
+            Shop Now
+          </Button>
+        </Link>
       </div>
     </div>
   );
