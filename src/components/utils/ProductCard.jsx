@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
-          className={`w-full h-full object-fill rounded-xl transition-transform ${
+          className={`w-full h-full object-cover rounded-xl transition-transform ${
             isOutOfStock ? "opacity-60 grayscale-[30%]" : ""
           }`}
         />

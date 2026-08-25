@@ -441,11 +441,11 @@ const ProductDetail = () => {
 
           {/* Main Image */}
           <div className="md:col-span-10 order-1 md:order-2">
-            <div className="aspect-square w-full rounded-2xl overflow-hidden border border-neutral-100 relative group bg-neutral-100/50">
+            <div className="w-full rounded-2xl overflow-hidden border border-neutral-100 relative group bg-neutral-100/50 flex items-center justify-center">
               <img
                 src={selectedImage}
                 alt={product.name}
-                className="w-full h-full object-fill transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
@@ -627,8 +627,8 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* CTA Buttons - More compact */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* CTA Buttons - Arranged in one row */}
+          <div className="grid grid-cols-2 gap-3">
             <button
               disabled={isOutOfStock}
               onClick={() => {

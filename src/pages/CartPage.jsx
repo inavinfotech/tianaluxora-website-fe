@@ -109,87 +109,108 @@ const CartPage = () => {
           </div>
 
           {/* Cart Item Cards */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {cartItems.map((item) => (
               <div
                 key={`${item.id}-${item.variant_id}`}
-                className="bg-white/80 backdrop-blur-md p-5 rounded-3xl border border-white/80 shadow-xs hover:shadow-md transition-all duration-300 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center group"
+                className="bg-white/80 backdrop-blur-md p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/80 shadow-xs hover:shadow-md transition-all duration-300 flex flex-row items-center gap-3.5 sm:gap-6 group"
               >
-                {/* Product Info & Image (Col 6) */}
-                <div className="sm:col-span-6 flex items-center gap-4">
-                  <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden bg-neutral-50 shrink-0 border border-neutral-100 relative group-hover:shadow-sm transition-all">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-md inline-block mb-1">
-                      {item.tag || "Signature Perfume"}
-                    </span>
-                    <h3 className="text-base sm:text-lg font-serif font-bold text-primary truncate capitalize">
+                {/* Product Image */}
+                <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-xl sm:rounded-2xl overflow-hidden bg-neutral-50 shrink-0 border border-neutral-100 relative group-hover:shadow-sm transition-all">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+
+                {/* Main Content Area */}
+                <div className="flex-1 min-w-0 flex flex-col sm:grid sm:grid-cols-10 sm:gap-4 sm:items-center justify-between">
+                  {/* Info: Col 5 on Desktop */}
+                  <div className="sm:col-span-5 min-w-0">
+                    <div className="flex items-center justify-between gap-2 sm:block">
+                      {item.tag && (
+                        <span className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-0.5 rounded-md inline-block mb-1">
+                          {item.tag}
+                        </span>
+                      )}
+                      {/* Mobile Delete Button */}
+                      <button
+                        onClick={() => removeFromCart(item.id, item.variant_id)}
+                        className="sm:hidden p-1 text-primary/30 hover:text-red-500 transition-colors cursor-pointer"
+                        title="Remove item"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+
+                    <h3 className="text-sm sm:text-base font-serif font-bold text-primary truncate capitalize">
                       {item.name}
                     </h3>
-                    <p className="text-xs text-primary/60 font-medium mt-0.5">
-                      Size: {item.selectedSize || "Standard"}
+                    <p className="text-[11px] sm:text-xs text-primary/60 font-medium mt-0.5">
+                      {item.selectedSize
+                        ? item.selectedSize.toLowerCase().startsWith("size:")
+                          ? item.selectedSize
+                          : `Size: ${item.selectedSize}`
+                        : "Standard"}
                     </p>
-                    <p className="text-xs font-bold text-primary sm:hidden mt-2">
+                  </div>
+
+                  {/* Quantity Controls: Col 3 on Desktop */}
+                  <div className="sm:col-span-3 flex items-center justify-between sm:justify-center mt-2.5 sm:mt-0">
+                    {/* Mobile Price Display */}
+                    <span className="sm:hidden text-sm font-bold text-primary">
                       ₹{parseFloat(String(item.price).replace(/[^0-9.]/g, "")).toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Quantity Controls (Col 3) */}
-                <div className="sm:col-span-3 flex items-center justify-between sm:justify-center">
-                  <span className="sm:hidden text-xs text-primary/50 font-medium">Qty:</span>
-                  <div className="flex items-center bg-neutral-100/80 rounded-full border border-neutral-200/60 p-0.5 shadow-xs">
-                    <button
-                      onClick={() =>
-                        updateQuantity(
-                          item.id,
-                          item.variant_id,
-                          item.quantity - 1
-                        )
-                      }
-                      className="w-7 h-7 flex items-center justify-center text-primary/70 hover:text-primary transition-colors text-sm font-bold cursor-pointer hover:bg-white rounded-full"
-                    >
-                      -
-                    </button>
-                    <span className="w-8 text-center font-bold text-primary text-xs">
-                      {item.quantity}
                     </span>
+
+                    <div className="flex items-center bg-neutral-100/80 rounded-full border border-neutral-200/60 p-0.5 shadow-xs">
+                      <button
+                        onClick={() =>
+                          updateQuantity(
+                            item.id,
+                            item.variant_id,
+                            item.quantity - 1
+                          )
+                        }
+                        className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center text-primary/70 hover:text-primary transition-colors text-xs sm:text-sm font-bold cursor-pointer hover:bg-white rounded-full"
+                      >
+                        -
+                      </button>
+                      <span className="w-6 sm:w-8 text-center font-bold text-primary text-xs">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          updateQuantity(
+                            item.id,
+                            item.variant_id,
+                            item.quantity + 1
+                          )
+                        }
+                        className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center text-primary/70 hover:text-primary transition-colors text-xs sm:text-sm font-bold cursor-pointer hover:bg-white rounded-full"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Subtotal & Delete: Col 2 on Desktop */}
+                  <div className="sm:col-span-2 hidden sm:flex items-center justify-end gap-3">
+                    <div className="text-right">
+                      <p className="text-sm font-serif font-bold text-primary">
+                        ₹{(
+                          parseFloat(String(item.price).replace(/[^0-9.]/g, "")) * item.quantity
+                        ).toLocaleString()}
+                      </p>
+                    </div>
                     <button
-                      onClick={() =>
-                        updateQuantity(
-                          item.id,
-                          item.variant_id,
-                          item.quantity + 1
-                        )
-                      }
-                      className="w-7 h-7 flex items-center justify-center text-primary/70 hover:text-primary transition-colors text-sm font-bold cursor-pointer hover:bg-white rounded-full"
+                      onClick={() => removeFromCart(item.id, item.variant_id)}
+                      className="p-2 text-primary/30 hover:text-red-500 hover:bg-red-50 rounded-full transition-all cursor-pointer"
+                      title="Remove item"
                     >
-                      +
+                      <Trash2 size={16} />
                     </button>
                   </div>
-                </div>
-
-                {/* Subtotal & Delete (Col 3) */}
-                <div className="sm:col-span-3 flex items-center justify-between sm:justify-end gap-3 border-t sm:border-0 border-neutral-100 pt-3 sm:pt-0">
-                  <div className="text-right hidden sm:block">
-                    <p className="text-sm font-serif font-bold text-primary">
-                      ₹{(
-                        parseFloat(String(item.price).replace(/[^0-9.]/g, "")) * item.quantity
-                      ).toLocaleString()}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => removeFromCart(item.id, item.variant_id)}
-                    className="p-2 text-primary/30 hover:text-red-500 hover:bg-red-50 rounded-full transition-all cursor-pointer"
-                    title="Remove item"
-                  >
-                    <Trash2 size={16} />
-                  </button>
                 </div>
               </div>
             ))}

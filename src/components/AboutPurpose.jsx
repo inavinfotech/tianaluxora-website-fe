@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "./utils/Button";
 
 import { aboutContent } from "../data/about";
 
 const AboutPurpose = () => {
+  const [activePillar, setActivePillar] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef(null);
+
+  const totalPillars = aboutContent.pillars.length;
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActivePillar((prev) => (prev + 1) % totalPillars);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [isPaused, totalPillars]);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const handleTouchEnd = (e) => {
+    setIsPaused(false);
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        setActivePillar((prev) => (prev + 1) % totalPillars);
+      } else {
+        setActivePillar((prev) => (prev - 1 + totalPillars) % totalPillars);
+      }
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <section
       className="py-12 lg:py-16 min-h-0 animate-fade-in bg-cover bg-center rounded-[24px] md:rounded-[40px] px-4 md:px-8 mb-8 md:mb-12 overflow-hidden relative"
@@ -64,12 +98,12 @@ const AboutPurpose = () => {
           </div>
         </div>
 
-        {/* 3 Core Brand Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-8 border-t border-primary/10 pt-8">
+        {/* 3 Core Brand Pillars - Desktop Grid */}
+        <div className="hidden md:grid md:grid-cols-3 gap-4 md:gap-6 mt-8 border-t border-primary/10 pt-8">
           {aboutContent.pillars.map((pillar, idx) => (
             <div
               key={idx}
-              className="bg-white/60 backdrop-blur-md p-5 rounded-2xl border border-white/60 shadow-xs text-center md:text-left"
+              className="bg-white/60 backdrop-blur-md p-5 rounded-2xl border border-white/60 shadow-xs text-left"
             >
               <h3 className="text-[1.1rem] font-serif font-bold text-primary mb-1">
                 {pillar.title}
@@ -79,6 +113,51 @@ const AboutPurpose = () => {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* 3 Core Brand Pillars - Mobile Auto-Changing Carousel */}
+        <div
+          className="block md:hidden mt-8 border-t border-primary/10 pt-6"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="overflow-hidden rounded-2xl">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${activePillar * 100}%)` }}
+            >
+              {aboutContent.pillars.map((pillar, idx) => (
+                <div key={idx} className="w-full shrink-0 px-1">
+                  <div className="bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-white/60 shadow-xs text-center min-h-[130px] flex flex-col justify-center">
+                    <h3 className="text-[1.15rem] font-serif font-bold text-primary mb-1.5">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-[0.86rem] text-[rgba(131,37,78,0.8)] leading-relaxed">
+                      {pillar.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center items-center gap-2 mt-4">
+            {aboutContent.pillars.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActivePillar(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  activePillar === idx
+                    ? "w-7 bg-primary"
+                    : "w-2 bg-primary/25 hover:bg-primary/50"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
