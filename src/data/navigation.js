@@ -3,7 +3,6 @@ import { getPath } from "../utils/paths";
 export const navLinks = [
   { name: "Home", path: getPath("/") },
   { name: "Shop", path: getPath("/shop") },
-  { name: "Collections", path: getPath("/collections") },
   { name: "About", path: getPath("/about") },
   // { name: "Blog", path: "#" },
   { name: "Contact", path: getPath("/contact") },
