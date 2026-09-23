@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
     : prodStock !== undefined && prodStock !== null && prodStock <= 0;
 
   return (
-    <div className="bg-white/80 rounded-[16px] p-3 flex flex-col items-center gap-2 border border-white/40 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-custom group relative hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
+    <div className="bg-white/90 backdrop-blur-md rounded-[16px] p-3 flex flex-col items-center gap-2 border border-white/80 shadow-[0_10px_30px_rgba(131,37,78,0.06)] transition-custom group relative hover:shadow-[0_20px_40px_rgba(131,37,78,0.12)] hover:bg-white">
       {isOutOfStock ? (
         <span className="absolute top-3 left-3 z-10 bg-red-100 text-red-700 border border-red-200 text-[0.65rem] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
           Out of Stock
@@ -64,31 +64,32 @@ const ProductCard = ({ product }) => {
         {isOutOfStock ? (
           <button
             disabled
-            className="flex-1 bg-neutral-200 text-neutral-400 text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold cursor-not-allowed"
+            className="flex-1 bg-neutral-200 text-neutral-400 text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-wider font-bold cursor-not-allowed"
           >
             Out of Stock
           </button>
         ) : product.real_variants && product.real_variants.length > 0 ? (
           <Link
             to={getPath(`/product/${product.id}`)}
-            className="flex-1 bg-primary text-white text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold transition-custom hover:opacity-90"
+            className="flex-1 bg-[#83254e] hover:bg-[#6c1d3f] text-white text-[0.72rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-wider font-bold transition-all shadow-xs hover:shadow-md"
           >
             Choose
           </Link>
         ) : (
           <Button
+            variant="secondary"
             onClick={() => {
               addToCart(product);
               navigate(getPath("/cart"));
             }}
-            className="flex-1 bg-primary text-white text-[0.7rem] px-2 py-2 uppercase tracking-widest font-bold hover:opacity-90"
+            className="flex-1 text-[0.72rem] px-2 py-2 uppercase tracking-wider font-bold"
           >
             Add
           </Button>
         )}
         <Link
           to={getPath(`/product/${product.id}`)}
-          className="flex-1 bg-white/60 hover:bg-white text-primary text-[0.7rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-widest font-bold border border-primary/5 transition-custom"
+          className="flex-1 bg-[#f7c2d4] hover:bg-[#f4b8cc] text-[#83254e] text-[0.72rem] px-2 py-2 flex items-center justify-center rounded-full uppercase tracking-wider font-bold border border-white/60 shadow-xs hover:shadow-md transition-all"
         >
           Details
         </Link>

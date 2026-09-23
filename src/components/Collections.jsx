@@ -23,9 +23,9 @@ const Collections = () => {
       <div className="flex justify-center mt-6">
         <Link
           to="/collections"
-          className="bg-[#f7d7c4] text-primary px-8 py-3 rounded-[50px] font-medium text-[1rem] flex items-center gap-[0.8rem] shadow-[0_10px_30px_rgba(212,140,106,0.2)] transition-custom hover:-translate-y-[5px] hover:shadow-[0_15px_40px_rgba(212,140,106,0.3)] hover:bg-[#f5ccb5]"
+          className="bg-[#f7c2d4] hover:bg-[#f4b8cc] text-[#83254e] px-8 py-3.5 rounded-[50px] font-bold text-[1rem] flex items-center justify-center border border-white/60 shadow-[0_10px_30px_rgba(217,115,152,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(217,115,152,0.4)]"
         >
-          View all Collections <span>→</span>
+          View all Collections
         </Link>
       </div>
     </section>

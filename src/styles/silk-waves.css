@@ -1,0 +1,191 @@
+/* ==========================================================================
+   SILK WAVE BACKGROUND STYLES
+   Hyper-realistic, luxury flowing pink silk waves with glowing neon filaments
+   ========================================================================== */
+
+.silk-waves-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 15% 15%, #ffe6f0 0%, #ffbfd8 25%, #f53d8f 55%, #bd0053 85%, #610029 100%);
+}
+
+.silk-waves-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Base Ambient Radial Lighting */
+.silk-ambient-glow {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 65% 50% at 20% 25%, rgba(255, 230, 240, 0.9) 0%, rgba(255, 170, 205, 0.4) 40%, transparent 80%),
+    radial-gradient(ellipse 55% 45% at 50% 55%, rgba(255, 30, 130, 0.45) 0%, rgba(210, 0, 95, 0.25) 50%, transparent 85%),
+    radial-gradient(ellipse 60% 55% at 85% 75%, rgba(230, 0, 105, 0.5) 0%, rgba(130, 0, 50, 0.3) 60%, transparent 90%),
+    radial-gradient(ellipse 70% 60% at 10% 90%, rgba(180, 0, 75, 0.85) 0%, rgba(95, 0, 38, 0.6) 50%, transparent 85%);
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* Canvas & SVG Waves Layer */
+.silk-waves-canvas,
+.silk-waves-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+/* Wave Layer Floating Animations */
+.silk-layer-deep {
+  transform-origin: center center;
+  animation: silkFloatDeep 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.silk-layer-mid {
+  transform-origin: 40% 60%;
+  animation: silkFloatMid 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.silk-layer-fore {
+  transform-origin: 60% 40%;
+  animation: silkFloatFore 11s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.silk-layer-crest {
+  transform-origin: 50% 50%;
+  animation: silkFloatCrest 13s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.silk-filaments {
+  animation: filamentGlow 8s ease-in-out infinite alternate;
+  will-change: opacity, filter;
+}
+
+.silk-shimmer-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.12) 55%, transparent 80%);
+  background-size: 250% 250%;
+  animation: silkShimmer 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Keyframes for Organic Floating Waves */
+@keyframes silkFloatDeep {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-1.5%, 1.2%) scale(1.02);
+  }
+  100% {
+    transform: translate(1.2%, -1.8%) scale(0.99);
+  }
+}
+
+@keyframes silkFloatMid {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate(1.8%, -1.4%) rotate(0.4deg) scale(1.015);
+  }
+  100% {
+    transform: translate(-1.2%, 1.5%) rotate(-0.3deg) scale(0.985);
+  }
+}
+
+@keyframes silkFloatFore {
+  0% {
+    transform: translate(0, 0) skewX(0deg) scale(1);
+  }
+  50% {
+    transform: translate(-1.2%, 1.8%) skewX(-0.5deg) scale(1.01);
+  }
+  100% {
+    transform: translate(1.5%, -1.2%) skewX(0.4deg) scale(0.99);
+  }
+}
+
+@keyframes silkFloatCrest {
+  0% {
+    transform: translate(0, 0) scaleY(1);
+  }
+  50% {
+    transform: translate(0.8%, -1.5%) scaleY(1.03);
+  }
+  100% {
+    transform: translate(-1%, 1.2%) scaleY(0.97);
+  }
+}
+
+@keyframes filamentGlow {
+  0% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 12px rgba(255, 60, 140, 0.7));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 18px rgba(255, 80, 160, 0.85));
+  }
+  100% {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 14px rgba(255, 40, 120, 0.75));
+  }
+}
+
+@keyframes silkShimmer {
+  0% {
+    background-position: 0% 0%;
+    opacity: 0.2;
+  }
+  50% {
+    background-position: 100% 100%;
+    opacity: 0.5;
+  }
+  100% {
+    background-position: 0% 0%;
+    opacity: 0.2;
+  }
+}
+
+/* Static fallback / reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .silk-layer-deep,
+  .silk-layer-mid,
+  .silk-layer-fore,
+  .silk-layer-crest,
+  .silk-filaments,
+  .silk-shimmer-sheen {
+    animation: none !important;
+  }
+}
+
+/* Standalone Pure CSS Background Utility Class */
+.bg-silk-waves {
+  background: 
+    radial-gradient(ellipse 65% 50% at 20% 25%, rgba(255, 230, 240, 0.9) 0%, rgba(255, 170, 205, 0.4) 40%, transparent 80%),
+    radial-gradient(ellipse 55% 45% at 50% 55%, rgba(255, 30, 130, 0.45) 0%, rgba(210, 0, 95, 0.25) 50%, transparent 85%),
+    radial-gradient(ellipse 60% 55% at 85% 75%, rgba(230, 0, 105, 0.5) 0%, rgba(130, 0, 50, 0.3) 60%, transparent 90%),
+    radial-gradient(ellipse 70% 60% at 10% 90%, rgba(180, 0, 75, 0.85) 0%, rgba(95, 0, 38, 0.6) 50%, transparent 85%),
+    radial-gradient(circle at 15% 15%, #ffe6f0 0%, #ffbfd8 25%, #f53d8f 55%, #bd0053 85%, #610029 100%);
+  background-size: cover;
+  background-position: center;
+}

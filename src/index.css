@@ -48,6 +48,18 @@
   animation: buttonShine 3s infinite ease-in-out;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 :root {
   --primary: #83254e;
   --primary-rgb: 131, 37, 78;
@@ -226,12 +238,6 @@ sup {
 
   .mt-8, .mt-10, .mt-12, .mt-16 {
     margin-top: 1rem !important;
-  }
-
-  /* App container adjustments */
-  .max-w-\[1400px\] {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
   }
 }
 

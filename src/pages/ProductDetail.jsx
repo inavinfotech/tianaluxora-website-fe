@@ -125,7 +125,51 @@ const ProductDetail = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [pincode, setPincode] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [copiedToast, setCopiedToast] = useState(false);
   const { addToCart } = useCart();
+
+  const handleShare = async () => {
+    const shareData = {
+      title: product?.name ? `${product.name} | Tiana Luxora` : "Tiana Luxora Luxury Fragrances",
+      text: product?.name
+        ? `Experience ${product.name} by Tiana Luxora.`
+        : "Discover exquisite luxury fragrances by Tiana Luxora.",
+      url: window.location.href,
+    };
+
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("Error using native share:", err);
+        }
+      }
+    }
+
+    // Fallback: Copy URL to clipboard
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(window.location.href);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = window.location.href;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        textArea.remove();
+      }
+      setCopiedToast(true);
+      setTimeout(() => setCopiedToast(false), 2800);
+    } catch (err) {
+      console.error("Failed to copy link to clipboard:", err);
+    }
+  };
 
   const isUuidOrId = (str) => {
     if (typeof str !== "string") return false;
@@ -378,157 +422,176 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="py-2 md:py-4">
-      {/* Breadcrumbs - Reduced margin */}
-      <nav className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-primary/40 mb-4 animate-fade-in">
-        <span
-          className="cursor-pointer hover:text-accent transition-colors"
-          onClick={() => navigate(getPath("/"))}
-        >
-          Home
-        </span>
-        <span className="text-[8px] opacity-30">/</span>
-        <span
-          className="cursor-pointer hover:text-accent transition-colors"
-          onClick={() => navigate(getPath("/shop"))}
-        >
-          Shop
-        </span>
-        <span className="text-[8px] opacity-30">/</span>
-        <span className="text-secondary font-bold capitalize">
-          {product.name}
-        </span>
-      </nav>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Gallery Section - More compact */}
-        <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-12 gap-3 animate-slide-right">
-          {/* Thumbnails - Showing all available images */}
-          <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2 h-fit md:max-h-[500px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
-            {(() => {
-              const baseUrl = product.image?.includes("/uploads/")
-                ? product.image.split("/uploads/")[0]
-                : "";
-              const allImages = [
-                product.image,
-                ...(product.thumbnails || []),
-                ...(product.images || []).map((img) =>
-                  img.startsWith("/") && baseUrl ? `${baseUrl}${img}` : img,
-                ),
-              ]
-                .filter(Boolean)
-                .filter((v, i, a) => a.indexOf(v) === i);
-
-              return allImages.map((thumb, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(thumb)}
-                  className={`aspect-square w-16 md:w-full rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 ${
-                    selectedImage === thumb
-                      ? "border-accent ring-1 ring-accent/10 shadow-sm"
-                      : "border-transparent hover:border-accent/30"
-                  }`}
-                >
-                  <img
-                    src={thumb}
-                    alt={`View ${idx}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ));
-            })()}
-          </div>
-
-          {/* Main Image */}
-          <div className="md:col-span-10 order-1 md:order-2">
-            <div className="w-full max-h-[40vh] md:max-h-[500px] rounded-2xl overflow-hidden border border-neutral-100 relative group bg-neutral-100/50 flex items-center justify-center">
-              <img
-                src={selectedImage}
-                alt={product.name}
-                className="w-full h-auto max-h-[40vh] md:max-h-[500px] object-contain transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg backdrop-blur-md transition-all ${
-                    isWishlisted
-                      ? "bg-rose-500 text-white"
-                      : "bg-white/80 text-primary hover:bg-white"
-                  }`}
-                >
-                  <Heart
-                    size={18}
-                    fill={isWishlisted ? "currentColor" : "none"}
-                  />
-                </button>
-                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md text-primary hover:bg-white flex items-center justify-center shadow-lg transition-all">
-                  <Share2 size={18} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Info Section - Tighter spacing */}
-        <div className="lg:col-span-6 flex flex-col gap-5 animate-slide-left">
-          <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <div className="flex bg-amber-50 px-2 py-0.5 rounded-full items-center gap-1 border border-amber-100">
-                <Star size={12} fill="#d97706" className="text-amber-600" />
-                <span className="text-[10px] font-bold text-amber-900">
-                  {product.rating || "4.8"}
-                </span>
-              </div>
-              <span className="text-[10px] text-primary/40 font-medium tracking-tight">
-                ({product.reviews || 124} Reviews)
-              </span>
-            </div>
-
-            <h1 className="font-serif text-3xl lg:text-4xl font-bold text-secondary tracking-tight capitalize">
+    <div className="w-full animate-fade-in">
+      {/* Full-bleed Edge-to-edge Luxury Surface touching navbar with zero gap */}
+      <div className="w-full min-h-screen bg-white/92 sm:bg-white/95 backdrop-blur-2xl border-b border-white/80 shadow-sm pt-16 sm:pt-20 pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-12">
+        <div className="max-w-[1400px] mx-auto">
+          {/* Breadcrumbs Navigation */}
+          <nav className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-primary/70 mb-4 sm:mb-6 font-medium">
+            <span
+              className="cursor-pointer hover:text-accent transition-colors"
+              onClick={() => navigate(getPath("/"))}
+            >
+              Home
+            </span>
+            <span className="opacity-40">/</span>
+            <span
+              className="cursor-pointer hover:text-accent transition-colors"
+              onClick={() => navigate(getPath("/shop"))}
+            >
+              Shop
+            </span>
+            <span className="opacity-40">/</span>
+            <span className="text-primary font-bold capitalize truncate max-w-[200px] sm:max-w-none">
               {product.name}
-            </h1>
+            </span>
+          </nav>
 
-            <div className="flex items-center gap-4">
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-primary">
+        {/* Product Main Grid (Gallery & Information) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Gallery Section */}
+          <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 animate-slide-right">
+            {/* Thumbnails */}
+            <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2.5 h-fit md:max-h-[520px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
+              {(() => {
+                const baseUrl = product.image?.includes("/uploads/")
+                  ? product.image.split("/uploads/")[0]
+                  : "";
+                const allImages = [
+                  product.image,
+                  ...(product.thumbnails || []),
+                  ...(product.images || []).map((img) =>
+                    img.startsWith("/") && baseUrl ? `${baseUrl}${img}` : img,
+                  ),
+                ]
+                  .filter(Boolean)
+                  .filter((v, i, a) => a.indexOf(v) === i);
+
+                return allImages.map((thumb, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(thumb)}
+                    className={`aspect-square w-16 md:w-full rounded-xl overflow-hidden border-2 transition-all duration-300 shrink-0 bg-white shadow-xs ${
+                      selectedImage === thumb
+                        ? "border-primary ring-2 ring-primary/20 scale-105"
+                        : "border-primary/10 hover:border-accent/50 opacity-80 hover:opacity-100"
+                    }`}
+                  >
+                    <img
+                      src={thumb}
+                      alt={`View ${idx}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ));
+              })()}
+            </div>
+
+            {/* Main Stage Image */}
+            <div className="md:col-span-10 order-1 md:order-2">
+              <div className="w-full aspect-square sm:aspect-[4/5] max-h-[460px] md:max-h-[520px] rounded-2xl overflow-hidden border border-primary/10 relative group bg-gradient-to-b from-[#faf5f7] via-white to-[#fbf6f8] flex items-center justify-center p-6 shadow-inner">
+                <img
+                  src={selectedImage}
+                  alt={product.name}
+                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_20px_35px_rgba(131,37,78,0.12)]"
+                />
+
+                {/* Floating Quick Actions */}
+                <div className="absolute top-4 right-4 flex flex-col gap-2.5 z-10">
+                  <button
+                    onClick={() => setIsWishlisted(!isWishlisted)}
+                    aria-label="Wishlist"
+                    style={{
+                      backgroundColor: isWishlisted ? "#e11d48" : "#ffffff",
+                      color: isWishlisted ? "#ffffff" : "#83254e",
+                      borderColor: isWishlisted ? "#e11d48" : "rgba(131,37,78,0.2)",
+                    }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center shadow-md border transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer bg-white"
+                  >
+                    <Heart
+                      size={18}
+                      className="transition-colors"
+                      style={{
+                        color: isWishlisted ? "#ffffff" : "#83254e",
+                        stroke: isWishlisted ? "#ffffff" : "#83254e",
+                        fill: isWishlisted ? "#ffffff" : "none",
+                      }}
+                    />
+                  </button>
+                  <button 
+                    onClick={handleShare}
+                    aria-label="Share"
+                    title={copiedToast ? "Copied!" : "Share Product"}
+                    style={{
+                      backgroundColor: copiedToast ? "#10b981" : "#ffffff",
+                      color: copiedToast ? "#ffffff" : "#83254e",
+                      borderColor: copiedToast ? "#10b981" : "rgba(131,37,78,0.2)",
+                    }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center shadow-md border transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer bg-white"
+                  >
+                    {copiedToast ? (
+                      <Check size={18} style={{ color: "#ffffff", stroke: "#ffffff" }} />
+                    ) : (
+                      <Share2 size={18} style={{ color: "#83254e", stroke: "#83254e" }} />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Info & Options Section */}
+          <div className="lg:col-span-6 flex flex-col gap-6 animate-slide-left">
+            {/* Header: Rating, Title & Price in Single Row */}
+            <div className="space-y-3 border-b border-primary/10 pb-5">
+              <div className="flex items-center gap-3">
+                <div className="flex bg-amber-50 px-2.5 py-1 rounded-full items-center gap-1.5 border border-amber-200 shadow-xs">
+                  <Star size={13} fill="#d97706" className="text-amber-600" />
+                  <span className="text-xs font-bold text-amber-950">
+                    {product.rating || "4.8"}
+                  </span>
+                </div>
+                <span className="text-xs text-primary/70 font-semibold tracking-tight">
+                  ({product.reviews || 124} Verified Reviews)
+                </span>
+                {isOutOfStock && (
+                  <span className="text-xs font-bold bg-red-50 text-red-700 px-3 py-0.5 rounded-full uppercase tracking-wider border border-red-200 ml-auto">
+                    Out of Stock
+                  </span>
+                )}
+              </div>
+
+              {/* Title & Price in Single Row */}
+              <div className="flex flex-wrap items-baseline justify-between gap-3 pt-1">
+                <h1 className="font-serif text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-primary tracking-tight capitalize leading-tight">
+                  {product.name}
+                </h1>
+
+                <div className="flex items-baseline gap-2.5">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-primary font-serif">
                     {getDisplayPrice()}
                   </span>
                   {(activeVariant?.oldPrice || (activeVariant?.mrp && activeVariant?.mrp > activeVariant?.price ? `₹${activeVariant.mrp}` : null) || product.oldPrice) && (
-                    <span className="text-base line-through text-primary/40 font-medium">
+                    <span className="text-base line-through text-primary/45 font-medium">
                       {activeVariant?.oldPrice || (activeVariant?.mrp ? `₹${activeVariant.mrp}` : product.oldPrice)}
                     </span>
                   )}
-                </div>
-                <div className="flex items-center gap-2">
                   {(activeVariant?.discount || product.discount) && (
-                    <span className="text-[10px] w-fit font-bold bg-[#E4C59E] px-2 py-0.5 rounded text-primary uppercase tracking-wider">
+                    <span className="text-xs font-bold bg-[#f7c2d4] text-primary px-2 py-0.5 rounded-md uppercase tracking-wider border border-white/60 shadow-xs">
                       {activeVariant?.discount || product.discount}
-                    </span>
-                  )}
-                  {isOutOfStock ? (
-                    <span className="text-[10px] w-fit font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded uppercase tracking-wider border border-red-200">
-                      Out of Stock
-                    </span>
-                  ) : (
-                    <span className="text-[10px] w-fit font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded uppercase tracking-wider border border-emerald-200">
-                      In Stock ({availableStock} available)
                     </span>
                   )}
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Variant Option Pills & Pincode Section */}
-          <div className="space-y-4">
-            {/* Variant Option Pills */}
-            <div className="space-y-4 bg-white/40 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-neutral-100 shadow-sm">
-              <div className="flex items-center justify-between border-b border-primary/5 pb-2.5">
-                <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary/70 font-bold flex items-center gap-1.5">
-                  <Tag size={13} className="text-accent" /> Available Variants
+            {/* Variant Option Selection */}
+            <div className="space-y-4 bg-white/70 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-primary/10 shadow-sm">
+              <div className="flex items-center justify-between border-b border-primary/10 pb-3">
+                <h3 className="text-xs uppercase tracking-[0.15em] text-primary font-bold flex items-center gap-1.5">
+                  <Tag size={14} className="text-accent" /> Available Variants
                 </h3>
-                <span className="text-[10px] font-bold text-primary bg-[#f7d7c4]/60 px-2.5 py-1 rounded-lg border border-accent/20">
+                <span className="text-xs font-bold text-primary bg-[#f7d7c4]/70 px-3 py-1 rounded-lg border border-accent/30 shadow-xs">
                   {selectedVariant ? formatVariantTitle(selectedVariant) : "Default"} — {getDisplayPrice()}
                 </span>
               </div>
@@ -542,10 +605,10 @@ const ProductDetail = () => {
                     group.name.toLowerCase().includes("tone");
 
                   return (
-                    <div key={group.name} className="space-y-2">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70 flex items-center gap-2">
+                    <div key={group.name} className="space-y-2.5">
+                      <div className="text-xs font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-2">
                         <span>{group.name}:</span>
-                        <span className="text-accent font-black">
+                        <span className="text-accent font-extrabold">
                           {selectedVal || "Select option"}
                         </span>
                       </div>
@@ -560,10 +623,10 @@ const ProductDetail = () => {
                               key={opt}
                               type="button"
                               onClick={() => handleSelectAttributeOption(group.name, opt)}
-                              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border cursor-pointer select-none ${
+                              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-2 border cursor-pointer select-none ${
                                 isSelected
-                                  ? "scale-[1.02] shadow-md"
-                                  : "hover:border-accent"
+                                  ? "scale-[1.03] shadow-md ring-2 ring-primary/20"
+                                  : "hover:border-accent hover:bg-white/80"
                               }`}
                               style={{
                                 backgroundColor: isSelected ? THEME_COLORS.primary : "#ffffff",
@@ -607,158 +670,167 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Pincode Check */}
+            {/* Pincode & Delivery Section */}
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary/50">
-                Check Delivery
+              <label className="text-xs uppercase tracking-[0.2em] font-bold text-primary flex items-center gap-1.5">
+                <Truck size={14} className="text-accent" /> Check Estimated Delivery
               </label>
-              <div className="flex border border-neutral-100 rounded-xl overflow-hidden shadow-sm bg-white">
+              <div className="flex border border-primary/20 rounded-xl overflow-hidden shadow-xs bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
                 <input
                   type="text"
-                  placeholder="Pincode"
+                  placeholder="Enter 6-digit Pincode"
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
-                  className="flex-1 py-3 px-4 outline-none text-xs font-medium w-full"
+                  className="flex-1 py-3.5 px-4 outline-none text-xs font-semibold text-primary w-full placeholder:text-primary/40"
                 />
-                <button className="px-4 bg-neutral-50 hover:bg-neutral-100 text-[10px] font-bold uppercase tracking-widest text-secondary transition-colors">
+                <button
+                  type="button"
+                  style={{ backgroundColor: "#83254e", color: "#ffffff" }}
+                  className="px-6 py-3.5 bg-[#83254e] hover:bg-[#6c1d3f] text-xs font-bold uppercase tracking-wider text-white transition-colors cursor-pointer border-l border-primary/10"
+                >
                   Check
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* CTA Buttons - Arranged in one row */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              disabled={isOutOfStock}
-              onClick={() => {
-                if (isOutOfStock) return;
-                handleAddToCart();
-                navigate(getPath("/cart"));
-              }}
-              style={{
-                backgroundColor: isOutOfStock ? "#e5e7eb" : THEME_COLORS.primary,
-                color: isOutOfStock ? "#9ca3af" : "#ffffff",
-                cursor: isOutOfStock ? "not-allowed" : "pointer",
-              }}
-              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-lg active:scale-95 disabled:shadow-none disabled:transform-none"
-            >
-              {isOutOfStock ? "Out of Stock" : "Buy Now"}
-            </button>
-            <button
-              disabled={isOutOfStock}
-              onClick={() => {
-                if (isOutOfStock) return;
-                handleAddToCart();
-                navigate(getPath("/cart"));
-              }}
-              style={{
-                backgroundColor: isOutOfStock ? "#f3f4f6" : THEME_COLORS.accentLight,
-                color: isOutOfStock ? "#9ca3af" : THEME_COLORS.primary,
-                cursor: isOutOfStock ? "not-allowed" : "pointer",
-              }}
-              className="py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 disabled:shadow-none disabled:transform-none border border-neutral-200"
-            >
-              {isOutOfStock ? "Out of Stock" : "Add to Cart"}
-            </button>
-          </div>
-
-          {/* Description Section */}
-          <div className="bg-neutral-50/30 rounded-2xl p-6 border border-neutral-100 space-y-3">
-            <h4 className="text-secondary font-serif font-bold text-lg">
-              Description
-            </h4>
-            <p className="text-primary/70 text-sm leading-relaxed">
-              {product.description ||
-                "No description available for this exquisite product."}
-            </p>
-          </div>
-
-          {/* Olfactory Notes Pyramid Section */}
-          {product.notes && (
-            <div className="bg-linear-to-b from-[#faf7f5] to-white rounded-2xl p-6 border border-primary/10 shadow-xs space-y-4">
-              <h4 className="text-secondary font-serif font-bold text-lg flex items-center gap-2">
-                <Sparkles size={18} className="text-accent" />
-                Olfactory Notes Pyramid
-              </h4>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-                {/* Top Notes */}
-                {product.notes.top && (
-                  <div className="bg-white p-4 rounded-xl border border-primary/5 shadow-xs">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
-                      Top Notes
-                    </span>
-                    <p className="text-xs font-medium text-primary leading-snug">
-                      {product.notes.top}
-                    </p>
-                  </div>
+            {/* CTA Action Buttons */}
+            <div className="grid grid-cols-2 gap-3.5 pt-2">
+              <button
+                disabled={isOutOfStock}
+                onClick={() => {
+                  if (isOutOfStock) return;
+                  handleAddToCart();
+                  navigate(getPath("/cart"));
+                }}
+                style={{
+                  backgroundColor: isOutOfStock ? "#e5e7eb" : "#83254e",
+                  color: isOutOfStock ? "#9ca3af" : "#ffffff",
+                }}
+                className="relative overflow-hidden py-4 sm:py-4.5 rounded-2xl font-bold uppercase tracking-wider text-xs sm:text-sm text-white transition-all duration-300 shadow-[0_10px_25px_rgba(131,37,78,0.35)] hover:shadow-[0_15px_30px_rgba(131,37,78,0.5)] hover:brightness-110 active:scale-[0.98] disabled:shadow-none disabled:transform-none disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed cursor-pointer bg-[#83254e] border border-[#83254e]"
+              >
+                {/* Continuous Shimmer Light Sheen */}
+                {!isOutOfStock && (
+                  <span className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none animate-btn-shine" />
                 )}
+                <span className="relative z-10">{isOutOfStock ? "Out of Stock" : "Buy Now"}</span>
+              </button>
 
-                {/* Heart Notes */}
-                {product.notes.heart && (
-                  <div className="bg-white p-4 rounded-xl border border-primary/5 shadow-xs">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary block mb-1">
-                      Heart Notes
-                    </span>
-                    <p className="text-xs font-medium text-primary leading-snug">
-                      {product.notes.heart}
-                    </p>
-                  </div>
-                )}
-
-                {/* Base Notes */}
-                {product.notes.base && (
-                  <div className="bg-white p-4 rounded-xl border border-primary/5 shadow-xs">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
-                      Base Notes
-                    </span>
-                    <p className="text-xs font-medium text-primary leading-snug">
-                      {product.notes.base}
-                    </p>
-                  </div>
-                )}
-              </div>
+              <button
+                disabled={isOutOfStock}
+                onClick={() => {
+                  if (isOutOfStock) return;
+                  handleAddToCart();
+                  navigate(getPath("/cart"));
+                }}
+                style={{
+                  backgroundColor: isOutOfStock ? "#f3f4f6" : "#f7c2d4",
+                  color: isOutOfStock ? "#9ca3af" : "#83254e",
+                  borderColor: isOutOfStock ? "#e5e7eb" : "#d97398",
+                }}
+                className="py-4 sm:py-4.5 rounded-2xl font-bold uppercase tracking-wider text-xs sm:text-sm text-[#83254e] transition-all duration-300 bg-[#f7c2d4] hover:bg-[#f4b8cc] border-2 border-[#d97398]/50 hover:border-[#83254e] shadow-[0_10px_25px_rgba(217,115,152,0.25)] hover:shadow-[0_15px_30px_rgba(217,115,152,0.35)] hover:brightness-105 active:scale-[0.98] disabled:shadow-none disabled:transform-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+              </button>
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* Trust Badges - Centered on mobile */}
-      <div className="mt-8 py-6 border-t border-neutral-100 grid grid-cols-3 md:grid-cols-3 gap-6">
-        {[
-          {
-            icon: ShieldCheck,
-            title: "100% Original",
-            sub: "Authenticity Guaranteed",
-          },
-          {
-            icon: RotateCcw,
-            title: "7 Day Return",
-            sub: "Hassle-free Returns",
-          },
-          { icon: Truck, title: "Fast Shipping", sub: "Express Safe Delivery" },
-        ].map((badge, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 group text-center md:text-left"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300 shadow-sm border border-neutral-100">
-              <badge.icon size={22} />
-            </div>
-            <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-0.5">
-                {badge.title}
+            {/* Description Section */}
+            <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-primary/10 shadow-xs space-y-2.5">
+              <h4 className="text-primary font-serif font-bold text-lg">
+                Description
               </h4>
-              <p className="text-[8px] text-primary/40 uppercase tracking-widest leading-none">
-                {badge.sub}
+              <p className="text-primary/80 text-sm leading-relaxed font-normal">
+                {product.description ||
+                  "No description available for this exquisite fragrance."}
               </p>
             </div>
+
+            {/* Olfactory Notes Pyramid Section */}
+            {product.notes && (
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-primary/10 shadow-xs space-y-4">
+                <h4 className="text-primary font-serif font-bold text-lg flex items-center gap-2">
+                  <Sparkles size={18} className="text-accent" />
+                  Olfactory Notes Pyramid
+                </h4>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                  {/* Top Notes */}
+                  {product.notes.top && (
+                    <div className="bg-[#faf5f7] p-4 rounded-xl border border-primary/10 shadow-xs">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
+                        Top Notes
+                      </span>
+                      <p className="text-xs font-semibold text-primary leading-snug">
+                        {product.notes.top}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Heart Notes */}
+                  {product.notes.heart && (
+                    <div className="bg-[#faf5f7] p-4 rounded-xl border border-primary/10 shadow-xs">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary block mb-1">
+                        Heart Notes
+                      </span>
+                      <p className="text-xs font-semibold text-primary leading-snug">
+                        {product.notes.heart}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Base Notes */}
+                  {product.notes.base && (
+                    <div className="bg-[#faf5f7] p-4 rounded-xl border border-primary/10 shadow-xs">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
+                        Base Notes
+                      </span>
+                      <p className="text-xs font-semibold text-primary leading-snug">
+                        {product.notes.base}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        ))}
+        </div>
+
+        {/* Trust Badges Bar */}
+        <div className="mt-10 pt-8 border-t border-primary/10 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          {[
+            {
+              icon: ShieldCheck,
+              title: "100% Original",
+              sub: "Authenticity Guaranteed",
+            },
+            {
+              icon: RotateCcw,
+              title: "7 Day Return",
+              sub: "Hassle-free Returns",
+            },
+            { icon: Truck, title: "Fast Shipping", sub: "Express Safe Delivery" },
+          ].map((badge, idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-4 bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-primary/10 shadow-xs group hover:bg-white transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#faf5f7] flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-xs border border-primary/10 shrink-0">
+                <badge.icon size={22} />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-primary mb-0.5">
+                  {badge.title}
+                </h4>
+                <p className="text-[10px] text-primary/70 uppercase tracking-widest leading-none font-medium">
+                  {badge.sub}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ProductDetail;

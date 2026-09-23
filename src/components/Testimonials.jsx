@@ -28,8 +28,7 @@ const Testimonials = () => {
 
   return (
     <section
-      className="py-12 md:py-16 animate-fade-in bg-cover bg-center -mx-4 md:-mx-8 px-4 md:px-8 relative overflow-hidden"
-      style={{ backgroundImage: "url('/images/backgrounds/testimonial.webp')" }}
+      className="max-w-[1400px] mx-auto px-4 md:px-8 py-12 md:py-16 animate-fade-in relative overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -37,7 +36,7 @@ const Testimonials = () => {
         <h2 className="text-[1.8rem] md:text-[2.4rem] mb-2 text-primary font-serif font-bold tracking-tight">
           What Our Customers Say
         </h2>
-        <p className="text-[0.95rem] md:text-[1.05rem] text-[rgba(131,37,78,0.75)] max-w-[500px] mx-auto font-medium">
+        <p className="text-[0.95rem] md:text-[1.05rem] text-primary font-medium max-w-[500px] mx-auto">
           Real experiences from those who love Tiana Luxora
         </p>
       </div>
@@ -48,13 +47,14 @@ const Testimonials = () => {
         <button
           onClick={prevSlide}
           aria-label="Previous Testimonial"
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur-md text-primary flex justify-center items-center shadow-md hover:bg-white hover:scale-110 transition-all z-10 cursor-pointer border border-white/40"
+          style={{ backgroundColor: "#ffffff", color: "#83254e", borderColor: "rgba(131,37,78,0.2)" }}
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-[#83254e] flex justify-center items-center shadow-md hover:bg-[#83254e] hover:text-white hover:scale-110 transition-all z-10 cursor-pointer border"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={20} style={{ stroke: "currentColor" }} />
         </button>
 
         {/* Testimonial Slide Card */}
-        <div className="bg-white/65 backdrop-blur-lg rounded-[24px] p-8 md:p-10 border border-white/40 shadow-[0_15px_35px_rgba(131,37,78,0.08)] text-center relative transition-all duration-500 min-h-[220px] flex flex-col justify-between items-center">
+        <div className="bg-white/90 backdrop-blur-xl rounded-[24px] p-8 md:p-10 border border-white/80 shadow-[0_15px_35px_rgba(131,37,78,0.08)] text-center relative transition-all duration-500 min-h-[220px] flex flex-col justify-between items-center">
           <Quote className="absolute top-4 left-6 text-primary/10 w-12 h-12 pointer-events-none" />
 
           {/* Star Rating */}
@@ -65,7 +65,7 @@ const Testimonials = () => {
           </div>
 
           {/* Quote Text */}
-          <p className="text-[1.05rem] md:text-[1.2rem] italic text-primary leading-relaxed max-w-[580px] font-serif my-auto">
+          <p className="text-[1.05rem] md:text-[1.2rem] italic text-primary leading-relaxed max-w-[580px] font-serif my-auto font-medium">
             "{current.quote}"
           </p>
 
@@ -78,7 +78,7 @@ const Testimonials = () => {
               <h4 className="font-bold text-[0.95rem] md:text-[1rem] text-primary">
                 {current.name}
               </h4>
-              <p className="text-[0.75rem] text-[rgba(131,37,78,0.6)] font-semibold uppercase tracking-wider">
+              <p className="text-[0.75rem] text-primary font-semibold uppercase tracking-wider">
                 {current.role || "Verified Buyer"}
               </p>
             </div>
@@ -89,9 +89,10 @@ const Testimonials = () => {
         <button
           onClick={nextSlide}
           aria-label="Next Testimonial"
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur-md text-primary flex justify-center items-center shadow-md hover:bg-white hover:scale-110 transition-all z-10 cursor-pointer border border-white/40"
+          style={{ backgroundColor: "#ffffff", color: "#83254e", borderColor: "rgba(131,37,78,0.2)" }}
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-[#83254e] flex justify-center items-center shadow-md hover:bg-[#83254e] hover:text-white hover:scale-110 transition-all z-10 cursor-pointer border"
         >
-          <ChevronRight size={20} />
+          <ChevronRight size={20} style={{ stroke: "currentColor" }} />
         </button>
 
         {/* Pagination Dots */}

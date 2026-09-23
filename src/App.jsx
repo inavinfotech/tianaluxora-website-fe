@@ -4,6 +4,7 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SilkWaveBackground from "./components/SilkWaveBackground";
 import Footer from "./components/Footer";
 import DevAccessGate from "./components/DevAccessGate";
 
@@ -102,10 +103,12 @@ function App() {
   return (
     <ErrorBoundary>
       <DevAccessGate>
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative overflow-hidden">
-          <div className="fixed top-0 left-0 w-full h-full -z-10 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_10%_20%,var(--accent)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,var(--accent)_0%,transparent_40%)]"></div>
+        {/* Global Silk Wave Background at 30% Opacity */}
+        <SilkWaveBackground fullscreen animated={true} opacity="0.3" showShimmer={true} />
+
+        <div className="min-h-screen flex flex-col justify-between w-full">
           <Navbar />
-          <main>
+          <main className="w-full flex-1">
             <Suspense fallback={<LoadingFallback />}>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -146,8 +149,8 @@ function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
-            <Footer />
           </main>
+          <Footer />
         </div>
       </DevAccessGate>
     </ErrorBoundary>

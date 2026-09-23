@@ -4,13 +4,14 @@ import { footerLinks, brandDetails } from "../data/navigation";
 
 const Footer = () => {
   return (
-    <footer className="pt-4 md:pt-14 pb-6 md:pb-10 border-t border-[rgba(131,37,78,0.1)] animate-fade-in relative z-10">
-      {/* Official Brand Trust Ribbon */}
-      <div className="border-y border-primary/15 py-2.5 px-3 text-center mb-6 md:mb-8 -mx-4 md:-mx-8">
-        <p className="text-[10px] md:text-xs font-bold text-primary uppercase tracking-widest">
-          {brandDetails.badge}
-        </p>
-      </div>
+    <footer className="w-full bg-white border-t border-[rgba(131,37,78,0.12)] shadow-[0_-8px_30px_rgba(131,37,78,0.04)] animate-fade-in relative z-10 mt-12 md:mt-20">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-6 md:pt-12 pb-6 md:pb-10">
+        {/* Official Brand Trust Ribbon */}
+        <div className="border-y border-primary/10 bg-[#faf5f8]/70 py-2.5 px-4 text-center mb-6 md:mb-10 rounded-md">
+          <p className="text-[10px] md:text-xs font-bold text-primary uppercase tracking-widest">
+            {brandDetails.badge}
+          </p>
+        </div>
 
       <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-x-4 sm:gap-x-6 gap-y-6 md:gap-y-8 mb-6 md:mb-12">
         {/* Brand & Contact Header */}
@@ -24,7 +25,7 @@ const Footer = () => {
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 mt-1 text-[0.75rem] md:text-[0.82rem] w-full">
             <a
               href={`mailto:${footerLinks.contactInfo.email}`}
-              className="text-[rgba(131,37,78,0.85)] hover:text-accent transition-colors flex items-center gap-1.5 font-medium"
+              className="text-primary hover:text-accent transition-colors flex items-center gap-1.5 font-medium"
               title="Customer Care Support"
             >
               <svg
@@ -75,7 +76,7 @@ const Footer = () => {
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.75rem] md:text-[0.92rem] text-[rgba(131,37,78,0.75)] hover:text-accent transition-colors"
+                  className="text-[0.75rem] md:text-[0.92rem] text-primary hover:text-accent transition-colors font-medium"
                 >
                   {link.name}
                 </Link>
@@ -94,7 +95,7 @@ const Footer = () => {
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.75rem] md:text-[0.92rem] text-[rgba(131,37,78,0.75)] hover:text-accent transition-colors"
+                  className="text-[0.75rem] md:text-[0.92rem] text-primary hover:text-accent transition-colors font-medium"
                 >
                   {link.name}
                 </Link>
@@ -113,7 +114,7 @@ const Footer = () => {
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="text-[0.75rem] md:text-[0.92rem] text-[rgba(131,37,78,0.75)] hover:text-accent transition-colors"
+                  className="text-[0.75rem] md:text-[0.92rem] text-primary hover:text-accent transition-colors font-medium"
                 >
                   {link.name}
                 </Link>
@@ -124,12 +125,12 @@ const Footer = () => {
       </div>
 
       {/* Copyright & Legal Links */}
-      <div className="border-t border-[rgba(131,37,78,0.08)] pt-4 md:pt-6 flex flex-col md:flex-row justify-between items-center gap-2.5 text-[0.75rem] md:text-[0.85rem] text-[rgba(131,37,78,0.6)]">
+      <div className="border-t border-[rgba(131,37,78,0.08)] pt-4 md:pt-6 flex flex-col md:flex-row justify-between items-center gap-2.5 text-[0.75rem] md:text-[0.85rem] text-primary">
         <div className="flex flex-col items-center md:items-start gap-0.5 text-center md:text-left">
-          <p>
+          <p className="text-primary font-medium">
             © 2026 Tiana Luxora<sup>TM</sup>. All rights reserved.
           </p>
-          <p className="text-[10px] font-medium opacity-75">
+          <p className="text-[10px] font-medium text-primary">
             Designed & Developed by{" "}
             <a
               href="https://inexarum.in/"
@@ -153,7 +154,8 @@ const Footer = () => {
           ))}
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
   );
 };
 

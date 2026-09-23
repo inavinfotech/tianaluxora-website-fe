@@ -49,10 +49,10 @@ const CartPage = () => {
         </p>
         <Link
           to={getPath("/shop")}
-          className="bg-primary text-white px-9 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-accent transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-2"
+          style={{ backgroundColor: "#83254e", color: "#ffffff" }}
+          className="bg-[#83254e] hover:bg-[#6c1d3f] text-white px-9 py-4 rounded-full font-bold uppercase tracking-wider text-xs transition-all shadow-[0_8px_20px_rgba(131,37,78,0.35)] hover:shadow-[0_12px_25px_rgba(131,37,78,0.45)] active:scale-95 flex items-center justify-center"
         >
           <span>Explore Collection</span>
-          <span>→</span>
         </Link>
       </div>
     );
