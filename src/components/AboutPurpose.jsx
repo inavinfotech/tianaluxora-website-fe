@@ -13,26 +13,16 @@ const AboutPurpose = () => {
       <div className="absolute inset-0 bg-white/30 backdrop-blur-[3px]"></div>
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 items-center gap-10 text-center lg:text-left">
-          {/* Image & Founder Quote */}
-          <div className="relative group w-full max-w-[480px] mx-auto lg:mx-0">
-            <div className="rounded-[25px] md:rounded-[30px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] aspect-square relative">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 items-center gap-8 lg:gap-12 text-center lg:text-left">
+          {/* Image */}
+          <div className="relative group w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px] mx-auto lg:mx-0">
+            <div className="rounded-[22px] md:rounded-[28px] overflow-hidden shadow-[0_15px_40px_rgba(131,37,78,0.12)] aspect-square relative border border-white/60">
               <img
                 src={aboutContent.image}
                 alt={aboutContent.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/10 transition-custom group-hover:bg-black/0"></div>
-            </div>
-
-            {/* Founder Quote Overlay Card */}
-            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-6 right-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-white/60 shadow-lg text-left">
-              <p className="text-[0.82rem] italic font-serif text-primary font-medium">
-                "{aboutContent.founder.quote}"
-              </p>
-              <p className="text-[0.72rem] font-bold text-accent uppercase tracking-wider mt-1">
-                — {aboutContent.founder.name}, {aboutContent.founder.role}
-              </p>
+              <div className="absolute inset-0 bg-primary/5 transition-opacity group-hover:opacity-0"></div>
             </div>
           </div>
 

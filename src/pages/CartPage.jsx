@@ -37,7 +37,7 @@ const CartPage = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 animate-fade-in">
+      <div className="min-h-[70dvh] flex flex-col items-center justify-center text-center px-4 animate-fade-in">
         <div className="w-20 h-20 bg-[#f7d7c4]/30 rounded-full flex items-center justify-center text-primary mb-6 shadow-sm border border-white/50">
           <ShoppingBag size={36} className="text-primary/70" />
         </div>

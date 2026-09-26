@@ -395,7 +395,7 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center">
+      <div className="min-h-[80dvh] flex items-center justify-center">
         <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -403,7 +403,7 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center gap-6">
+      <div className="min-h-[80dvh] flex flex-col items-center justify-center gap-6">
         <h2 className="font-serif text-3xl text-primary font-bold">
           Product not found
         </h2>
@@ -424,7 +424,7 @@ const ProductDetail = () => {
   return (
     <div className="w-full animate-fade-in">
       {/* Full-bleed Edge-to-edge Luxury Surface touching navbar with zero gap */}
-      <div className="w-full min-h-screen bg-white/92 sm:bg-white/95 backdrop-blur-2xl border-b border-white/80 shadow-sm pt-16 sm:pt-20 pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-12">
+      <div className="w-full min-h-screen min-h-[100dvh] bg-white/92 sm:bg-white/95 backdrop-blur-2xl border-b border-white/80 shadow-sm pt-16 sm:pt-20 pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-[1400px] mx-auto">
           {/* Breadcrumbs Navigation */}
           <nav className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-primary/70 mb-4 sm:mb-6 font-medium">

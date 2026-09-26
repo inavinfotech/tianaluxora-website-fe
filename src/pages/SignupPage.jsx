@@ -30,7 +30,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-120px)] flex items-center justify-center py-8 px-4 sm:px-6">
+    <div className="min-h-[calc(100dvh-120px)] flex items-center justify-center py-8 px-4 sm:px-6">
       <div className="w-full max-w-md bg-white/40 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.06)] animate-fade-in">
         <h2 className="text-3xl font-serif font-bold mb-2 text-center text-primary">
           Create Account

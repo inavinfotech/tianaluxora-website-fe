@@ -51,7 +51,7 @@ const OrderDetailPage = () => {
 
   if (loading || orderLoading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="min-h-[60dvh] flex items-center justify-center">
         <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -59,7 +59,7 @@ const OrderDetailPage = () => {
 
   if (!order) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6">
+      <div className="min-h-[60dvh] flex flex-col items-center justify-center gap-6">
         <h2 className="text-2xl font-serif font-bold">Order not found</h2>
         <button
           onClick={() => navigate(getPath("/profile/orders"))}

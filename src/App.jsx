@@ -31,7 +31,7 @@ const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 
 const LoadingFallback = () => (
-  <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 text-primary">
+  <div className="min-h-[60dvh] flex flex-col items-center justify-center gap-4 text-primary">
     <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
     <p className="text-xs font-semibold tracking-wider uppercase opacity-60">Loading...</p>
   </div>
@@ -106,7 +106,7 @@ function App() {
         {/* Global Silk Wave Background at 30% Opacity */}
         <SilkWaveBackground fullscreen animated={true} opacity="0.3" showShimmer={true} />
 
-        <div className="min-h-screen flex flex-col justify-between w-full">
+        <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between w-full">
           <Navbar />
           <main className="w-full flex-1">
             <Suspense fallback={<LoadingFallback />}>

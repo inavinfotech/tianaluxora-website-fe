@@ -32,7 +32,7 @@ const AdminLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-[#fcf5f8] flex flex-col items-center justify-center text-[#83254e] font-sans">
+      <div className="min-h-screen min-h-[100dvh] w-full bg-[#fcf5f8] flex flex-col items-center justify-center text-[#83254e] font-sans">
         <div className="w-10 h-10 border-4 border-[#83254e]/20 border-t-[#83254e] rounded-full animate-spin mb-3"></div>
         <p className="text-xs font-semibold tracking-wider text-slate-500">Loading Admin Dashboard...</p>
       </div>
@@ -66,7 +66,7 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="admin-portal flex flex-col md:flex-row min-h-screen bg-[#fcf5f8] font-sans text-slate-900 w-full relative">
+    <div className="admin-portal flex flex-col md:flex-row min-h-screen min-h-[100dvh] bg-[#fcf5f8] font-sans text-slate-900 w-full relative">
       {/* Mobile Header Bar */}
       <div className="md:hidden w-full bg-[#83254e] text-white px-4 py-3 flex justify-between items-center fixed top-0 left-0 z-50 border-b border-white/10 shadow-sm">
         <div className="flex items-center gap-2.5">

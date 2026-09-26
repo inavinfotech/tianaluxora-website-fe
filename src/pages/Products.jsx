@@ -25,7 +25,7 @@ const Products = () => {
   }, [products, query]);
 
   return (
-    <div className="py-6 animate-fade-in flex flex-col min-h-screen">
+    <div className="py-6 animate-fade-in flex flex-col min-h-screen min-h-[100dvh]">
       <div className="flex-1 max-w-[1200px] mx-auto px-4 w-full">
         <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
           <div>
@@ -66,7 +66,7 @@ const Products = () => {
             ))}
           </div>
         ) : (
-          <div className="min-h-[40vh] flex flex-col items-center justify-center border-2 border-dashed border-primary/5 rounded-3xl">
+          <div className="min-h-[40dvh] flex flex-col items-center justify-center border-2 border-dashed border-primary/5 rounded-3xl">
             <h2 className="font-serif text-xl mb-4">
               No treasures found for "{query}"
             </h2>

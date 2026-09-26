@@ -135,7 +135,7 @@ const ProfilePage = () => {
 
   if (loading || !user) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="min-h-[60dvh] flex items-center justify-center">
         <div className="animate-pulse flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
           <p className="text-primary font-medium">Authenticating...</p>
@@ -596,7 +596,7 @@ const ProfilePage = () => {
             <Route
               path="*"
               element={
-                <div className="h-[60vh] bg-white/20 rounded-4xl border-2 border-dashed border-primary/5 flex flex-col items-center justify-center gap-4 text-center p-8 animate-fade-in text-primary/60">
+                <div className="h-[60dvh] bg-white/20 rounded-4xl border-2 border-dashed border-primary/5 flex flex-col items-center justify-center gap-4 text-center p-8 animate-fade-in text-primary/60">
                   <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent animate-bounce">
                     <Settings size={32} />
                   </div>

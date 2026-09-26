@@ -33,7 +33,7 @@ const DevAccessGate = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf6f0] text-primary flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans">
+    <div className="min-h-screen min-h-[100dvh] bg-[#faf6f0] text-primary flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans">
       {/* Light subtle ambient radial glows */}
       <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#f7d7c4]/30 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-[#e6ceb8]/20 rounded-full blur-3xl pointer-events-none" />

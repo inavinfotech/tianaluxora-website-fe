@@ -35,7 +35,7 @@ const HeroSection = () => {
             <PerfumeModel />
           </div>
         ) : (
-          <div className="w-full max-w-[340px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-[540px] h-auto max-h-[46vh] sm:max-h-[50vh] lg:max-h-[560px] relative flex justify-center items-center px-0">
+          <div className="w-full max-w-[340px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-[540px] h-auto max-h-[46dvh] sm:max-h-[50dvh] lg:max-h-[560px] relative flex justify-center items-center px-0">
             <img
               src="/images/big-bottle.webp"
               alt="Tiana Luxora Signature Perfume Bottle"

@@ -30,7 +30,7 @@ const collections = [
 
 const CollectionsPage = () => {
   return (
-    <div className="py-6 animate-fade-in flex flex-col min-h-screen">
+    <div className="py-6 animate-fade-in flex flex-col min-h-screen min-h-[100dvh]">
       <div className="flex-1 max-w-[1200px] mx-auto px-4 w-full">
         <h1 className="font-serif text-[2.5rem] md:text-[3rem] text-center mb-8">
           Our Collections

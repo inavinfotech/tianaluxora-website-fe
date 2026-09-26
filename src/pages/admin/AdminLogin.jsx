@@ -55,7 +55,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-portal min-h-screen w-full bg-bg-light flex flex-col items-center justify-center font-sans p-4 relative overflow-hidden text-slate-800">
+    <div className="admin-portal min-h-screen min-h-[100dvh] w-full bg-bg-light flex flex-col items-center justify-center font-sans p-4 relative overflow-hidden text-slate-800">
       {/* Background ambient light effects */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full -ml-20 -mb-20 blur-3xl pointer-events-none" />

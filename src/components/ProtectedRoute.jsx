@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 text-primary">
+      <div className="min-h-[60dvh] flex flex-col items-center justify-center gap-4 text-primary">
         <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
         <p className="text-xs font-semibold tracking-wider uppercase opacity-60">Authenticating...</p>
       </div>
