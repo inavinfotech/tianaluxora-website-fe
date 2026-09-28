@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
-  const { cartCount } = useCart();
+  const { cartCount, setIsCartOpen } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -63,28 +63,35 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 z-100 transition-all duration-300 ${
           isHomePage
             ? scrolled
-              ? "bg-[#fcf5f8]/92 backdrop-blur-md shadow-xs border-b border-[rgba(131,37,78,0.12)] py-3"
-              : "bg-[#fcf5f8]/80 backdrop-blur-sm border-b border-[rgba(131,37,78,0.08)] py-4"
+              ? "bg-[#faf6f4]/95 backdrop-blur-md shadow-xs border-b border-[rgba(131,37,78,0.1)]"
+              : "bg-[#faf6f4]/85 backdrop-blur-sm border-b border-[rgba(131,37,78,0.06)]"
             : scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-xs border-b border-[rgba(131,37,78,0.1)] py-3"
-            : "bg-white/90 backdrop-blur-sm border-b border-[rgba(131,37,78,0.06)] py-4"
+            ? "bg-white/95 backdrop-blur-md shadow-xs border-b border-[rgba(131,37,78,0.1)]"
+            : "bg-white/90 backdrop-blur-sm border-b border-[rgba(131,37,78,0.06)]"
         }`}
       >
-        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 flex justify-between items-center relative z-100">
+        {/* Luxury Top Announcement Bar */}
+        <div className="bg-[#83254e] text-[#f7ece8] text-[10px] sm:text-[11px] py-1.5 px-4 text-center font-medium tracking-wider flex items-center justify-center gap-2 border-b border-white/10">
+          <span>✨ Complimentary Luxury Vial with Every Order</span>
+          <span className="hidden sm:inline">• Free Express Pan-India Delivery Above ₹999</span>
+        </div>
+
+        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 py-3.5 md:py-4 flex justify-between items-center relative z-100">
           <Link
             to={getPath("/")}
-            className="font-serif text-[1.4rem] md:text-[1.5rem] tracking-wider font-bold relative z-110"
+            className="font-serif text-[1.4rem] md:text-[1.55rem] tracking-wider font-bold text-primary relative z-110 flex items-center"
           >
-            Tiana Luxora<sup>TM</sup>
+            <span>Tiana Luxora</span>
+            <sup className="text-[0.55em] ml-1 text-primary/70 font-sans font-medium">TM</sup>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex gap-8">
+          <div className="hidden lg:flex gap-9">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-base font-normal relative hover:after:w-full after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-primary after:transition-custom group"
+                className="text-sm tracking-wide font-medium relative hover:text-accent transition-colors hover:after:w-full after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-primary after:transition-custom group"
               >
                 {link.name}
               </Link>
@@ -93,7 +100,7 @@ const Navbar = () => {
 
           {/* Actions & Hamburger Row */}
           <div className="flex items-center gap-3.5 sm:gap-5 md:gap-6">
-            {/* Search, Cart, Profile Icons (Always visible directly to the left of hamburger on all screens) */}
+            {/* Search, Cart, Profile Icons */}
             <div className="flex items-center gap-3.5 sm:gap-5 md:gap-6">
               {/* Search Button */}
               <button
@@ -102,8 +109,8 @@ const Navbar = () => {
                 aria-label="Search"
               >
                 <svg
-                  width="22"
-                  height="22"
+                  width="21"
+                  height="21"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -114,15 +121,15 @@ const Navbar = () => {
                 </svg>
               </button>
 
-              {/* Cart Button */}
+              {/* Cart Button -> Opens CartDrawer */}
               <button
-                onClick={() => navigate(getPath("/cart"))}
+                onClick={() => setIsCartOpen(true)}
                 className="text-primary flex items-center justify-center hover:-translate-y-0.5 hover:text-accent transition-custom relative cursor-pointer"
-                aria-label="Cart"
+                aria-label="Open Cart"
               >
                 <svg
-                  width="22"
-                  height="22"
+                  width="21"
+                  height="21"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -133,7 +140,7 @@ const Navbar = () => {
                   <path d="M16 10a4 4 0 0 1-8 0"></path>
                 </svg>
                 {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 bg-accent text-white text-[9px] sm:text-[10px] font-bold rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center shadow-xs">
+                  <span className="absolute -top-1.5 -right-2 bg-primary text-white text-[9px] sm:text-[10px] font-bold rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center shadow-xs">
                     {cartCount}
                   </span>
                 )}
@@ -164,8 +171,8 @@ const Navbar = () => {
                     aria-label="Account"
                   >
                     <svg
-                      width="22"
-                      height="22"
+                      width="21"
+                      height="21"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -186,8 +193,8 @@ const Navbar = () => {
               aria-label="Toggle Menu"
             >
               <svg
-                width="26"
-                height="26"
+                width="25"
+                height="25"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -211,7 +218,8 @@ const Navbar = () => {
       </header>
 
       {/* Spacer to prevent page content overlap under fixed header */}
-      <div className="h-16 md:h-20" />
+      <div className="h-20 md:h-24" />
+
 
       {/* Global Search Overlay */}
       {isSearchOpen && (

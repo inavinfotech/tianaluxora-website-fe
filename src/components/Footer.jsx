@@ -1,162 +1,163 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { footerLinks, brandDetails } from "../data/navigation";
+import { getPath } from "../utils/paths";
+import { ShieldCheck, Mail, Phone, MapPin, Globe } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-white border-t border-[rgba(131,37,78,0.12)] shadow-[0_-8px_30px_rgba(131,37,78,0.04)] animate-fade-in relative z-10">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-6 md:pt-12 pb-6 md:pb-10">
+    <footer className="w-full bg-[#faf6f4] border-t border-primary/10 shadow-[0_-8px_30px_rgba(131,37,78,0.03)] animate-fade-in relative z-10">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-8 md:pt-14 pb-8 md:pb-12">
         {/* Official Brand Trust Ribbon */}
-        <div className="border-y border-primary/10 bg-[#faf5f8]/70 py-2.5 px-4 text-center mb-6 md:mb-10 rounded-md">
-          <p className="text-[10px] md:text-xs font-bold text-primary uppercase tracking-widest">
-            {brandDetails.badge}
-          </p>
+        <div className="border border-primary/10 bg-white/80 backdrop-blur-xs py-3 px-6 text-center mb-8 md:mb-12 rounded-2xl shadow-xs flex flex-wrap items-center justify-center gap-2 sm:gap-6 text-[10px] sm:text-xs font-bold text-primary uppercase tracking-widest">
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck size={14} className="text-accent" />
+            Proudly Made in India
+          </span>
+          <span className="hidden sm:inline opacity-30">•</span>
+          <span>MSME & Trademark Recognized</span>
+          <span className="hidden sm:inline opacity-30">•</span>
+          <span>Global Export Grade Formulations</span>
         </div>
 
-      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-x-4 sm:gap-x-6 gap-y-6 md:gap-y-8 mb-6 md:mb-12">
-        {/* Brand & Contact Header */}
-        <div className="col-span-3 md:col-span-3 lg:col-span-2 flex flex-col items-center lg:items-start gap-2 md:gap-4 text-center lg:text-left border-b lg:border-b-0 border-[rgba(131,37,78,0.08)] pb-4 lg:pb-0">
-          <h3 className="font-serif text-[1.35rem] md:text-[1.8rem] font-bold text-primary">
-            {brandDetails.name}
-          </h3>
-          <p className="text-[0.8rem] md:text-[0.92rem] text-primary font-medium italic">
-            "{brandDetails.tagline}"
-          </p>
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 mt-1 text-[0.75rem] md:text-[0.82rem] w-full">
-            <a
-              href={`mailto:${footerLinks.contactInfo.email}`}
-              className="text-primary hover:text-accent transition-colors flex items-center gap-1.5 font-medium"
-              title="Customer Care Support"
-            >
-              <svg
-                width="13"
-                height="13"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="shrink-0"
-              >
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              <span>{footerLinks.contactInfo.email}</span>
-            </a>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-8 mb-10 md:mb-14">
+          {/* Brand & Contact Header */}
+          <div className="col-span-2 md:col-span-4 lg:col-span-2 flex flex-col items-center lg:items-start gap-3 text-center lg:text-left border-b lg:border-b-0 border-primary/10 pb-6 lg:pb-0">
+            <h3 className="font-serif text-2xl md:text-3xl font-bold text-primary tracking-tight">
+              Tiana Luxora<sup className="text-xs ml-1 opacity-70">TM</sup>
+            </h3>
+            <p className="text-xs sm:text-sm text-primary/75 font-serif italic max-w-sm">
+              "{brandDetails.tagline}" — Handcrafted signature fragrances made for timeless distinction.
+            </p>
 
-            <a
-              href={`mailto:${footerLinks.contactInfo.exportEmail}`}
-              className="text-accent hover:text-primary transition-colors flex items-center gap-1.5 font-semibold"
-              title="Global Export & Business Inquiry"
-            >
-              <svg
-                width="13"
-                height="13"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="shrink-0"
+            <div className="flex flex-col gap-2 mt-2 text-xs text-primary/80 w-full max-w-sm">
+              <a
+                href={`mailto:${footerLinks.contactInfo.email}`}
+                className="hover:text-accent transition-colors flex items-center gap-2 justify-center lg:justify-start"
+                title="Customer Care Support"
               >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-              <span>{footerLinks.contactInfo.exportEmail}</span>
-            </a>
+                <Mail size={14} className="text-accent shrink-0" />
+                <span>{footerLinks.contactInfo.email}</span>
+              </a>
+
+              <a
+                href={`mailto:${footerLinks.contactInfo.exportEmail}`}
+                className="hover:text-accent transition-colors flex items-center gap-2 justify-center lg:justify-start font-medium"
+                title="Global Export & Business Inquiry"
+              >
+                <Globe size={14} className="text-accent shrink-0" />
+                <span>{footerLinks.contactInfo.exportEmail} (B2B Export)</span>
+              </a>
+
+              <div className="flex items-center gap-2 justify-center lg:justify-start text-primary/60 text-[11px]">
+                <MapPin size={13} className="shrink-0 text-accent" />
+                <span>New Delhi, India • GSTIN: {footerLinks.contactInfo.gst}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="flex flex-col gap-3 md:gap-4">
+            <h4 className="font-bold text-primary uppercase tracking-wider text-xs">
+              Discovery
+            </h4>
+            <ul className="flex flex-col gap-2 text-xs">
+              {footerLinks.quickLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-primary/75 hover:text-accent transition-colors font-medium"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Customer Care */}
+          <div className="flex flex-col gap-3 md:gap-4">
+            <h4 className="font-bold text-primary uppercase tracking-wider text-xs">
+              Client Concierge
+            </h4>
+            <ul className="flex flex-col gap-2 text-xs">
+              {footerLinks.customerService.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-primary/75 hover:text-accent transition-colors font-medium"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* House & Heritage */}
+          <div className="flex flex-col gap-3 md:gap-4">
+            <h4 className="font-bold text-primary uppercase tracking-wider text-xs">
+              The House
+            </h4>
+            <ul className="flex flex-col gap-2 text-xs">
+              {footerLinks.about.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-primary/75 hover:text-accent transition-colors font-medium"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Quick Links (Col 1 of 3 on Mobile) */}
-        <div className="col-span-1 flex flex-col gap-2 md:gap-5">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.68rem] md:text-[0.85rem]">
-            Quick Links
-          </h4>
-          <ul className="flex flex-col gap-1.5 md:gap-2.5">
-            {footerLinks.quickLinks.map((link, index) => (
-              <li key={index}>
-                <Link
-                  to={link.path}
-                  className="text-[0.75rem] md:text-[0.92rem] text-primary hover:text-accent transition-colors font-medium"
-                >
-                  {link.name}
-                </Link>
-              </li>
+        {/* Payment Methods Trust Bar */}
+        <div className="border-t border-primary/10 pt-6 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-[11px] font-bold text-primary/60 uppercase tracking-wider">
+            <ShieldCheck size={14} className="text-emerald-600" />
+            <span>100% Safe & Encrypted Checkout</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {["UPI / GPay / PhonePe", "Visa", "MasterCard", "RuPay", "NetBanking", "COD Available"].map((badge, idx) => (
+              <span
+                key={idx}
+                className="bg-white border border-primary/10 rounded-lg px-2.5 py-1 text-[10px] font-bold text-primary/70 shadow-2xs"
+              >
+                {badge}
+              </span>
             ))}
-          </ul>
+          </div>
         </div>
 
-        {/* Customer Service (Col 2 of 3 on Mobile) */}
-        <div className="col-span-1 flex flex-col gap-2 md:gap-5">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.68rem] md:text-[0.85rem]">
-            Customer Service
-          </h4>
-          <ul className="flex flex-col gap-1.5 md:gap-2.5">
-            {footerLinks.customerService.map((link, index) => (
-              <li key={index}>
-                <Link
-                  to={link.path}
-                  className="text-[0.75rem] md:text-[0.92rem] text-primary hover:text-accent transition-colors font-medium"
-                >
-                  {link.name}
-                </Link>
-              </li>
+        {/* Copyright & Legal Links */}
+        <div className="border-t border-primary/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-primary/70">
+          <div className="flex flex-col items-center md:items-start gap-1 text-center md:text-left">
+            <p className="font-medium">
+              © 2026 Tiana Luxora. All rights reserved.
+            </p>
+            <p className="text-[10px] text-primary/50">
+              Handcrafted in India • Certified Batch Standard
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[11px]">
+            {footerLinks.legal.map((link, index) => (
+              <Link
+                key={index}
+                to={link.path}
+                className="hover:text-accent transition-colors font-medium"
+              >
+                {link.name}
+              </Link>
             ))}
-          </ul>
-        </div>
-
-        {/* About Links (Col 3 of 3 on Mobile) */}
-        <div className="col-span-1 flex flex-col gap-2 md:gap-5">
-          <h4 className="font-bold text-primary uppercase tracking-wider text-[0.68rem] md:text-[0.85rem]">
-            About
-          </h4>
-          <ul className="flex flex-col gap-1.5 md:gap-2.5">
-            {footerLinks.about.map((link, index) => (
-              <li key={index}>
-                <Link
-                  to={link.path}
-                  className="text-[0.75rem] md:text-[0.92rem] text-primary hover:text-accent transition-colors font-medium"
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          </div>
         </div>
       </div>
-
-      {/* Copyright & Legal Links */}
-      <div className="border-t border-[rgba(131,37,78,0.08)] pt-4 md:pt-6 flex flex-col md:flex-row justify-between items-center gap-2.5 text-[0.75rem] md:text-[0.85rem] text-primary">
-        <div className="flex flex-col items-center md:items-start gap-0.5 text-center md:text-left">
-          <p className="text-primary font-medium">
-            © 2026 Tiana Luxora<sup>TM</sup>. All rights reserved.
-          </p>
-          <p className="text-[10px] font-medium text-primary">
-            Designed & Developed by{" "}
-            <a
-              href="https://inexarum.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary font-bold hover:text-accent transition-colors"
-            >
-              iNexarum Private Limited
-            </a>
-          </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-[10px] md:text-xs">
-          {footerLinks.legal.map((link, index) => (
-            <Link
-              key={index}
-              to={link.path}
-              className="hover:text-primary transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
   );
 };
 
 export default Footer;
+

@@ -67,6 +67,10 @@ const CartPage = () => {
     );
   }
 
+  const FREE_SHIPPING_THRESHOLD = 999;
+  const freeShippingProgress = Math.min(100, (cartTotal / FREE_SHIPPING_THRESHOLD) * 100);
+  const amountNeeded = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
+
   return (
     <div className="bg-white min-h-[100dvh] pb-24 pt-4 sm:pt-6 animate-fade-in w-full">
       {/* Full-width container with generous padding */}
@@ -86,10 +90,40 @@ const CartPage = () => {
               {cartItems.reduce((acc, item) => acc + item.quantity, 0)} {cartItems.reduce((acc, item) => acc + item.quantity, 0) === 1 ? "item" : "items"} in selection
             </p>
           </div>
+
+          {/* Free Shipping Progress Banner */}
+          <div className="mt-4 bg-[#faf6f4] p-3.5 sm:p-4 rounded-2xl border border-primary/10">
+            <div className="flex items-center justify-between text-xs font-semibold text-primary mb-1.5">
+              <div className="flex items-center gap-2">
+                <Truck size={15} className="text-accent" />
+                <span>
+                  {amountNeeded === 0 ? (
+                    <strong className="text-emerald-700 font-bold">
+                      ✨ You have unlocked Complimentary Express Pan-India Delivery!
+                    </strong>
+                  ) : (
+                    <>
+                      Add <strong className="text-primary font-bold">₹{amountNeeded}</strong> more to qualify for <strong>Free Express Delivery</strong>
+                    </>
+                  )}
+                </span>
+              </div>
+              <span className="text-[11px] font-bold text-primary/60">
+                {Math.round(freeShippingProgress)}%
+              </span>
+            </div>
+            <div className="w-full bg-white rounded-full h-2 overflow-hidden shadow-inner border border-primary/10">
+              <div
+                className="h-full bg-primary transition-all duration-500 rounded-full"
+                style={{ width: `${freeShippingProgress}%` }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Unified Full-Width 2-Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start w-full">
+
           {/* Left Column: Professionally Aligned Items List */}
           <div className="lg:col-span-7 xl:col-span-8 space-y-6 w-full">
             <div className="border border-primary/10 rounded-2xl bg-white overflow-hidden shadow-xs w-full">

@@ -1,31 +1,38 @@
 import { Link } from "react-router-dom";
 import CollectionCard from "./utils/CollectionCard";
 import { collections } from "../data/collections";
+import { getPath } from "../utils/paths";
+import { Sparkles } from "lucide-react";
 
 const Collections = () => {
   return (
-    <section className="py-8 md:py-12 animate-fade-in">
-      <div className="text-center mb-8 md:mb-10">
-        <h2 className="text-[1.8rem] md:text-[2.2rem] mb-2 text-primary font-serif font-bold">
-          Explore our Collection
+    <section className="max-w-[1400px] mx-auto px-4 md:px-8 py-10 md:py-14 animate-fade-in">
+      <div className="text-center mb-8 md:mb-12">
+        <div className="text-accent text-[11px] font-bold uppercase tracking-[0.25em] flex items-center justify-center gap-1.5 mb-2">
+          <Sparkles size={13} className="text-accent" />
+          <span>Curated Olfactory Realms</span>
+        </div>
+        <h2 className="text-[2rem] md:text-[2.6rem] mb-2 text-primary font-serif font-bold">
+          Explore Scent Collections
         </h2>
-        <p className="text-[0.9rem] md:text-[1rem] text-[rgba(131,37,78,0.7)] max-w-[500px] mx-auto">
-          Curated fragrance collections for every mood and moment.
+        <p className="text-sm md:text-base text-primary/70 max-w-[540px] mx-auto font-normal">
+          From luminous florals to opulent woody notes, find the aroma that defines your aura.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
         {collections.map((collection) => (
           <CollectionCard key={collection.id} collection={collection} />
         ))}
       </div>
 
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-8 md:mt-10">
         <Link
-          to="/collections"
-          className="bg-[#f7c2d4] hover:bg-[#f4b8cc] text-[#83254e] px-8 py-3.5 rounded-[50px] font-bold text-[1rem] flex items-center justify-center border border-white/60 shadow-[0_10px_30px_rgba(217,115,152,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(217,115,152,0.4)]"
+          to={getPath("/shop")}
+          style={{ backgroundColor: "#83254e", color: "#ffffff" }}
+          className="px-9 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest flex items-center justify-center shadow-md hover:opacity-90 transition-all hover:-translate-y-0.5 active:scale-95"
         >
-          View all Collections
+          Discover All Fragrances
         </Link>
       </div>
     </section>
@@ -33,3 +40,4 @@ const Collections = () => {
 };
 
 export default Collections;
+

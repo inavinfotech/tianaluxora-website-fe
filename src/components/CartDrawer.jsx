@@ -1,8 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import AddressForm from "./AddressForm";
 import { useCheckout } from "../hooks/useCheckout";
 import THEME_COLORS from "../styles/theme";
+import { getPath } from "../utils/paths";
+import {
+  ShoppingBag,
+  X,
+  Trash2,
+  Truck,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+} from "lucide-react";
+
+const FREE_SHIPPING_THRESHOLD = 999;
 
 const CartDrawer = () => {
   const {
@@ -41,118 +54,145 @@ const CartDrawer = () => {
 
   if (!isCartOpen) return null;
 
+  const freeShippingProgress = Math.min(
+    100,
+    (cartTotal / FREE_SHIPPING_THRESHOLD) * 100
+  );
+  const amountNeeded = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
+
   return (
-    <div className="fixed inset-0 z-200 overflow-hidden">
+    <div className="fixed inset-0 z-[200] overflow-hidden">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300"
         onClick={() => setIsCartOpen(false)}
       />
 
       {/* Drawer */}
-      <div className="absolute inset-y-0 right-0 max-w-full flex">
-        <div className="w-screen max-w-md flex flex-col bg-white shadow-2xl animate-slide-left">
-          <div className="flex-1 flex flex-col p-6 overflow-y-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-serif font-bold text-primary">
-                Your Collection
+      <div className="absolute inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10">
+        <div className="w-screen max-w-md flex flex-col bg-white shadow-2xl animate-slide-left border-l border-primary/10">
+          {/* Header */}
+          <div className="px-6 py-5 border-b border-primary/10 bg-[#faf6f4] flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <ShoppingBag size={20} className="text-primary" />
+              <h2 className="text-xl font-serif font-bold text-primary">
+                Your Selection
               </h2>
-              <button
-                onClick={() => setIsCartOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
+              <span className="text-xs bg-primary/10 text-primary font-bold px-2 py-0.5 rounded-full">
+                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+              </span>
             </div>
+            <button
+              onClick={() => setIsCartOpen(false)}
+              className="w-9 h-9 rounded-full bg-white border border-primary/10 flex items-center justify-center text-primary/70 hover:text-primary hover:bg-neutral-100 transition-colors cursor-pointer shadow-xs"
+              aria-label="Close cart"
+            >
+              <X size={18} />
+            </button>
+          </div>
 
+          {/* Free Shipping Progress Meter */}
+          <div className="bg-[#f7ece8]/60 px-6 py-3 border-b border-primary/10">
+            <div className="flex items-center justify-between text-xs font-semibold text-primary mb-1.5">
+              <div className="flex items-center gap-1.5">
+                <Truck size={14} className="text-primary" />
+                <span>
+                  {amountNeeded === 0 ? (
+                    <strong className="text-emerald-700">
+                      ✨ Unlocked Free Express Shipping!
+                    </strong>
+                  ) : (
+                    <>
+                      Add <strong>₹{amountNeeded}</strong> for Free Delivery
+                    </>
+                  )}
+                </span>
+              </div>
+              <span className="text-[10px] font-bold text-primary/60">
+                {Math.round(freeShippingProgress)}%
+              </span>
+            </div>
+            <div className="w-full bg-white rounded-full h-1.5 overflow-hidden shadow-inner border border-primary/10">
+              <div
+                className="h-full bg-primary transition-all duration-500 rounded-full"
+                style={{ width: `${freeShippingProgress}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Body content */}
+          <div className="flex-1 flex flex-col p-6 overflow-y-auto">
             {cartItems.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
+              <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+                <div className="w-20 h-20 bg-[#faf6f4] rounded-full flex items-center justify-center text-primary/50 mb-4 border border-primary/10 shadow-xs">
+                  <ShoppingBag size={34} />
                 </div>
-                <p className="text-lg text-gray-500 mb-6">Your cart is empty</p>
+                <h3 className="font-serif text-xl font-bold text-primary mb-2">
+                  Your bag is empty
+                </h3>
+                <p className="text-xs text-primary/60 max-w-xs mb-6 leading-relaxed">
+                  Explore our handcrafted fragrances and discover your signature scent.
+                </p>
                 <button
-                  onClick={() => setIsCartOpen(false)}
-                  className="px-8 py-3 bg-primary text-white font-medium hover:bg-accent transition-all duration-300"
+                  onClick={() => {
+                    setIsCartOpen(false);
+                  }}
+                  style={{ backgroundColor: "#83254e", color: "#ffffff" }}
+                  className="px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md hover:opacity-90 active:scale-95 transition-all cursor-pointer"
                 >
-                  Start Shopping
+                  Explore Fragrances
                 </button>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-4 divide-y divide-primary/5">
                 {cartItems.map((item) => (
                   <div
                     key={`${item.id}_${item.variant_id || "base"}`}
-                    className="flex gap-4 p-4 border border-gray-100 rounded-lg group hover:border-accent/30 transition-colors"
+                    className="pt-4 first:pt-0 flex gap-4 group"
                   >
-                    <div className="w-20 h-24 bg-gray-50 rounded shrink-0 overflow-hidden">
+                    <div className="w-20 h-24 bg-[#faf6f4] rounded-xl shrink-0 overflow-hidden border border-primary/10 shadow-xs">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <div className="flex-1 flex flex-col">
-                      <div className="flex justify-between mb-1">
-                        <h3 className="font-medium text-primary">
-                          {item.name}
-                        </h3>
-                        <button
-                          onClick={() =>
-                            removeFromCart(item.id, item.variant_id)
-                          }
-                          className="text-gray-400 hover:text-red-500 transition-colors"
-                        >
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
+                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-between items-start gap-2">
+                          <h3 className="font-serif font-bold text-sm text-primary truncate">
+                            {item.name}
+                          </h3>
+                          <button
+                            onClick={() =>
+                              removeFromCart(item.id, item.variant_id)
+                            }
+                            className="text-primary/40 hover:text-red-500 transition-colors p-0.5 cursor-pointer"
+                            title="Remove item"
                           >
-                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                          </svg>
-                        </button>
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                        <p className="text-[11px] text-primary/60 font-medium mt-0.5">
+                          {item.selectedSize || "Standard Edition"}
+                        </p>
                       </div>
-                      <p className="text-sm text-gray-500 mb-3">
-                        {item.selectedSize || item.tag || "Eau de Parfum"}
-                      </p>
-                      <div className="mt-auto flex items-center justify-between">
-                        <div className="flex items-center border border-gray-200 rounded">
+
+                      <div className="flex items-center justify-between mt-3">
+                        <div className="flex items-center border border-primary/20 rounded-lg bg-white overflow-hidden shadow-xs">
                           <button
                             onClick={() =>
                               updateQuantity(
                                 item.id,
                                 item.variant_id,
-                                item.quantity - 1,
+                                item.quantity - 1
                               )
                             }
-                            className="p-1 px-2 hover:bg-gray-50 text-gray-500"
+                            className="px-2.5 py-1 text-xs font-bold hover:bg-neutral-100 text-primary transition-colors cursor-pointer"
                           >
                             -
                           </button>
-                          <span className="px-3 py-1 text-sm">
+                          <span className="px-2 py-1 text-xs font-bold text-primary min-w-[24px] text-center">
                             {item.quantity}
                           </span>
                           <button
@@ -160,16 +200,16 @@ const CartDrawer = () => {
                               updateQuantity(
                                 item.id,
                                 item.variant_id,
-                                item.quantity + 1,
+                                item.quantity + 1
                               )
                             }
-                            className="p-1 px-2 hover:bg-gray-50 text-gray-500"
+                            className="px-2.5 py-1 text-xs font-bold hover:bg-neutral-100 text-primary transition-colors cursor-pointer"
                           >
                             +
                           </button>
                         </div>
-                        <span className="font-semibold text-accent">
-                          ₹{item.price}
+                        <span className="font-serif font-bold text-base text-primary">
+                          ₹{typeof item.price === "number" ? item.price * item.quantity : item.price}
                         </span>
                       </div>
                     </div>
@@ -177,6 +217,8 @@ const CartDrawer = () => {
                 ))}
               </div>
             )}
+
+
             {/* Address Section */}
             {user && (
               <div className="mt-6 border-t border-gray-100 pt-6">
@@ -358,52 +400,68 @@ const CartDrawer = () => {
                 </div>
               )}
 
-              <button
-                onClick={handleCheckout}
-                disabled={
-                  isProcessing ||
-                  orderStatus === "success" ||
-                  (user && !isAddressConfirmed && !showAddressForm)
-                }
-                style={{
-                  backgroundColor:
-                    orderStatus === "success"
-                      ? "#15803d"
-                      : orderStatus === "error"
-                        ? "#812d2d"
-                        : user && !isAddressConfirmed && !showAddressForm
-                          ? "#e5e5e5"
-                          : THEME_COLORS.primary,
-                  color:
-                    user && !isAddressConfirmed && !showAddressForm
-                      ? "#737373"
-                      : "white",
-                }}
-                className={`w-full py-4 font-bold tracking-widest uppercase transition-all duration-500 relative overflow-hidden group shadow-lg disabled:cursor-not-allowed`}
-              >
-                <span className="relative z-10">
-                  {isProcessing
-                    ? "Processing..."
-                    : orderStatus === "success"
-                      ? "Order Placed!"
-                      : orderStatus === "error"
-                        ? "Retry Checkout"
-                        : user
-                          ? !isAddressConfirmed
-                            ? "Confirm Address First"
-                            : "Punch Order"
-                          : "Login to Checkout"}
-                </span>
-                {!(isProcessing || orderStatus) && (
-                  <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                )}
-              </button>
+              <div className="flex flex-col gap-2.5">
+                <button
+                  onClick={handleCheckout}
+                  disabled={
+                    isProcessing ||
+                    orderStatus === "success" ||
+                    (user && !isAddressConfirmed && !showAddressForm)
+                  }
+                  style={{
+                    backgroundColor:
+                      orderStatus === "success"
+                        ? "#15803d"
+                        : orderStatus === "error"
+                          ? "#812d2d"
+                          : user && !isAddressConfirmed && !showAddressForm
+                            ? "#e5e5e5"
+                            : THEME_COLORS.primary,
+                    color:
+                      user && !isAddressConfirmed && !showAddressForm
+                        ? "#737373"
+                        : "white",
+                  }}
+                  className={`w-full py-4 rounded-xl font-bold tracking-widest uppercase transition-all duration-300 relative overflow-hidden group shadow-md disabled:cursor-not-allowed cursor-pointer text-xs`}
+                >
+                  <span className="relative z-10">
+                    {isProcessing
+                      ? "Processing..."
+                      : orderStatus === "success"
+                        ? "Order Placed!"
+                        : orderStatus === "error"
+                          ? "Retry Checkout"
+                          : user
+                            ? !isAddressConfirmed
+                              ? "Confirm Address First"
+                              : "Instant Checkout"
+                            : "Login to Checkout"}
+                  </span>
+                  {!(isProcessing || orderStatus) && (
+                    <div className="absolute inset-0 bg-white/15 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                  )}
+                </button>
+
+                <Link
+                  to={getPath("/cart")}
+                  onClick={() => setIsCartOpen(false)}
+                  className="w-full py-3 rounded-xl border border-primary/20 text-primary hover:bg-[#faf6f4] font-bold text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>View Full Bag</span>
+                  <ArrowRight size={13} />
+                </Link>
+              </div>
 
               {orderStatus === "success" && (
                 <p className="text-center text-green-600 mt-4 text-sm font-medium animate-pulse">
                   Redirecting to your profile...
                 </p>
               )}
+
+              <div className="mt-4 pt-3 border-t border-primary/10 flex items-center justify-center gap-2 text-[10px] text-primary/60 font-semibold uppercase tracking-wider">
+                <ShieldCheck size={13} className="text-emerald-600" />
+                <span>100% Authentic • Secure Razorpay Payment</span>
+              </div>
             </div>
           )}
         </div>
@@ -413,3 +471,4 @@ const CartDrawer = () => {
 };
 
 export default CartDrawer;
+

@@ -64,14 +64,17 @@
   --primary: #83254e;
   --primary-rgb: 131, 37, 78;
 
-  --accent: #d97398;
-  --accent-rgb: 217, 115, 152;
+  --accent: #c47c94;
+  --accent-rgb: 196, 124, 148;
 
-  --bg-gradient: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
-  --bg-light: #fcf5f8;
+  --gold: #c5a880;
+  --gold-light: #f5eedc;
 
-  --accent-light: #f7c2d4;
-  --accent-light-hover: #f4b8cc;
+  --bg-gradient: linear-gradient(135deg, #fdf9f7 0%, #f7ece8 100%);
+  --bg-light: #faf6f4;
+
+  --accent-light: #f5e4ea;
+  --accent-light-hover: #edd3dd;
 
   --disabled: #a65377;
   --primary-dark: #6c1e40;
@@ -109,7 +112,7 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -117,19 +120,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
+  background: rgba(131, 37, 78, 0.6);
   border-radius: 10px;
   border: 2px solid var(--bg-light);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: var(--primary);
 }
 
 /* Firefox support */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--primary) var(--bg-light);
+  scrollbar-color: rgba(131, 37, 78, 0.6) var(--bg-light);
 }
 
 h1,
@@ -211,60 +214,26 @@ html.lenis body {
 }
 
 sup {
-  font-size: 0.5em;
-  margin-left: 1px;
-  opacity: 0.8;
+  font-size: 0.55em;
+  margin-left: 2px;
+  opacity: 0.85;
   font-weight: 400;
 }
 
-/* Global Mobile Optimizations */
+/* Global Responsive Refinements */
 @media (max-width: 768px) {
   :root {
-    font-size: 14px; /* Scales down all rem-based units by ~12.5% */
+    font-size: 15px;
   }
 
   body {
-    line-height: 1.5; /* Slightly tighter for mobile */
-  }
-
-  /* Reduce global spacing for sections and containers */
-  section {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-    gap: 1.5rem !important;
-  }
-
-  /* Target common Tailwind spacing patterns */
-  .py-8, .py-10, .py-12, .py-16, .py-20 {
-    padding-top: 1.5rem !important;
-    padding-bottom: 1.5rem !important;
-  }
-
-  .px-8, .px-10, .px-12, .px-16 {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
-  }
-
-  .gap-8, .gap-10, .gap-12, .gap-16 {
-    gap: 1rem !important;
-  }
-
-  .mb-8, .mb-10, .mb-12, .mb-16 {
-    margin-bottom: 1rem !important;
-  }
-
-  .mt-8, .mt-10, .mt-12, .mt-16 {
-    margin-top: 1rem !important;
+    line-height: 1.5;
   }
 }
 
 @media (max-width: 480px) {
   :root {
-    font-size: 13px; /* Further scale down for very small screens */
-  }
-
-  .px-4 {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
+    font-size: 14px;
   }
 }
+

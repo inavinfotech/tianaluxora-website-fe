@@ -715,6 +715,7 @@ const ProductDetail = () => {
 
             {/* CTA Action Buttons */}
             <div className="grid grid-cols-2 gap-3.5 pt-2">
+
               <button
                 disabled={isOutOfStock}
                 onClick={() => {
@@ -726,13 +727,9 @@ const ProductDetail = () => {
                   backgroundColor: isOutOfStock ? "#e5e7eb" : "#83254e",
                   color: isOutOfStock ? "#9ca3af" : "#ffffff",
                 }}
-                className="relative overflow-hidden py-4 sm:py-4.5 rounded-2xl font-bold uppercase tracking-wider text-xs sm:text-sm text-white transition-all duration-300 shadow-[0_10px_25px_rgba(131,37,78,0.35)] hover:shadow-[0_15px_30px_rgba(131,37,78,0.5)] hover:brightness-110 active:scale-[0.98] disabled:shadow-none disabled:transform-none disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed cursor-pointer bg-[#83254e] border border-[#83254e]"
+                className="py-4 sm:py-4.5 rounded-2xl font-bold uppercase tracking-wider text-xs sm:text-sm text-white transition-all duration-300 shadow-md hover:shadow-lg hover:opacity-95 active:scale-[0.98] disabled:shadow-none disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed cursor-pointer"
               >
-                {/* Continuous Shimmer Light Sheen */}
-                {!isOutOfStock && (
-                  <span className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none animate-btn-shine" />
-                )}
-                <span className="relative z-10">{isOutOfStock ? "Out of Stock" : "Buy Now"}</span>
+                {isOutOfStock ? "Out of Stock" : "Buy Now"}
               </button>
 
               <button
@@ -740,77 +737,96 @@ const ProductDetail = () => {
                 onClick={() => {
                   if (isOutOfStock) return;
                   handleAddToCart();
-                  navigate(getPath("/cart"));
                 }}
                 style={{
-                  backgroundColor: isOutOfStock ? "#f3f4f6" : "#f7c2d4",
+                  backgroundColor: isOutOfStock ? "#f3f4f6" : "#ffffff",
                   color: isOutOfStock ? "#9ca3af" : "#83254e",
-                  borderColor: isOutOfStock ? "#e5e7eb" : "#d97398",
+                  borderColor: isOutOfStock ? "#e5e7eb" : "#83254e",
                 }}
-                className="py-4 sm:py-4.5 rounded-2xl font-bold uppercase tracking-wider text-xs sm:text-sm text-[#83254e] transition-all duration-300 bg-[#f7c2d4] hover:bg-[#f4b8cc] border-2 border-[#d97398]/50 hover:border-[#83254e] shadow-[0_10px_25px_rgba(217,115,152,0.25)] hover:shadow-[0_15px_30px_rgba(217,115,152,0.35)] hover:brightness-105 active:scale-[0.98] disabled:shadow-none disabled:transform-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
+                className="py-4 sm:py-4.5 rounded-2xl font-bold uppercase tracking-wider text-xs sm:text-sm transition-all duration-300 border-2 hover:bg-[#faf6f4] shadow-sm hover:shadow-md active:scale-[0.98] disabled:shadow-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
               >
-                {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                {isOutOfStock ? "Out of Stock" : "Add to Bag"}
               </button>
             </div>
 
+            {/* Sensory Fragrance Metrics Bar */}
+            <div className="bg-[#faf6f4] rounded-2xl p-4 sm:p-5 border border-primary/10 grid grid-cols-3 gap-3 text-center">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50 block mb-1">
+                  Concentration
+                </span>
+                <p className="text-xs sm:text-sm font-serif font-bold text-primary">
+                  Eau de Parfum
+                </p>
+              </div>
+              <div className="border-x border-primary/10 px-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50 block mb-1">
+                  Longevity
+                </span>
+                <p className="text-xs sm:text-sm font-serif font-bold text-primary">
+                  8+ Hours
+                </p>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50 block mb-1">
+                  Sillage
+                </span>
+                <p className="text-xs sm:text-sm font-serif font-bold text-primary">
+                  Radiant Aura
+                </p>
+              </div>
+            </div>
+
             {/* Description Section */}
-            <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-primary/10 shadow-xs space-y-2.5">
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-primary/10 shadow-xs space-y-2.5">
               <h4 className="text-primary font-serif font-bold text-lg">
-                Description
+                Olfactory Character
               </h4>
               <p className="text-primary/80 text-sm leading-relaxed font-normal">
                 {product.description ||
-                  "No description available for this exquisite fragrance."}
+                  "An exquisite formulation blending rare floral essences, luminous amber accords, and deep woody base notes created for timeless sophistication."}
               </p>
             </div>
 
             {/* Olfactory Notes Pyramid Section */}
-            {product.notes && (
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-primary/10 shadow-xs space-y-4">
-                <h4 className="text-primary font-serif font-bold text-lg flex items-center gap-2">
-                  <Sparkles size={18} className="text-accent" />
-                  Olfactory Notes Pyramid
-                </h4>
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-primary/10 shadow-xs space-y-4">
+              <h4 className="text-primary font-serif font-bold text-lg flex items-center gap-2">
+                <Sparkles size={18} className="text-accent" />
+                Olfactory Notes Pyramid
+              </h4>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-                  {/* Top Notes */}
-                  {product.notes.top && (
-                    <div className="bg-[#faf5f7] p-4 rounded-xl border border-primary/10 shadow-xs">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
-                        Top Notes
-                      </span>
-                      <p className="text-xs font-semibold text-primary leading-snug">
-                        {product.notes.top}
-                      </p>
-                    </div>
-                  )}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                {/* Top Notes */}
+                <div className="bg-[#faf6f4] p-4 rounded-xl border border-primary/10 shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
+                    Top Notes
+                  </span>
+                  <p className="text-xs font-semibold text-primary leading-snug">
+                    {product.notes?.top || "Luminous Bergamot, Pink Peppercorn, Fresh Citrus"}
+                  </p>
+                </div>
 
-                  {/* Heart Notes */}
-                  {product.notes.heart && (
-                    <div className="bg-[#faf5f7] p-4 rounded-xl border border-primary/10 shadow-xs">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary block mb-1">
-                        Heart Notes
-                      </span>
-                      <p className="text-xs font-semibold text-primary leading-snug">
-                        {product.notes.heart}
-                      </p>
-                    </div>
-                  )}
+                {/* Heart Notes */}
+                <div className="bg-[#faf6f4] p-4 rounded-xl border border-primary/10 shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary block mb-1">
+                    Heart Notes
+                  </span>
+                  <p className="text-xs font-semibold text-primary leading-snug">
+                    {product.notes?.heart || "Damask Rose, Wild Jasmine, French Orris"}
+                  </p>
+                </div>
 
-                  {/* Base Notes */}
-                  {product.notes.base && (
-                    <div className="bg-[#faf5f7] p-4 rounded-xl border border-primary/10 shadow-xs">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
-                        Base Notes
-                      </span>
-                      <p className="text-xs font-semibold text-primary leading-snug">
-                        {product.notes.base}
-                      </p>
-                    </div>
-                  )}
+                {/* Base Notes */}
+                <div className="bg-[#faf6f4] p-4 rounded-xl border border-primary/10 shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-1">
+                    Base Notes
+                  </span>
+                  <p className="text-xs font-semibold text-primary leading-snug">
+                    {product.notes?.base || "Velvet Sandalwood, Golden Amber, White Musk"}
+                  </p>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
 
@@ -824,16 +840,16 @@ const ProductDetail = () => {
             },
             {
               icon: RotateCcw,
-              title: "7 Day Return",
-              sub: "Hassle-free Returns",
+              title: "Verified Replacements",
+              sub: "Transit Damage Guarantee",
             },
-            { icon: Truck, title: "Fast Shipping", sub: "Express Safe Delivery" },
+            { icon: Truck, title: "Fast Shipping", sub: "Express Pan-India Delivery" },
           ].map((badge, idx) => (
             <div
               key={idx}
               className="flex items-center gap-4 bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-primary/10 shadow-xs group hover:bg-white transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#faf5f7] flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-xs border border-primary/10 shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-[#faf6f4] flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-xs border border-primary/10 shrink-0">
                 <badge.icon size={22} />
               </div>
               <div>
@@ -849,8 +865,29 @@ const ProductDetail = () => {
         </div>
       </div>
     </div>
+
+    {/* Mobile Sticky Add to Bag Bar */}
+    <div className="sm:hidden fixed bottom-0 left-0 right-0 z-90 bg-white/95 backdrop-blur-md border-t border-primary/10 p-3 shadow-lg flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <p className="text-xs font-serif font-bold text-primary truncate">
+          {product.name}
+        </p>
+        <p className="text-sm font-extrabold text-primary font-serif">
+          {getDisplayPrice()}
+        </p>
+      </div>
+      <button
+        disabled={isOutOfStock}
+        onClick={handleAddToCart}
+        style={{ backgroundColor: isOutOfStock ? "#e5e7eb" : "#83254e", color: "#ffffff" }}
+        className="px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 disabled:cursor-not-allowed shrink-0"
+      >
+        {isOutOfStock ? "Out of Stock" : "Add to Bag"}
+      </button>
+    </div>
   </div>
 );
 };
 
 export default ProductDetail;
+

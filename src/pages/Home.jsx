@@ -1,21 +1,24 @@
 import HeroSection from "../components/HeroSection";
+import Collections from "../components/Collections";
 import BestSellers from "../components/BestSellers";
-import Features from "../components/Features";
 import AboutPurpose from "../components/AboutPurpose";
-import GlobalExportSection from "../components/GlobalExportSection";
+import Features from "../components/Features";
 import Testimonials from "../components/Testimonials";
+import GlobalExportSection from "../components/GlobalExportSection";
 
 const Home = () => {
   return (
     <>
       <HeroSection />
+      {/* <Collections /> */}
+      <BestSellers />
       <AboutPurpose />
       <Features />
-      <BestSellers />
       <GlobalExportSection />
-      {/* <Testimonials /> */}
+      <Testimonials />
     </>
   );
 };
 
 export default Home;
+

@@ -34,7 +34,10 @@ const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 
+import CartDrawer from "./components/CartDrawer";
+
 const LoadingFallback = () => <LuxuryLoader fullscreen={false} />;
+
 
 function App() {
   const location = useLocation();
@@ -172,6 +175,7 @@ function App() {
           }`}
         >
           <Navbar />
+          <CartDrawer />
           <main className="w-full flex-1">
             <Suspense fallback={<LoadingFallback />}>
               <Routes>
@@ -208,6 +212,15 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/orders/:orderId"
+                  element={
+                    <ProtectedRoute>
+                      <OrderDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
+
 
                 {/* Global catch all */}
                 <Route path="*" element={<Navigate to="/" replace />} />
