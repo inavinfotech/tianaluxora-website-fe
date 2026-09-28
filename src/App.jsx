@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import Lenis from "lenis";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -7,20 +7,24 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SilkWaveBackground from "./components/SilkWaveBackground";
 import Footer from "./components/Footer";
 import DevAccessGate from "./components/DevAccessGate";
+import LuxuryLoader from "./components/LuxuryLoader";
+import { useAuth } from "./contexts/AuthContext";
+import { useProducts } from "./contexts/ProductContext";
+import { getPath } from "./utils/paths";
 
-// Lazy-loaded Storefront Pages
-const Home = lazy(() => import("./pages/Home"));
-const Products = lazy(() => import("./pages/Products"));
-const CollectionsPage = lazy(() => import("./pages/CollectionsPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
-const SignupPage = lazy(() => import("./pages/SignupPage"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const CartPage = lazy(() => import("./pages/CartPage"));
-const OrdersPage = lazy(() => import("./pages/OrdersPage"));
-const OrderDetailPage = lazy(() => import("./pages/OrderDetailPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
+// Direct Storefront Page Imports (Preloaded upfront)
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import CollectionsPage from "./pages/CollectionsPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import ProfilePage from "./pages/ProfilePage";
+import ProductDetail from "./pages/ProductDetail";
+import CartPage from "./pages/CartPage";
+import OrdersPage from "./pages/OrdersPage";
+import OrderDetailPage from "./pages/OrderDetailPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 
 // Lazy-loaded Admin Pages
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -30,16 +34,50 @@ const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 
-const LoadingFallback = () => (
-  <div className="min-h-[60dvh] flex flex-col items-center justify-center gap-4 text-primary">
-    <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
-    <p className="text-xs font-semibold tracking-wider uppercase opacity-60">Loading...</p>
-  </div>
-);
+const LoadingFallback = () => <LuxuryLoader fullscreen={false} />;
 
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const { loading: authLoading } = useAuth();
+  const { products, loading: productsLoading } = useProducts();
+  const [initialReady, setInitialReady] = useState(false);
+
+  // Comprehensive upfront preloading before rendering storefront
+  useEffect(() => {
+    if (isAdminRoute) return;
+
+    if (!authLoading && !productsLoading) {
+      // Preload critical images and assets before revealing site
+      const imagesToPreload = [
+        "/images/big-bottle.webp",
+        "/images/women-empowermwnt.webp",
+        "/images/backgrounds/about-purpose.webp",
+        ...(products || [])
+          .slice(0, 8)
+          .map((p) => p.image)
+          .filter(Boolean),
+      ];
+
+      const preloadPromises = imagesToPreload.map((src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      });
+
+      Promise.race([
+        Promise.all(preloadPromises),
+        new Promise((resolve) => setTimeout(resolve, 800)),
+      ]).then(() => {
+        setTimeout(() => {
+          setInitialReady(true);
+        }, 150);
+      });
+    }
+  }, [authLoading, productsLoading, products, isAdminRoute]);
 
   // Scroll to top of window on every route change
   useEffect(() => {
@@ -100,13 +138,39 @@ function App() {
     );
   }
 
+  if (!isAdminRoute && !initialReady) {
+    return <LuxuryLoader fullscreen={true} />;
+  }
+
+  const isHomePage =
+    location.pathname === "/" ||
+    location.pathname === getPath("/") ||
+    location.pathname === "";
+
   return (
     <ErrorBoundary>
       <DevAccessGate>
-        {/* Global Silk Wave Background at 30% Opacity */}
-        <SilkWaveBackground fullscreen animated={true} opacity="0.3" showShimmer={true} />
+        {/* Silk Wave & CSS Gradient Background ONLY on Home Screen */}
+        {isHomePage && (
+          <>
+            <div
+              className="fixed inset-0 pointer-events-none -z-10"
+              style={{ background: "var(--bg-gradient)" }}
+            />
+            <SilkWaveBackground
+              fullscreen
+              animated={true}
+              opacity="0.3"
+              showShimmer={true}
+            />
+          </>
+        )}
 
-        <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between w-full">
+        <div
+          className={`min-h-screen min-h-[100dvh] flex flex-col justify-between w-full ${
+            isHomePage ? "bg-transparent" : "bg-white"
+          }`}
+        >
           <Navbar />
           <main className="w-full flex-1">
             <Suspense fallback={<LoadingFallback />}>

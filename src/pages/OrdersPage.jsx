@@ -12,6 +12,7 @@ import {
   XCircle,
   ArrowLeft,
 } from "lucide-react";
+import LuxuryLoader from "../components/LuxuryLoader";
 import "../styles/Profile.css";
 
 const OrdersPage = () => {
@@ -79,9 +80,11 @@ const OrdersPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[60dvh] flex items-center justify-center">
-        <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <LuxuryLoader
+        fullscreen={false}
+        message="Retrieving Orders"
+        subtext="Loading order history..."
+      />
     );
   }
 

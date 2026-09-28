@@ -23,13 +23,9 @@ const BestSellers = () => {
         <div className="text-center py-10 text-red-500">Error: {error}</div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {loading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <ProductSkeleton key={index} />
-              ))
-            : products.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+          {products.slice(0, 4).map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       )}
 

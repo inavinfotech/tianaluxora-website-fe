@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { api } from "../utils/api";
 import { getPath } from "../utils/paths";
+import LuxuryLoader from "../components/LuxuryLoader";
 import "../styles/OrderDetail.css";
 import {
   ArrowLeft,
@@ -51,9 +52,11 @@ const OrderDetailPage = () => {
 
   if (loading || orderLoading) {
     return (
-      <div className="min-h-[60dvh] flex items-center justify-center">
-        <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <LuxuryLoader
+        fullscreen={false}
+        message="Loading Order Details"
+        subtext="Fetching consignment info..."
+      />
     );
   }
 

@@ -33,9 +33,7 @@ const Products = () => {
               {query ? `Search: ${query}` : "All Products"}
             </h1>
             <p className="text-[10px] uppercase tracking-[0.3em] text-primary/40">
-              {loading
-                ? "Loading products..."
-                : `${filteredProducts.length} Exquisite Items Found`}
+              {`${filteredProducts.length} Exquisite Items Found`}
             </p>
           </div>
 
@@ -52,12 +50,6 @@ const Products = () => {
         {error ? (
           <div className="text-center py-20 text-red-500 font-serif">
             Error: {error}
-          </div>
-        ) : loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-            {Array.from({ length: 8 }).map((_, idx) => (
-              <ProductSkeleton key={idx} />
-            ))}
           </div>
         ) : filteredProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">

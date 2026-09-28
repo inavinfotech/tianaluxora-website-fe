@@ -9,9 +9,9 @@ const ProductSkeleton = () => {
       </div>
 
       {/* Title & Price Skeleton */}
-      <div className="text-center w-full flex flex-col items-center gap-2">
-        <div className="h-4 bg-primary/15 rounded-md w-3/4"></div>
-        <div className="h-3 bg-primary/10 rounded-md w-1/3"></div>
+      <div className="w-full flex items-center justify-between px-0.5 gap-2">
+        <div className="h-4 bg-primary/15 rounded-md w-1/2"></div>
+        <div className="h-4 bg-primary/10 rounded-md w-1/4"></div>
       </div>
 
       {/* Buttons Skeleton */}

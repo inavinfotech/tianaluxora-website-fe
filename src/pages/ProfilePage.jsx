@@ -24,6 +24,7 @@ import { getPath } from "../utils/paths";
 import AddressForm from "../components/AddressForm";
 import OrdersPage from "./OrdersPage";
 import OrderDetailPage from "./OrderDetailPage";
+import LuxuryLoader from "../components/LuxuryLoader";
 import "../styles/Profile.css";
 
 const ProfilePage = () => {
@@ -135,12 +136,11 @@ const ProfilePage = () => {
 
   if (loading || !user) {
     return (
-      <div className="min-h-[60dvh] flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-primary font-medium">Authenticating...</p>
-        </div>
-      </div>
+      <LuxuryLoader
+        fullscreen={false}
+        message="Authenticating Account"
+        subtext="Loading luxury membership profile..."
+      />
     );
   }
 

@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
+import { useProducts } from "../contexts/ProductContext";
+import LuxuryLoader from "../components/LuxuryLoader";
 import api from "../utils/api";
 import { getPath } from "../utils/paths";
 import THEME_COLORS, { primaryAlpha } from "../styles/theme";
@@ -119,10 +121,19 @@ const getColorSwatch = (colorName) => {
 const ProductDetail = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState("");
-  const [selectedVariant, setSelectedVariant] = useState(null);
+  const { products } = useProducts();
+  const [product, setProduct] = useState(() => {
+    if (products && products.length > 0) {
+      return products.find((p) => String(p.id) === String(productId)) || null;
+    }
+    return null;
+  });
+  const [loading, setLoading] = useState(() => !product);
+  const [selectedImage, setSelectedImage] = useState(() => product?.image || "");
+  const [selectedVariant, setSelectedVariant] = useState(() => {
+    const list = product?.real_variants || product?.variants || [];
+    return list.length > 0 ? list[0] : null;
+  });
   const [pincode, setPincode] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [copiedToast, setCopiedToast] = useState(false);
@@ -257,23 +268,28 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        setLoading(true);
+        if (!product) {
+          setLoading(true);
+        }
         const response = await api.get(`/api/products/${productId}`);
         if (response.ok) {
           const data = await response.json();
           setProduct(data);
-          setSelectedImage(data.image);
 
           const list = data.real_variants || data.variants || [];
           if (list.length > 0) {
-            setSelectedVariant(list[0]);
+            setSelectedVariant((prev) => prev || list[0]);
+            const initialImg =
+              list[0].image ||
+              (Array.isArray(list[0].images) && list[0].images[0]) ||
+              data.image;
+            setSelectedImage((prev) => prev || initialImg);
+          } else {
+            setSelectedImage((prev) => prev || data.image);
           }
-        } else {
-          setProduct(null);
         }
       } catch (error) {
         console.error("Error fetching product from backend API:", error);
-        setProduct(null);
       } finally {
         setLoading(false);
       }
@@ -331,10 +347,12 @@ const ProductDetail = () => {
 
     if (match) {
       setSelectedVariant(match);
-      if (match.image) {
-        setSelectedImage(match.image);
-      } else if (match.images && match.images[0]) {
-        setSelectedImage(match.images[0]);
+      const newImg =
+        match.image ||
+        (Array.isArray(match.images) && match.images[0]) ||
+        product?.image;
+      if (newImg) {
+        setSelectedImage(newImg);
       }
     }
   };
@@ -393,11 +411,13 @@ const ProductDetail = () => {
     return typeof price === "number" ? `₹${price}` : price;
   };
 
-  if (loading) {
+  if (loading && !product) {
     return (
-      <div className="min-h-[80dvh] flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <LuxuryLoader
+        fullscreen={false}
+        message="Curating Fragrance Details"
+        subtext="Preparing luxury aroma profile..."
+      />
     );
   }
 
@@ -452,7 +472,7 @@ const ProductDetail = () => {
           {/* Gallery Section */}
           <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 animate-slide-right">
             {/* Thumbnails */}
-            <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2.5 h-fit md:max-h-[520px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
+            <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2.5 h-fit md:max-h-[420px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
               {(() => {
                 const baseUrl = product.image?.includes("/uploads/")
                   ? product.image.split("/uploads/")[0]
@@ -489,7 +509,7 @@ const ProductDetail = () => {
 
             {/* Main Stage Image */}
             <div className="md:col-span-10 order-1 md:order-2">
-              <div className="w-full aspect-square sm:aspect-[4/5] max-h-[460px] md:max-h-[520px] rounded-2xl overflow-hidden border border-primary/10 relative group bg-gradient-to-b from-[#faf5f7] via-white to-[#fbf6f8] flex items-center justify-center p-6 shadow-inner">
+              <div className="w-full aspect-square sm:aspect-[4/5] max-h-[380px] md:max-h-[420px] rounded-2xl overflow-hidden border border-primary/10 relative group bg-gradient-to-b from-[#faf5f7] via-white to-[#fbf6f8] flex items-center justify-center p-4 shadow-inner">
                 <img
                   src={selectedImage}
                   alt={product.name}

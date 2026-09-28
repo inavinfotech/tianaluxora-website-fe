@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <>
       <HeroSection />
-      <Features />
       <AboutPurpose />
+      <Features />
       <BestSellers />
       <GlobalExportSection />
       {/* <Testimonials /> */}

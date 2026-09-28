@@ -4,7 +4,7 @@ import { footerLinks, brandDetails } from "../data/navigation";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-white border-t border-[rgba(131,37,78,0.12)] shadow-[0_-8px_30px_rgba(131,37,78,0.04)] animate-fade-in relative z-10 mt-12 md:mt-20">
+    <footer className="w-full bg-white border-t border-[rgba(131,37,78,0.12)] shadow-[0_-8px_30px_rgba(131,37,78,0.04)] animate-fade-in relative z-10">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-6 md:pt-12 pb-6 md:pb-10">
         {/* Official Brand Trust Ribbon */}
         <div className="border-y border-primary/10 bg-[#faf5f8]/70 py-2.5 px-4 text-center mb-6 md:mb-10 rounded-md">
