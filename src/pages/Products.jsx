@@ -96,7 +96,7 @@ const Products = () => {
         {/* Page Header */}
         <div className="mb-8 border-b border-primary/10 pb-6">
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary tracking-tight">
-            {searchQuery ? `Search Results: "${searchQuery}"` : "The Fragrance Collection"}
+            {searchQuery ? `Search Results: "${searchQuery}"` : "The Fragrance Catalog"}
           </h1>
           <p className="text-xs sm:text-sm text-primary/70 font-normal mt-1">
             Showing {loading ? "..." : filteredProducts.length} handcrafted perfumes

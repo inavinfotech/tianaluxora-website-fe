@@ -18,9 +18,9 @@ export const brandDetails = {
 
 export const footerLinks = {
   quickLinks: [
-    { name: "Shop", path: getPath("/shop") },
-    { name: "Collections", path: getPath("/collections") },
-    { name: "Brand Stories", path: getPath("/story") },
+    { name: "Shop Fragrances", path: getPath("/shop") },
+    { name: "Brand Cinema", path: getPath("/story") },
+    { name: "About Us", path: getPath("/about") },
     { name: "Contact", path: getPath("/contact") },
   ],
   customerService: [

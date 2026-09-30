@@ -248,7 +248,7 @@ const Navbar = () => {
               <input
                 autoFocus
                 type="text"
-                placeholder="Search products, collections..."
+                placeholder="Search perfumes, scents..."
                 className="w-full bg-transparent border-b-2 border-primary/10 py-4 text-2xl outline-none focus:border-accent transition-all pl-2"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

@@ -15,7 +15,6 @@ import { getPath } from "./utils/paths";
 // Direct Storefront Page Imports (Preloaded upfront)
 import Home from "./pages/Home";
 import Products from "./pages/Products";
-import CollectionsPage from "./pages/CollectionsPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -182,7 +181,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/shop" element={<Products />} />
-                <Route path="/collections" element={<CollectionsPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route

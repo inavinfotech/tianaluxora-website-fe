@@ -47,20 +47,20 @@ const HeroSection = () => {
           Tiana Luxora blends rare botanicals and precious oils into unforgettable fragrances crafted for timeless presence.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+        <div className="flex flex-nowrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3.5 pt-2 w-full max-w-full">
           <Link
-            to={getPath("/collections")}
+            to={getPath("/shop")}
             style={{ backgroundColor: "#83254e", color: "#ffffff" }}
-            className="px-8 sm:px-9 py-4 rounded-full font-bold text-xs uppercase tracking-widest flex items-center justify-center shadow-lg hover:shadow-xl hover:opacity-95 hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer"
+            className="px-5 sm:px-7 py-3.5 sm:py-4 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center shadow-lg hover:shadow-xl hover:opacity-95 hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer whitespace-nowrap shrink-0"
           >
-            Explore Collections
+            Explore Fragrances
           </Link>
 
           <Link
-            to={getPath("/shop")}
-            className="px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest text-primary border border-primary/20 bg-white/60 hover:bg-white transition-all shadow-xs hover:-translate-y-0.5 active:scale-95"
+            to={getPath("/story")}
+            className="px-5 sm:px-7 py-3.5 sm:py-4 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider text-primary border border-primary/20 bg-white/60 hover:bg-white transition-all shadow-xs hover:-translate-y-0.5 active:scale-95 whitespace-nowrap shrink-0"
           >
-            Shop All Perfumes
+            Brand Cinema & Story
           </Link>
         </div>
 
