@@ -111,9 +111,6 @@ const ContactPage = () => {
       <div className="max-w-[1050px] mx-auto space-y-8 md:space-y-10 mt-6 px-4">
         {/* Page Title - Compact */}
         <div className="text-center" id="contact-header">
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-accent block mb-1">
-            Customer Concierge & Care
-          </span>
           <h1 className="font-serif text-3xl md:text-4xl text-primary font-bold tracking-tight">
             Get In Touch
           </h1>

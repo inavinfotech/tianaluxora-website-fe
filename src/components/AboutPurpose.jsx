@@ -47,7 +47,7 @@ const AboutPurpose = () => {
                   {aboutContent.buttons[0].text}
                 </Button>
               </Link>
-              <Link to={getPath("/about")}>
+              <Link to={getPath("/story")}>
                 <Button variant="secondary" className="bg-primary! text-white! shadow-sm">
                   {aboutContent.buttons[1].text}
                 </Button>

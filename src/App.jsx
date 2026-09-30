@@ -25,6 +25,7 @@ import OrdersPage from "./pages/OrdersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import StoryPage from "./pages/StoryPage";
 
 // Lazy-loaded Admin Pages
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -193,6 +194,8 @@ function App() {
                   }
                 />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/story" element={<StoryPage />} />
+                <Route path="/our-story" element={<StoryPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/product/:productId" element={<ProductDetail />} />
                 <Route path="/cart" element={<CartPage />} />

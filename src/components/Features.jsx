@@ -33,7 +33,6 @@ const Features = () => {
           </div>
         ))}
       </div>
-      <div className="w-full border-b-2 border-dotted border-primary/25 mt-8 md:mt-12" />
     </section>
   );
 };

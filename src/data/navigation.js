@@ -3,8 +3,8 @@ import { getPath } from "../utils/paths";
 export const navLinks = [
   { name: "Home", path: getPath("/") },
   { name: "Shop", path: getPath("/shop") },
+  { name: "Story", path: getPath("/story") },
   { name: "About", path: getPath("/about") },
-  // { name: "Blog", path: "#" },
   { name: "Contact", path: getPath("/contact") },
 ];
 
@@ -20,7 +20,7 @@ export const footerLinks = {
   quickLinks: [
     { name: "Shop", path: getPath("/shop") },
     { name: "Collections", path: getPath("/collections") },
-    { name: "Best Sellers", path: getPath("/shop") },
+    { name: "Brand Stories", path: getPath("/story") },
     { name: "Contact", path: getPath("/contact") },
   ],
   customerService: [
@@ -30,7 +30,7 @@ export const footerLinks = {
     { name: "Track Order", path: getPath("/orders") },
   ],
   about: [
-    { name: "Our Story", path: getPath("/about") },
+    { name: "Our Story", path: getPath("/story") },
     { name: "Women Empowerment", path: getPath("/about#empowerment") },
     { name: "Why Choose Us", path: getPath("/about#purpose") },
   ],

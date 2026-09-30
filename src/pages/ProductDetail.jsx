@@ -129,12 +129,20 @@ const ProductDetail = () => {
     return null;
   });
   const [loading, setLoading] = useState(() => !product);
-  const [selectedImage, setSelectedImage] = useState(() => product?.image || "");
   const [selectedVariant, setSelectedVariant] = useState(() => {
     const list = product?.real_variants || product?.variants || [];
     return list.length > 0 ? list[0] : null;
   });
-  const [pincode, setPincode] = useState("");
+  const [selectedImage, setSelectedImage] = useState(() => {
+    const list = product?.real_variants || product?.variants || [];
+    const firstVar = list.length > 0 ? list[0] : null;
+    return (
+      (Array.isArray(firstVar?.images) && firstVar.images[0]) ||
+      firstVar?.image ||
+      product?.image ||
+      ""
+    );
+  });
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [copiedToast, setCopiedToast] = useState(false);
   const { addToCart } = useCart();
@@ -195,6 +203,89 @@ const ProductDetail = () => {
     if (!product) return [];
     return product.real_variants || product.variants || [];
   }, [product]);
+
+  const baseUrl = React.useMemo(() => {
+    if (product?.image && product.image.includes("/uploads/")) {
+      return product.image.split("/uploads/")[0];
+    }
+    return "";
+  }, [product]);
+
+  const normalizeUrl = React.useCallback(
+    (img) => {
+      if (!img || typeof img !== "string") return "";
+      if (img.startsWith("/") && baseUrl) return `${baseUrl}${img}`;
+      return img;
+    },
+    [baseUrl]
+  );
+
+  const activeVariant = selectedVariant || variantsList[0] || null;
+
+  // Build the gallery images array: strictly show active variant's images if available, otherwise general product images
+  const galleryImages = React.useMemo(() => {
+    if (!product) return [];
+
+    // 1. If active variant has its own images, strictly use active variant images
+    if (activeVariant) {
+      const variantImages = [
+        ...(Array.isArray(activeVariant.images) ? activeVariant.images : []),
+        ...(activeVariant.image ? [activeVariant.image] : []),
+      ]
+        .filter(Boolean)
+        .map(normalizeUrl);
+
+      const uniqueVariantImages = variantImages.filter(
+        (img, idx, arr) => img && arr.indexOf(img) === idx
+      );
+
+      if (uniqueVariantImages.length > 0) {
+        return uniqueVariantImages;
+      }
+    }
+
+    // 2. Otherwise, use general product images and thumbnails
+    const generalImages = [
+      ...(Array.isArray(product.images) ? product.images : []),
+      ...(Array.isArray(product.thumbnails) ? product.thumbnails : []),
+      product.image,
+    ]
+      .filter(Boolean)
+      .map(normalizeUrl);
+
+    const uniqueGeneral = generalImages.filter(
+      (img, idx, arr) => img && arr.indexOf(img) === idx
+    );
+
+    if (uniqueGeneral.length > 0) {
+      return uniqueGeneral;
+    }
+
+    // 3. Fallback: all images from all variants if none of the above
+    const allVarImgs = variantsList
+      .flatMap((v) => [
+        ...(Array.isArray(v.images) ? v.images : []),
+        v.image,
+      ])
+      .filter(Boolean)
+      .map(normalizeUrl)
+      .filter((img, idx, arr) => img && arr.indexOf(img) === idx);
+
+    return allVarImgs.length > 0
+      ? allVarImgs
+      : product.image
+      ? [normalizeUrl(product.image)]
+      : [];
+  }, [product, activeVariant, variantsList, normalizeUrl]);
+
+  const currentDisplayImage =
+    selectedImage && galleryImages.includes(selectedImage)
+      ? selectedImage
+      : galleryImages[0] || normalizeUrl(product?.image) || "";
+
+  const handleThumbnailClick = (thumb) => {
+    setSelectedImage(thumb);
+  };
 
   const attributeGroups = React.useMemo(() => {
     if (!product) return [];
@@ -278,14 +369,19 @@ const ProductDetail = () => {
 
           const list = data.real_variants || data.variants || [];
           if (list.length > 0) {
-            setSelectedVariant((prev) => prev || list[0]);
+            const firstVar = list[0];
+            setSelectedVariant(firstVar);
             const initialImg =
-              list[0].image ||
-              (Array.isArray(list[0].images) && list[0].images[0]) ||
+              (Array.isArray(firstVar.images) && firstVar.images[0]) ||
+              firstVar.image ||
               data.image;
-            setSelectedImage((prev) => prev || initialImg);
+            if (initialImg) {
+              setSelectedImage(initialImg);
+            }
           } else {
-            setSelectedImage((prev) => prev || data.image);
+            setSelectedImage(
+              data.image || (Array.isArray(data.images) && data.images[0]) || ""
+            );
           }
         }
       } catch (error) {
@@ -348,11 +444,11 @@ const ProductDetail = () => {
     if (match) {
       setSelectedVariant(match);
       const newImg =
-        match.image ||
         (Array.isArray(match.images) && match.images[0]) ||
+        match.image ||
         product?.image;
       if (newImg) {
-        setSelectedImage(newImg);
+        setSelectedImage(normalizeUrl(newImg));
       }
     }
   };
@@ -375,7 +471,6 @@ const ProductDetail = () => {
     return 999;
   };
 
-  const activeVariant = selectedVariant || variantsList[0];
   const availableStock = getAvailableStock(activeVariant);
   const isOutOfStock = availableStock <= 0;
 
@@ -403,7 +498,6 @@ const ProductDetail = () => {
 
   const getDisplayPrice = () => {
     if (!product) return "";
-    const activeVariant = selectedVariant || variantsList[0];
     const price =
       activeVariant && activeVariant.price != null
         ? activeVariant.price
@@ -472,46 +566,36 @@ const ProductDetail = () => {
           {/* Gallery Section */}
           <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 animate-slide-right">
             {/* Thumbnails */}
-            <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2.5 h-fit md:max-h-[420px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
-              {(() => {
-                const baseUrl = product.image?.includes("/uploads/")
-                  ? product.image.split("/uploads/")[0]
-                  : "";
-                const allImages = [
-                  product.image,
-                  ...(product.thumbnails || []),
-                  ...(product.images || []).map((img) =>
-                    img.startsWith("/") && baseUrl ? `${baseUrl}${img}` : img,
-                  ),
-                ]
-                  .filter(Boolean)
-                  .filter((v, i, a) => a.indexOf(v) === i);
-
-                return allImages.map((thumb, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedImage(thumb)}
-                    className={`aspect-square w-16 md:w-full rounded-xl overflow-hidden border-2 transition-all duration-300 shrink-0 bg-white shadow-xs ${
-                      selectedImage === thumb
-                        ? "border-primary ring-2 ring-primary/20 scale-105"
-                        : "border-primary/10 hover:border-accent/50 opacity-80 hover:opacity-100"
-                    }`}
-                  >
-                    <img
-                      src={thumb}
-                      alt={`View ${idx}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ));
-              })()}
-            </div>
+            {galleryImages.length > 1 && (
+              <div className="md:col-span-2 order-2 md:order-1 flex flex-row md:flex-col gap-2.5 h-fit md:max-h-[420px] overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-1 custom-scrollbar scrollbar-hide">
+                {galleryImages.map((thumb, idx) => {
+                  const isSelected = currentDisplayImage === thumb;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => handleThumbnailClick(thumb)}
+                      className={`aspect-square w-16 md:w-full rounded-xl overflow-hidden border-2 transition-all duration-300 shrink-0 bg-white shadow-xs cursor-pointer ${
+                        isSelected
+                          ? "border-primary ring-2 ring-primary/20 scale-105"
+                          : "border-primary/10 hover:border-accent/50 opacity-80 hover:opacity-100"
+                      }`}
+                    >
+                      <img
+                        src={thumb}
+                        alt={`${product.name} view ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Main Stage Image */}
-            <div className="md:col-span-10 order-1 md:order-2">
+            <div className={`${galleryImages.length > 1 ? "md:col-span-10" : "md:col-span-12"} order-1 md:order-2`}>
               <div className="w-full aspect-square sm:aspect-[4/5] max-h-[380px] md:max-h-[420px] rounded-2xl overflow-hidden border border-primary/10 relative group bg-gradient-to-b from-[#faf5f7] via-white to-[#fbf6f8] flex items-center justify-center p-4 shadow-inner">
                 <img
-                  src={selectedImage}
+                  src={currentDisplayImage}
                   alt={product.name}
                   className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_20px_35px_rgba(131,37,78,0.12)]"
                 />
@@ -687,29 +771,6 @@ const ProductDetail = () => {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-
-            {/* Pincode & Delivery Section */}
-            <div className="space-y-2">
-              <label className="text-xs uppercase tracking-[0.2em] font-bold text-primary flex items-center gap-1.5">
-                <Truck size={14} className="text-accent" /> Check Estimated Delivery
-              </label>
-              <div className="flex border border-primary/20 rounded-xl overflow-hidden shadow-xs bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-                <input
-                  type="text"
-                  placeholder="Enter 6-digit Pincode"
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value)}
-                  className="flex-1 py-3.5 px-4 outline-none text-xs font-semibold text-primary w-full placeholder:text-primary/40"
-                />
-                <button
-                  type="button"
-                  style={{ backgroundColor: "#83254e", color: "#ffffff" }}
-                  className="px-6 py-3.5 bg-[#83254e] hover:bg-[#6c1d3f] text-xs font-bold uppercase tracking-wider text-white transition-colors cursor-pointer border-l border-primary/10"
-                >
-                  Check
-                </button>
               </div>
             </div>
 
@@ -890,4 +951,7 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+
+
 

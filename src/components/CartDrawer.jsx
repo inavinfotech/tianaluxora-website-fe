@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import AddressForm from "./AddressForm";
@@ -52,7 +52,24 @@ const CartDrawer = () => {
     handleCheckout,
   } = useCheckout(() => setIsCartOpen(false));
 
-  if (!isCartOpen) return null;
+  // Lock body scroll and listen for ESC key when open
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+          setIsCartOpen(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "";
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isCartOpen, setIsCartOpen]);
 
   const freeShippingProgress = Math.min(
     100,
@@ -61,16 +78,27 @@ const CartDrawer = () => {
   const amountNeeded = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
 
   return (
-    <div className="fixed inset-0 z-[200] overflow-hidden">
-      {/* Overlay */}
+    <div
+      className={`fixed inset-0 z-[200] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isCartOpen ? "visible pointer-events-auto" : "invisible pointer-events-none"
+      }`}
+      aria-hidden={!isCartOpen}
+    >
+      {/* Overlay Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300"
+        className={`absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isCartOpen ? "opacity-100" : "opacity-0"
+        }`}
         onClick={() => setIsCartOpen(false)}
       />
 
       {/* Drawer */}
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10">
-        <div className="w-screen max-w-md flex flex-col bg-white shadow-2xl animate-slide-left border-l border-primary/10">
+        <div
+          className={`w-screen max-w-md flex flex-col bg-white shadow-[-20px_0_50px_rgba(131,37,78,0.18)] border-l border-primary/10 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform ${
+            isCartOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
           {/* Header */}
           <div className="px-6 py-5 border-b border-primary/10 bg-[#faf6f4] flex items-center justify-between">
             <div className="flex items-center gap-2.5">

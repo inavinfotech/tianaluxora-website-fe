@@ -1,20 +1,43 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import PerfumeModel from "./PerfumeModel";
 import { getPath } from "../utils/paths";
 
+const HERO_IMAGES = [
+  {
+    id: 1,
+    src: "/images/hero/hero-1.webp",
+    alt: "Tiana Luxora Signature Fragrance 1",
+    tag: "Velvet Amber Edition",
+  },
+  {
+    id: 2,
+    src: "/images/hero/hero-2.webp",
+    alt: "Tiana Luxora Signature Fragrance 2",
+    tag: "Royal Rose Elixir",
+  },
+  {
+    id: 3,
+    src: "/images/hero/hero-3.webp",
+    alt: "Tiana Luxora Signature Fragrance 3",
+    tag: "Golden Sillage Noir",
+  },
+];
+
 const HeroSection = () => {
-  // 3D Model disabled to ensure fast 60FPS page rendering
-  const is3dactive = false;
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  // Smooth continuous auto-rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col lg:grid lg:grid-cols-[1.1fr_1.2fr_0.9fr] items-center justify-center gap-6 md:gap-8 min-h-[calc(100vh-80px)] min-h-[calc(100dvh-80px)] pt-6 sm:pt-10 pb-10 lg:py-0 animate-fade-in text-center lg:text-left">
+      {/* Left Column: Hero Text */}
       <div className="flex flex-col gap-4 sm:gap-6 items-center lg:items-start order-1 lg:order-0">
-        {/* <div className="inline-flex items-center gap-2 bg-[#f5e4ea]/80 border border-primary/10 px-3.5 py-1 rounded-full text-[10px] sm:text-xs uppercase tracking-[0.25em] text-primary font-bold shadow-xs">
-          <span>Haute Parfumerie</span>
-          <span>•</span>
-          <span>Artisanal Blends</span>
-        </div> */}
-
         <h1 className="text-[2.6rem] sm:text-[3rem] md:text-[3.5rem] leading-[1.08] text-primary font-serif font-bold tracking-tight">
           Luxury That Speaks <br />
           <span className="italic font-normal font-serif text-accent">Before You Do</span>
@@ -42,27 +65,55 @@ const HeroSection = () => {
         </div>
 
         <div className="text-[0.78rem] sm:text-[0.82rem] font-semibold uppercase tracking-[1.5px] text-primary/70 mt-2 flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
           <span>100% Authentic • Handcrafted in India</span>
         </div>
       </div>
 
-      <div className="order-2 lg:order-0 w-full flex justify-center my-4 sm:my-6 lg:my-0">
-        {is3dactive ? (
-          <div className="h-[360px] sm:h-[420px] md:h-[500px] lg:h-[600px] w-full relative flex justify-center items-center">
-            <PerfumeModel />
-          </div>
-        ) : (
-          <div className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[460px] lg:max-w-[500px] h-auto max-h-[48dvh] sm:max-h-[52dvh] lg:max-h-[540px] relative flex justify-center items-center">
-            <img
-              src="/images/big-bottle.webp"
-              alt="Tiana Luxora Signature Perfume Bottle"
-              className="w-full h-auto max-h-full object-contain transition-transform duration-500 hover:scale-102 drop-shadow-[0_25px_50px_rgba(131,37,78,0.18)]"
-            />
-          </div>
-        )}
+      {/* Middle Column: Auto-changing 3-Bottle Showcase with Enhanced Transitions */}
+      <div className="order-2 lg:order-0 w-full flex flex-col items-center justify-center my-2 sm:my-4 lg:my-0 relative">
+        <div className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[460px] lg:max-w-[500px] h-[340px] sm:h-[420px] md:h-[480px] lg:h-[520px] relative flex justify-center items-center">
+          {/* Ambient Glow Aura */}
+          <div className="absolute inset-0 m-auto w-52 sm:w-72 h-52 sm:h-72 rounded-full bg-accent/15 blur-3xl pointer-events-none -z-10 transition-all duration-1000" />
+
+          {/* Render all 3 images with luxury crossfade and floating scale transition */}
+          {HERO_IMAGES.map((item, idx) => {
+            const isActive = idx === currentIdx;
+            return (
+              <img
+                key={item.id}
+                src={item.src}
+                alt={item.alt}
+                className={`absolute inset-0 m-auto w-full h-auto max-h-full object-contain transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] drop-shadow-[0_25px_50px_rgba(131,37,78,0.22)] ${
+                  isActive
+                    ? "opacity-100 scale-100 translate-y-0 blur-none z-10"
+                    : "opacity-0 scale-92 translate-y-4 blur-[2px] pointer-events-none z-0"
+                }`}
+              />
+            );
+          })}
+        </div>
+
+        {/* Minimalist Dots Indicator (Auto-changing active pill + soft circular dots) */}
+        <div className="flex items-center gap-2 mt-4 z-20" aria-label="Slide indicators">
+          {HERO_IMAGES.map((item, idx) => {
+            const isActive = idx === currentIdx;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setCurrentIdx(idx)}
+                aria-label={`Go to fragrance ${idx + 1}`}
+                className={`transition-all duration-500 rounded-full cursor-pointer p-0 border-0 outline-none ${
+                  isActive
+                    ? "w-7 h-2 bg-[#83254e] shadow-xs"
+                    : "w-2 h-2 bg-[#83254e]/25 hover:bg-[#83254e]/50"
+                }`}
+              />
+            );
+          })}
+        </div>
       </div>
 
+      {/* Right Column: Spotlight Card */}
       <div className="flex justify-center lg:justify-end order-3 lg:order-0 max-lg:hidden">
         <div className="max-w-[280px] flex flex-col gap-4 items-center lg:items-start bg-white/70 backdrop-blur-md p-6 rounded-3xl border border-primary/10 shadow-xs">
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
@@ -76,16 +127,16 @@ const HeroSection = () => {
           </p>
 
           <div className="w-full pt-2 flex items-center gap-3 border-t border-primary/10">
-            <div className="w-14 h-14 rounded-xl bg-[#faf6f4] flex justify-center items-center overflow-hidden border border-primary/10 shrink-0">
+            <div className="w-14 h-14 rounded-xl bg-[#faf6f4] flex justify-center items-center overflow-hidden border border-primary/10 shrink-0 p-1">
               <img
-                src="/images/small-bottle.webp"
-                alt="Miniature Perfume Bottle"
-                className="w-full h-full object-contain"
+                src={HERO_IMAGES[currentIdx].src}
+                alt={HERO_IMAGES[currentIdx].alt}
+                className="w-full h-full object-contain transition-all duration-700"
               />
             </div>
             <div>
-              <span className="text-xs font-serif font-bold text-primary block">
-                Signature Eau de Parfum
+              <span className="text-xs font-serif font-bold text-primary block line-clamp-1">
+                {HERO_IMAGES[currentIdx].tag}
               </span>
               <Link
                 to={getPath("/shop")}
@@ -101,5 +152,5 @@ const HeroSection = () => {
   );
 };
 
-
 export default HeroSection;
+
