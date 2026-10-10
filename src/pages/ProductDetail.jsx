@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import { useProducts } from "../contexts/ProductContext";
 import LuxuryLoader from "../components/LuxuryLoader";
@@ -121,24 +121,61 @@ const getColorSwatch = (colorName) => {
 const ProductDetail = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const { products } = useProducts();
+  const location = useLocation();
+  const { products, baseProducts } = useProducts();
+
+  const queryVariantId = React.useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("variant");
+  }, [location.search]);
+
   const [product, setProduct] = useState(() => {
-    if (products && products.length > 0) {
-      return products.find((p) => String(p.id) === String(productId)) || null;
+    const pool = baseProducts && baseProducts.length > 0 ? baseProducts : products || [];
+    let found = pool.find(
+      (p) => String(p.id) === String(productId) || String(p.base_product_id) === String(productId)
+    );
+    if (!found && products && products.length > 0) {
+      const match = products.find(
+        (p) =>
+          String(p.variant_id) === String(productId) ||
+          String(p.id) === String(productId)
+      );
+      found = match?.parent_product || match || null;
     }
-    return null;
+    return found || null;
   });
   const [loading, setLoading] = useState(() => !product);
   const [selectedVariant, setSelectedVariant] = useState(() => {
     const list = product?.real_variants || product?.variants || [];
-    return list.length > 0 ? list[0] : null;
+    if (list.length === 0) return null;
+    if (queryVariantId) {
+      const matched = list.find(
+        (v) =>
+          String(v.id) === String(queryVariantId) ||
+          String(v.variant_id) === String(queryVariantId) ||
+          String(v.sku) === String(queryVariantId) ||
+          String(v.size || v.weight).toLowerCase() === String(queryVariantId).toLowerCase()
+      );
+      if (matched) return matched;
+    }
+    return list[0];
   });
   const [selectedImage, setSelectedImage] = useState(() => {
     const list = product?.real_variants || product?.variants || [];
-    const firstVar = list.length > 0 ? list[0] : null;
+    let activeVar = list.length > 0 ? list[0] : null;
+    if (queryVariantId && list.length > 0) {
+      const matched = list.find(
+        (v) =>
+          String(v.id) === String(queryVariantId) ||
+          String(v.variant_id) === String(queryVariantId) ||
+          String(v.sku) === String(queryVariantId) ||
+          String(v.size || v.weight).toLowerCase() === String(queryVariantId).toLowerCase()
+      );
+      if (matched) activeVar = matched;
+    }
     return (
-      (Array.isArray(firstVar?.images) && firstVar.images[0]) ||
-      firstVar?.image ||
+      (Array.isArray(activeVar?.images) && activeVar.images[0]) ||
+      activeVar?.image ||
       product?.image ||
       ""
     );
@@ -369,11 +406,22 @@ const ProductDetail = () => {
 
           const list = data.real_variants || data.variants || [];
           if (list.length > 0) {
-            const firstVar = list[0];
-            setSelectedVariant(firstVar);
+            let chosenVar = list[0];
+            const targetId = queryVariantId || data.matched_variant_id;
+            if (targetId) {
+              const matched = list.find(
+                (v) =>
+                  String(v.id) === String(targetId) ||
+                  String(v.variant_id) === String(targetId) ||
+                  String(v.sku) === String(targetId) ||
+                  String(v.size || v.weight).toLowerCase() === String(targetId).toLowerCase()
+              );
+              if (matched) chosenVar = matched;
+            }
+            setSelectedVariant(chosenVar);
             const initialImg =
-              (Array.isArray(firstVar.images) && firstVar.images[0]) ||
-              firstVar.image ||
+              (Array.isArray(chosenVar.images) && chosenVar.images[0]) ||
+              chosenVar.image ||
               data.image;
             if (initialImg) {
               setSelectedImage(initialImg);
@@ -393,7 +441,30 @@ const ProductDetail = () => {
 
     fetchProduct();
     window.scrollTo(0, 0);
-  }, [productId]);
+  }, [productId, queryVariantId]);
+
+  // Keep selected variant in sync when URL variant param changes
+  useEffect(() => {
+    if (!queryVariantId || !product) return;
+    const list = product.real_variants || product.variants || [];
+    const matched = list.find(
+      (v) =>
+        String(v.id) === String(queryVariantId) ||
+        String(v.variant_id) === String(queryVariantId) ||
+        String(v.sku) === String(queryVariantId) ||
+        String(v.size || v.weight).toLowerCase() === String(queryVariantId).toLowerCase()
+    );
+    if (matched && String(matched.id) !== String(selectedVariant?.id)) {
+      setSelectedVariant(matched);
+      const newImg =
+        (Array.isArray(matched.images) && matched.images[0]) ||
+        matched.image ||
+        product?.image;
+      if (newImg) {
+        setSelectedImage(normalizeUrl(newImg));
+      }
+    }
+  }, [queryVariantId, product, selectedVariant, normalizeUrl]);
 
   const getSelectedAttrValue = (attrName) => {
     if (!selectedVariant) return "";
@@ -450,6 +521,7 @@ const ProductDetail = () => {
       if (newImg) {
         setSelectedImage(normalizeUrl(newImg));
       }
+      navigate(`?variant=${match.id || match.variant_id}`, { replace: true });
     }
   };
 
@@ -492,6 +564,11 @@ const ProductDetail = () => {
         variant_id: activeVariant?.id || null,
         sku: activeVariant?.sku || product.sku,
         variant_attributes: activeVariant?.attributes || null,
+        image:
+          activeVariant?.image ||
+          (Array.isArray(activeVariant?.images) && activeVariant.images[0]) ||
+          currentDisplayImage ||
+          product.image,
       });
     }
   };

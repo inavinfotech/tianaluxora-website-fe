@@ -1,10 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { api } from "../utils/api";
+import { expandProductsToVariants } from "../utils/productUtils";
 
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
+  const [baseProducts, setBaseProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,10 +22,14 @@ export const ProductProvider = ({ children }) => {
       const data = await response.json();
       // Data format from backend API is { items: [...], total: ... } or Array
       const itemsList = Array.isArray(data) ? data : data.items || [];
-      setProducts(itemsList);
+      setBaseProducts(itemsList);
+      // Expand each variant into its own separate product view
+      const expandedList = expandProductsToVariants(itemsList);
+      setProducts(expandedList);
     } catch (err) {
       setError(err.message);
       console.error("Error fetching products from backend:", err);
+      setBaseProducts([]);
       setProducts([]);
     } finally {
       setLoading(false);
@@ -36,7 +42,13 @@ export const ProductProvider = ({ children }) => {
 
   return (
     <ProductContext.Provider
-      value={{ products, loading, error, refreshProducts: fetchProducts }}
+      value={{
+        products,
+        baseProducts,
+        loading,
+        error,
+        refreshProducts: fetchProducts,
+      }}
     >
       {children}
     </ProductContext.Provider>
@@ -50,3 +62,4 @@ export const useProducts = () => {
   }
   return context;
 };
+
