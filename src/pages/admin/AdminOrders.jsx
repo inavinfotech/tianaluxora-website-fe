@@ -271,7 +271,7 @@ const AdminOrders = () => {
                       <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Phone Number</span>
                       <span className="text-slate-800 font-medium flex items-center gap-1.5 mt-0.5">
                         <Phone size={13} className="text-slate-400 flex-shrink-0" />
-                        {selectedOrder.customer_phone || selectedOrder.phone || "+91 98765 43210"}
+                        {selectedOrder.customer_phone || selectedOrder.phone || ""}
                       </span>
                     </div>
 

@@ -37,7 +37,7 @@ export const footerLinks = {
   contactInfo: {
     email: "tianacare6@gmail.com",
     exportEmail: "tianaluxora.global@gmail.com",
-    phone: "+91 98765 43210",
+    phone: "",
     workingHours: "Mon – Sat, 10 AM – 6 PM",
     location: "Delhi, India",
     gst: "07ADRPA1310K1ZU",
