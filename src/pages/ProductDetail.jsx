@@ -436,11 +436,20 @@ const ProductDetail = () => {
         console.error("Error fetching product from backend API:", error);
       } finally {
         setLoading(false);
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          if (window.lenis) {
+            window.lenis.scrollTo(0, { immediate: true, force: true });
+          }
+        });
       }
     };
 
     fetchProduct();
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true, force: true });
+    }
   }, [productId, queryVariantId]);
 
   // Keep selected variant in sync when URL variant param changes

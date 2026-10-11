@@ -489,13 +489,13 @@ const ProfilePage = () => {
             <Route
               path="/payments"
               element={
-                <div className="space-y-8 animate-slide-left">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-linear-to-br from-secondary to-black p-8 rounded-4xl text-white relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent/20 transition-colors"></div>
-                      <div className="flex justify-between items-start mb-12">
+                <div className="space-y-8 animate-slide-left w-full min-w-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full min-w-0">
+                    <div className="bg-gradient-to-br from-primary to-[#2a0818] p-6 sm:p-8 rounded-3xl sm:rounded-4xl text-white relative overflow-hidden group shadow-xl">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent/20 transition-colors pointer-events-none"></div>
+                      <div className="flex justify-between items-start mb-8 sm:mb-12">
                         <ShieldCheck size={32} className="text-accent" />
-                        <span className="text-[8px] font-black uppercase tracking-[0.4em] opacity-40">
+                        <span className="text-[8px] font-black uppercase tracking-[0.4em] opacity-50">
                           Luxury Preferred
                         </span>
                       </div>
@@ -506,86 +506,188 @@ const ProfilePage = () => {
                         UPI / Razorpay
                       </h4>
                       <div className="flex justify-between items-end">
-                        <span className="text-[10px] font-bold opacity-40">
+                        <span className="text-[10px] font-bold opacity-50">
                           Default Gateway
                         </span>
                         <div className="flex -space-x-2">
-                          <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 flex items-center justify-center text-[8px] font-bold">
+                          <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 flex items-center justify-center text-[8px] font-bold">
                             VISA
                           </div>
-                          <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 flex items-center justify-center text-[8px] font-bold">
+                          <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 flex items-center justify-center text-[8px] font-bold">
                             MC
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-white/30 backdrop-blur-md border border-dashed border-primary/20 p-8 rounded-4xl flex flex-col items-center justify-center text-center gap-3 group cursor-pointer hover:bg-white/50 transition-all">
-                      <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/20 group-hover:bg-accent/10 group-hover:text-accent transition-all">
+                    <div className="bg-white/30 backdrop-blur-md border border-dashed border-primary/20 p-6 sm:p-8 rounded-3xl sm:rounded-4xl flex flex-col items-center justify-center text-center gap-3 group cursor-pointer hover:bg-white/50 transition-all min-h-[160px]">
+                      <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/30 group-hover:bg-accent/10 group-hover:text-accent transition-all">
                         <CreditCard size={24} />
                       </div>
-                      <span className="text-xs font-bold text-primary/40">
+                      <span className="text-xs font-bold text-primary/60">
                         Add New Payment Method
                       </span>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between px-2">
+                  <div className="space-y-4 w-full min-w-0">
+                    <div className="flex flex-wrap items-center justify-between gap-2 px-2">
                       <h3 className="text-xl font-serif font-bold text-primary">
                         Transaction History
                       </h3>
-                      <button className="text-[10px] font-bold text-primary/40 hover:text-accent uppercase tracking-widest flex items-center gap-2">
+                      <button className="text-[10px] font-bold text-primary/50 hover:text-accent uppercase tracking-widest flex items-center gap-2 transition-colors">
                         <Receipt size={14} /> Download Ledger
                       </button>
                     </div>
 
                     {paymentsLoading ? (
-                      <div className="h-60 bg-white/20 rounded-4xl border-2 border-dashed border-primary/5 animate-pulse flex items-center justify-center">
-                        <p className="text-sm font-medium text-primary/20">
+                      <div className="h-60 bg-white/20 rounded-3xl sm:rounded-4xl border-2 border-dashed border-primary/5 animate-pulse flex items-center justify-center">
+                        <p className="text-sm font-medium text-primary/30">
                           Auditing ledgers...
                         </p>
                       </div>
-                    ) : (
-                      <div className="bg-white/40 backdrop-blur-xl border border-white/30 rounded-4xl overflow-hidden shadow-xl">
-                        <table className="w-full text-left">
-                          <thead>
-                            <tr className="border-b border-primary/5 text-[10px] uppercase tracking-widest font-black text-primary/30">
-                              <th className="px-8 py-5">Reference</th>
-                              <th className="px-8 py-5">Date</th>
-                              <th className="px-8 py-5">Method</th>
-                              <th className="px-8 py-5 text-right">Amount</th>
-                              <th className="px-8 py-5 text-right">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody className="text-sm text-primary">
-                            {transactions.map((txn) => (
-                              <tr
-                                key={txn.id}
-                                className="border-b border-primary/5 last:border-0 hover:bg-white/40 transition-colors group"
-                              >
-                                <td className="px-8 py-4 font-mono text-[10px] opacity-60 uppercase">
-                                  {txn.id}
-                                </td>
-                                <td className="px-8 py-4 font-medium">
-                                  {txn.date}
-                                </td>
-                                <td className="px-8 py-4 text-xs opacity-80">
-                                  {txn.method}
-                                </td>
-                                <td className="px-8 py-4 text-right font-bold">
-                                  ₹{(txn.total_amount || txn.amount || 0).toLocaleString()}
-                                </td>
-                                <td className="px-8 py-4 text-right">
-                                  <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
-                                    <CheckCircle size={10} /> {txn.status}
-                                  </span>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                    ) : transactions.length === 0 ? (
+                      <div className="bg-white/30 backdrop-blur-md border border-dashed border-primary/15 p-8 sm:p-12 rounded-3xl sm:rounded-4xl text-center flex flex-col items-center justify-center gap-2">
+                        <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/30 mb-1">
+                          <Receipt size={22} />
+                        </div>
+                        <p className="text-sm font-semibold text-primary/70">
+                          No transaction records found
+                        </p>
+                        <p className="text-xs text-primary/40 max-w-xs">
+                          Your completed luxury orders and payment receipts will appear here.
+                        </p>
                       </div>
+                    ) : (
+                      <>
+                        {/* Mobile Cards View (<640px) */}
+                        <div className="block sm:hidden space-y-3 w-full min-w-0">
+                          {transactions.map((txn) => {
+                            const dateStr =
+                              txn.date ||
+                              (txn.created_at
+                                ? new Date(txn.created_at).toLocaleDateString(
+                                    undefined,
+                                    {
+                                      year: "numeric",
+                                      month: "short",
+                                      day: "numeric",
+                                    },
+                                  )
+                                : "Recent");
+                            const refId = txn.id
+                              ? txn.id.length > 12
+                                ? `${txn.id.slice(0, 8)}...`
+                                : txn.id
+                              : "N/A";
+                            const amount =
+                              txn.total_amount || txn.amount || 0;
+                            const method = txn.method || "Razorpay / UPI";
+                            const status = txn.status || "Completed";
+
+                            return (
+                              <div
+                                key={txn.id}
+                                className="bg-white/60 backdrop-blur-md border border-white/40 p-4 rounded-2xl shadow-sm space-y-3"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="font-mono text-[11px] font-bold text-primary/60 uppercase">
+                                    #{refId}
+                                  </span>
+                                  <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                    <CheckCircle size={10} /> {status}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs text-primary/70 pt-2 border-t border-primary/5">
+                                  <div>
+                                    <p className="font-medium text-primary">
+                                      {method}
+                                    </p>
+                                    <p className="text-[10px] text-primary/40">
+                                      {dateStr}
+                                    </p>
+                                  </div>
+                                  <div className="text-right">
+                                    <span className="text-base font-serif font-bold text-primary">
+                                      ₹{Number(amount).toLocaleString()}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Tablet & Desktop Table View (>=640px) */}
+                        <div className="hidden sm:block bg-white/40 backdrop-blur-xl border border-white/30 rounded-3xl sm:rounded-4xl overflow-hidden shadow-xl w-full min-w-0">
+                          <div className="transaction-table-wrapper w-full overflow-x-auto">
+                            <table className="transaction-table w-full text-left">
+                              <thead>
+                                <tr className="border-b border-primary/5 text-[10px] uppercase tracking-widest font-black text-primary/30">
+                                  <th className="px-6 sm:px-8 py-5">Reference</th>
+                                  <th className="px-6 sm:px-8 py-5">Date</th>
+                                  <th className="px-6 sm:px-8 py-5">Method</th>
+                                  <th className="px-6 sm:px-8 py-5 text-right">
+                                    Amount
+                                  </th>
+                                  <th className="px-6 sm:px-8 py-5 text-right">
+                                    Status
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="text-sm text-primary">
+                                {transactions.map((txn) => {
+                                  const dateStr =
+                                    txn.date ||
+                                    (txn.created_at
+                                      ? new Date(
+                                          txn.created_at,
+                                        ).toLocaleDateString(undefined, {
+                                          year: "numeric",
+                                          month: "short",
+                                          day: "numeric",
+                                        })
+                                      : "Recent");
+                                  const refId = txn.id
+                                    ? txn.id.length > 14
+                                      ? `${txn.id.slice(0, 10)}...`
+                                      : txn.id
+                                    : "N/A";
+                                  const amount =
+                                    txn.total_amount || txn.amount || 0;
+                                  const method = txn.method || "Razorpay / UPI";
+                                  const status = txn.status || "Completed";
+
+                                  return (
+                                    <tr
+                                      key={txn.id}
+                                      className="border-b border-primary/5 last:border-0 hover:bg-white/40 transition-colors group"
+                                    >
+                                      <td className="px-6 sm:px-8 py-4 font-mono text-[10px] opacity-60 uppercase">
+                                        {refId}
+                                      </td>
+                                      <td className="px-6 sm:px-8 py-4 font-medium">
+                                        {dateStr}
+                                      </td>
+                                      <td className="px-6 sm:px-8 py-4 text-xs opacity-80">
+                                        {method}
+                                      </td>
+                                      <td className="px-6 sm:px-8 py-4 text-right font-bold font-serif">
+                                        ₹{Number(amount).toLocaleString()}
+                                      </td>
+                                      <td className="px-6 sm:px-8 py-4 text-right">
+                                        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
+                                          <CheckCircle size={10} /> {status}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>

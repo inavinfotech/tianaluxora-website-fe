@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import Lenis from "lenis";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -82,14 +82,43 @@ function App() {
     }
   }, [authLoading, productsLoading, products, isAdminRoute]);
 
-  // Scroll to top of window on every route change
+  const lenisRef = useRef(null);
+
+  // Scroll to top of window on every route change (synchronized with Lenis)
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, [location.pathname]);
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true, force: true });
+      } else if (window.lenis) {
+        window.lenis.scrollTo(0, { immediate: true, force: true });
+      }
+    };
+
+    // Immediate scroll reset
+    scrollToTop();
+
+    // Secondary reset on next animation frame and after microtasks to catch dynamic content mounts
+    const frameId = requestAnimationFrame(scrollToTop);
+    const timerId = setTimeout(scrollToTop, 60);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      clearTimeout(timerId);
+    };
+  }, [location.pathname, location.search]);
 
   // Lenis smooth scrolling (Initialized ONCE on mount)
   useEffect(() => {
     if (isAdminRoute) return;
+
+    // Prevent browser from restoring scroll position on navigation
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -97,6 +126,9 @@ function App() {
       smoothWheel: true,
       touchMultiplier: 2,
     });
+
+    lenisRef.current = lenis;
+    window.lenis = lenis;
 
     let rafId;
     function raf(time) {
@@ -111,6 +143,8 @@ function App() {
         cancelAnimationFrame(rafId);
       }
       lenis.destroy();
+      lenisRef.current = null;
+      window.lenis = null;
     };
   }, [isAdminRoute]);
 

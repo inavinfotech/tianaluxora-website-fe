@@ -3,20 +3,35 @@
   padding-bottom: 5rem;
   font-family: "Poppins", sans-serif;
   color: var(--primary);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .profile-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 320px minmax(0, 1fr);
   gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  width: 100%;
+  min-width: 0;
 }
 
 .profile-sidebar {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.profile-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .sidebar-glass-card {
@@ -456,7 +471,7 @@
 
 @media (max-width: 1024px) {
   .profile-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -546,17 +561,23 @@
   }
 
   /* Transaction table responsiveness */
-  .profile-content .overflow-hidden {
-    overflow-x: auto !important;
+  .transaction-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .profile-content table {
-    min-width: 600px;
+  .transaction-table {
+    width: 100%;
+    min-width: 520px;
   }
-  .profile-content table th,
-  .profile-content table td {
+
+  .transaction-table th,
+  .transaction-table td {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
+    white-space: nowrap;
   }
 }
 

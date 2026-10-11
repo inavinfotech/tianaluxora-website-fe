@@ -34,6 +34,17 @@
     }
   }
 
+  @keyframes slideLeft {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @keyframes buttonShine {
     0% {
       transform: translateX(-150%) skewX(-20deg);
