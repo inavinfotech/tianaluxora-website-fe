@@ -21,35 +21,38 @@ export const footerLinks = {
     { name: "Shop Fragrances", path: getPath("/shop") },
     { name: "Brand Cinema", path: getPath("/story") },
     { name: "About Us", path: getPath("/about") },
-    { name: "Contact", path: getPath("/contact") },
+    { name: "Contact Us", path: getPath("/contact") },
   ],
   customerService: [
+    { name: "My Orders", path: getPath("/orders") },
+    { name: "My Account", path: getPath("/profile") },
+    { name: "Shipping & Delivery", path: getPath("/contact#faqs") },
+    { name: "Returns & Replacements", path: getPath("/contact#faqs") },
     { name: "FAQs", path: getPath("/contact#faqs") },
-    { name: "Shipping Policy", path: getPath("/contact#shipping") },
-    { name: "Returns & Exchanges", path: getPath("/contact#returns") },
-    { name: "Track Order", path: getPath("/orders") },
   ],
   about: [
     { name: "Our Story", path: getPath("/story") },
+    { name: "Our Founder", path: getPath("/about#founder") },
     { name: "Women Empowerment", path: getPath("/about#empowerment") },
-    { name: "Why Choose Us", path: getPath("/about#purpose") },
+    { name: "Global B2B Export", path: getPath("/contact#faqs") },
   ],
   contactInfo: {
     email: "tianacare6@gmail.com",
     exportEmail: "tianaluxora.global@gmail.com",
     phone: "",
     workingHours: "Mon – Sat, 10 AM – 6 PM",
-    location: "Delhi, India",
+    location: "New Delhi, India",
     gst: "07ADRPA1310K1ZU",
     msme: "MSME Registered & Trademark Recognized",
   },
-  social: [
-    // Add social links if needed
-  ],
+  // Fill in real profile URLs to show icons in the footer, e.g.
+  // { name: "instagram", url: "https://instagram.com/tianaluxora" }
+  // Supported names: instagram, facebook, youtube, linkedin, whatsapp, x
+  social: [],
+  // Add Privacy Policy / Terms links here once those pages exist
   legal: [
-    { name: "Privacy Policy", path: getPath("/contact#privacy") },
-    { name: "Terms & Conditions", path: getPath("/contact#terms") },
-    { name: "Refund Policy", path: getPath("/contact#refund") },
-    { name: "Shipping Policy", path: getPath("/contact#shipping") },
+    { name: "Shipping", path: getPath("/contact#faqs") },
+    { name: "Returns & Refunds", path: getPath("/contact#faqs") },
+    { name: "Contact", path: getPath("/contact") },
   ],
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { getPath } from "../utils/paths";
 
@@ -10,9 +10,14 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const from = location.state?.from || getPath("/");
+
+  // Already signed in: skip this screen
+  if (user) {
+    return <Navigate to={from} replace />;
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,8 +34,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100dvh-120px)] flex items-center justify-center py-8 px-4 sm:px-6">
-      <div className="w-full max-w-md bg-white p-8 md:p-10 rounded-3xl border border-primary/10 shadow-[0_15px_45px_rgba(131,37,78,0.08)] animate-fade-in">
+    <div className="min-h-[calc(100dvh-120px)] flex items-start sm:items-center justify-center pt-8 pb-12 px-5 sm:py-10 sm:px-6 bg-white sm:bg-[#faf6f4]/60">
+      <div className="w-full max-w-md bg-white sm:p-10 sm:rounded-3xl sm:border sm:border-primary/10 sm:shadow-[0_15px_45px_rgba(131,37,78,0.08)] animate-fade-in">
         <h2 className="text-3xl font-serif font-bold mb-2 text-center text-primary">
           Welcome Back
         </h2>

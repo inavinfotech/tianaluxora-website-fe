@@ -10,25 +10,45 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Decode the (unverified) JWT payload so a session survives backend hiccups.
+  // The server still validates the token on every protected request.
+  const userFromToken = (token) => {
+    try {
+      const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+      const payload = JSON.parse(atob(base64));
+      if (payload.exp && payload.exp * 1000 < Date.now()) return null;
+      return {
+        user_id: payload.sub,
+        email: payload.email || localStorage.getItem("email") || "",
+        full_name: payload.full_name || "",
+        roles: payload.roles || ["consumer"],
+        is_active: true,
+      };
+    } catch {
+      return null;
+    }
+  };
+
   const fetchUser = async (token) => {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/auth/me`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (response.ok) {
-        const data = await response.json();
-        setUser(data);
-      } else {
+        setUser(await response.json());
+      } else if (response.status === 401 || response.status === 403) {
+        // Token genuinely invalid / expired
         logout();
+      } else {
+        // Server error (e.g. user portal down): keep the user signed in
+        setUser(userFromToken(token) || null);
       }
     } catch (err) {
+      // Network error: keep the user signed in using the token's own claims
       console.error("Failed to fetch user:", err);
-      logout();
+      const fallback = userFromToken(token);
+      if (fallback) setUser(fallback);
+      else logout();
     } finally {
       setLoading(false);
     }

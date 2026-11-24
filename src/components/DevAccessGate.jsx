@@ -33,12 +33,12 @@ const DevAccessGate = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-[#faf6f0] text-primary flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans">
+    <div className="min-h-screen min-h-[100dvh] bg-[#faf6f0] text-primary flex items-start sm:items-center justify-center px-5 pt-14 pb-8 sm:p-6 relative overflow-hidden font-sans">
       {/* Light subtle ambient radial glows */}
-      <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#f7d7c4]/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-[#e6ceb8]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#f7d7c4]/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-[#e6ceb8]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-lg bg-white/90 backdrop-blur-xl p-8 sm:p-12 rounded-[40px] border border-[#f3e5d8] shadow-2xl relative z-10 text-center animate-fade-in">
+      <div className="w-full max-w-lg sm:bg-white/90 sm:backdrop-blur-xl sm:p-12 sm:rounded-[40px] sm:border sm:border-[#f3e5d8] sm:shadow-2xl relative z-10 text-center animate-fade-in">
         {/* Company Logo at Top */}
         <div className="mb-6">
           <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-wider text-primary uppercase">

@@ -25,6 +25,7 @@ import OrderDetailPage from "./pages/OrderDetailPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import StoryPage from "./pages/StoryPage";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 // Lazy-loaded Admin Pages
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -98,18 +99,29 @@ function App() {
       }
     };
 
-    // Immediate scroll reset
-    scrollToTop();
+    // Links with a #section (e.g. /contact#faqs) scroll to that section instead of the top
+    const scrollToHash = () => {
+      const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (!el) return false;
+      const y = el.getBoundingClientRect().top + window.scrollY - 110; // clear the fixed navbar
+      if (lenisRef.current) lenisRef.current.scrollTo(y, { immediate: true, force: true });
+      else window.scrollTo({ top: y, behavior: "instant" });
+      return true;
+    };
+    const reset = () => {
+      if (!scrollToHash()) scrollToTop();
+    };
 
-    // Secondary reset on next animation frame and after microtasks to catch dynamic content mounts
-    const frameId = requestAnimationFrame(scrollToTop);
-    const timerId = setTimeout(scrollToTop, 60);
+    // Immediate reset, then again after the new page has mounted
+    reset();
+    const frameId = requestAnimationFrame(reset);
+    const timerId = setTimeout(reset, 120);
 
     return () => {
       cancelAnimationFrame(frameId);
       clearTimeout(timerId);
     };
-  }, [location.pathname, location.search]);
+  }, [location.pathname, location.search, location.hash]);
 
   // Lenis smooth scrolling (Initialized ONCE on mount)
   useEffect(() => {
@@ -231,6 +243,14 @@ function App() {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/product/:productId" element={<ProductDetail />} />
                 <Route path="/cart" element={<CartPage />} />
+                <Route
+                  path="/order-success"
+                  element={
+                    <ProtectedRoute>
+                      <OrderSuccessPage />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="/orders"
                   element={

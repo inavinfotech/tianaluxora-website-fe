@@ -608,7 +608,7 @@ const ProfilePage = () => {
                                     </p>
                                   </div>
                                   <div className="text-right">
-                                    <span className="text-base font-serif font-bold text-primary">
+                                    <span className="text-base price font-bold text-primary">
                                       ₹{Number(amount).toLocaleString()}
                                     </span>
                                   </div>
@@ -672,7 +672,7 @@ const ProfilePage = () => {
                                       <td className="px-6 sm:px-8 py-4 text-xs opacity-80">
                                         {method}
                                       </td>
-                                      <td className="px-6 sm:px-8 py-4 text-right font-bold font-serif">
+                                      <td className="px-6 sm:px-8 py-4 text-right font-bold price">
                                         ₹{Number(amount).toLocaleString()}
                                       </td>
                                       <td className="px-6 sm:px-8 py-4 text-right">

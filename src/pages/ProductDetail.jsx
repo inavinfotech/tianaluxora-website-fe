@@ -6,6 +6,7 @@ import { useProducts } from "../contexts/ProductContext";
 import LuxuryLoader from "../components/LuxuryLoader";
 import api from "../utils/api";
 import { getPath } from "../utils/paths";
+import useDragSwipe from "../hooks/useDragSwipe";
 import THEME_COLORS, { primaryAlpha } from "../styles/theme";
 import {
   Star,
@@ -182,6 +183,7 @@ const ProductDetail = () => {
   });
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [copiedToast, setCopiedToast] = useState(false);
+  const [qty, setQty] = useState(1);
   const { addToCart } = useCart();
 
   const handleShare = async () => {
@@ -319,6 +321,16 @@ const ProductDetail = () => {
     selectedImage && galleryImages.includes(selectedImage)
       ? selectedImage
       : galleryImages[0] || normalizeUrl(product?.image) || "";
+
+  const stepGallery = (dir) => {
+    if (galleryImages.length < 2) return;
+    const i = Math.max(0, galleryImages.indexOf(currentDisplayImage));
+    setSelectedImage(galleryImages[(i + dir + galleryImages.length) % galleryImages.length]);
+  };
+  const { bind: dragBind, offset: dragOffset, isDragging } = useDragSwipe({
+    onNext: () => stepGallery(1),
+    onPrev: () => stepGallery(-1),
+  });
 
   const handleThumbnailClick = (thumb) => {
     setSelectedImage(thumb);
@@ -554,18 +566,22 @@ const ProductDetail = () => {
 
   const availableStock = getAvailableStock(activeVariant);
   const isOutOfStock = availableStock <= 0;
+  const maxQty = Math.max(1, Math.min(availableStock, 10));
 
-  const handleAddToCart = () => {
-    if (isOutOfStock) return;
-    if (product) {
-      const activePrice =
-        activeVariant && activeVariant.price != null
-          ? activeVariant.price
-          : product.price;
+  useEffect(() => {
+    setQty(1);
+  }, [activeVariant?.id]);
 
-      addToCart({
+  const handleAddToCart = ({ buyNow = false } = {}) => {
+    if (isOutOfStock || !product) return;
+    const activePrice =
+      activeVariant && activeVariant.price != null
+        ? activeVariant.price
+        : product.price;
+
+    addToCart(
+      {
         ...product,
-        quantity: 1,
         selectedSize: activeVariant
           ? formatVariantTitle(activeVariant)
           : "Standard Item",
@@ -573,13 +589,17 @@ const ProductDetail = () => {
         variant_id: activeVariant?.id || null,
         sku: activeVariant?.sku || product.sku,
         variant_attributes: activeVariant?.attributes || null,
+        stock: availableStock,
         image:
           activeVariant?.image ||
           (Array.isArray(activeVariant?.images) && activeVariant.images[0]) ||
           currentDisplayImage ||
           product.image,
-      });
-    }
+      },
+      { quantity: qty, openDrawer: !buyNow }
+    );
+
+    if (buyNow) navigate(getPath("/cart"));
   };
 
   const getDisplayPrice = () => {
@@ -624,7 +644,7 @@ const ProductDetail = () => {
   return (
     <div className="w-full animate-fade-in">
       {/* Full-bleed Edge-to-edge Luxury Surface touching navbar with zero gap */}
-      <div className="w-full min-h-screen min-h-[100dvh] bg-white/92 sm:bg-white/95 backdrop-blur-2xl border-b border-white/80 shadow-sm pt-16 sm:pt-20 pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-12">
+      <div className="w-full min-h-screen min-h-[100dvh] bg-white/92 sm:bg-white/95 backdrop-blur-2xl border-b border-white/80 shadow-sm pt-4 sm:pt-20 pb-28 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-[1400px] mx-auto">
           {/* Breadcrumbs Navigation */}
           <nav className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-primary/70 mb-4 sm:mb-6 font-medium">
@@ -679,11 +699,13 @@ const ProductDetail = () => {
 
             {/* Main Stage Image */}
             <div className={`${galleryImages.length > 1 ? "md:col-span-10" : "md:col-span-12"} order-1 md:order-2`}>
-              <div className="w-full aspect-square sm:aspect-[4/5] max-h-[380px] md:max-h-[420px] rounded-2xl overflow-hidden border border-primary/10 relative group bg-gradient-to-b from-[#faf5f7] via-white to-[#fbf6f8] flex items-center justify-center p-4 shadow-inner">
+              <div className="w-full aspect-square sm:aspect-[4/5] max-h-[min(380px,52dvh)] md:max-h-[min(420px,56dvh)] rounded-2xl overflow-hidden border border-primary/10 relative group bg-gradient-to-b from-[#faf5f7] via-white to-[#fbf6f8] flex items-center justify-center p-4 shadow-inner" {...dragBind}>
                 <img
                   src={currentDisplayImage}
                   alt={product.name}
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_20px_35px_rgba(131,37,78,0.12)]"
+                  draggable={false}
+                  style={{ transform: `translateX(${dragOffset}px)`, transition: isDragging ? "none" : "transform 0.3s ease" }}
+                  className="w-full h-full object-contain select-none drop-shadow-[0_20px_35px_rgba(131,37,78,0.12)]"
                 />
 
                 {/* Floating Quick Actions */}
@@ -758,7 +780,7 @@ const ProductDetail = () => {
                 </h1>
 
                 <div className="flex items-baseline gap-2.5">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-primary font-serif">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-primary price">
                     {getDisplayPrice()}
                   </span>
                   {(activeVariant?.oldPrice || (activeVariant?.mrp && activeVariant?.mrp > activeVariant?.price ? `₹${activeVariant.mrp}` : null) || product.oldPrice) && (
@@ -860,16 +882,43 @@ const ProductDetail = () => {
               </div>
             </div>
 
+            {/* Quantity */}
+            {!isOutOfStock && (
+              <div className="flex items-center gap-4 pt-2">
+                <span className="text-xs font-bold uppercase tracking-[0.15em] text-primary">Quantity:</span>
+                <div className="flex items-center bg-white rounded-full border border-primary/20 p-0.5 shadow-xs">
+                  <button
+                    type="button"
+                    aria-label="Decrease quantity"
+                    disabled={qty <= 1}
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    className="w-9 h-9 flex items-center justify-center text-primary rounded-full hover:bg-[#faf5f8] font-bold cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    −
+                  </button>
+                  <span className="w-8 text-center font-bold text-primary text-sm" aria-live="polite">{qty}</span>
+                  <button
+                    type="button"
+                    aria-label="Increase quantity"
+                    disabled={qty >= maxQty}
+                    onClick={() => setQty((q) => Math.min(maxQty, q + 1))}
+                    className="w-9 h-9 flex items-center justify-center text-primary rounded-full hover:bg-[#faf5f8] font-bold cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    +
+                  </button>
+                </div>
+                {availableStock <= 5 && (
+                  <span className="text-xs font-semibold text-rose-600">Only {availableStock} left</span>
+                )}
+              </div>
+            )}
+
             {/* CTA Action Buttons */}
             <div className="grid grid-cols-2 gap-3.5 pt-2">
 
               <button
                 disabled={isOutOfStock}
-                onClick={() => {
-                  if (isOutOfStock) return;
-                  handleAddToCart();
-                  navigate(getPath("/cart"));
-                }}
+                onClick={() => handleAddToCart({ buyNow: true })}
                 style={{
                   backgroundColor: isOutOfStock ? "#e5e7eb" : "#83254e",
                   color: isOutOfStock ? "#9ca3af" : "#ffffff",
@@ -881,10 +930,7 @@ const ProductDetail = () => {
 
               <button
                 disabled={isOutOfStock}
-                onClick={() => {
-                  if (isOutOfStock) return;
-                  handleAddToCart();
-                }}
+                onClick={() => handleAddToCart()}
                 style={{
                   backgroundColor: isOutOfStock ? "#f3f4f6" : "#ffffff",
                   color: isOutOfStock ? "#9ca3af" : "#83254e",
@@ -1014,23 +1060,38 @@ const ProductDetail = () => {
     </div>
 
     {/* Mobile Sticky Add to Bag Bar */}
-    <div className="sm:hidden fixed bottom-0 left-0 right-0 z-90 bg-white/95 backdrop-blur-md border-t border-primary/10 p-3 shadow-lg flex items-center justify-between gap-3">
+    <div className="mobile-sticky-bar sm:hidden fixed bottom-0 left-0 right-0 z-90 bg-white/95 backdrop-blur-md border-t border-primary/10 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between gap-3">
       <div className="min-w-0">
         <p className="text-xs font-serif font-bold text-primary truncate">
           {product.name}
         </p>
-        <p className="text-sm font-extrabold text-primary font-serif">
+        <p className="text-sm font-extrabold text-primary price">
           {getDisplayPrice()}
         </p>
       </div>
-      <button
-        disabled={isOutOfStock}
-        onClick={handleAddToCart}
-        style={{ backgroundColor: isOutOfStock ? "#e5e7eb" : "#83254e", color: "#ffffff" }}
-        className="px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 disabled:cursor-not-allowed shrink-0"
-      >
-        {isOutOfStock ? "Out of Stock" : "Add to Bag"}
-      </button>
+      {isOutOfStock ? (
+        <span className="px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider bg-neutral-200 text-neutral-500 shrink-0">
+          Out of Stock
+        </span>
+      ) : (
+        <div className="flex gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => handleAddToCart()}
+            className="px-4 py-3 rounded-full text-xs font-bold uppercase tracking-wider border-2 border-primary text-primary bg-white active:scale-95"
+          >
+            Add
+          </button>
+          <button
+            type="button"
+            onClick={() => handleAddToCart({ buyNow: true })}
+            style={{ backgroundColor: "#83254e", color: "#ffffff" }}
+            className="px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow-md active:scale-95"
+          >
+            Buy Now
+          </button>
+        </div>
+      )}
     </div>
   </div>
 );

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 56" role="img" aria-label="Proudly Made in India">
+  <rect x="1" y="1" width="138" height="54" rx="12" fill="#fff" stroke="#83254e" stroke-opacity=".15"/>
+  <clipPath id="c"><circle cx="28" cy="28" r="16"/></clipPath>
+  <g clip-path="url(#c)">
+    <rect x="12" y="12" width="32" height="11" fill="#FF9933"/>
+    <rect x="12" y="23" width="32" height="10" fill="#fff"/>
+    <rect x="12" y="33" width="32" height="11" fill="#138808"/>
+  </g>
+  <circle cx="28" cy="28" r="16" fill="none" stroke="#83254e" stroke-opacity=".25"/>
+  <circle cx="28" cy="28" r="4" fill="none" stroke="#000080" stroke-width="1.2"/>
+  <text x="52" y="25" font-family="Poppins,Arial,sans-serif" font-size="9" font-weight="600" fill="#83254e" fill-opacity=".7" letter-spacing=".8">PROUDLY</text>
+  <text x="52" y="39" font-family="Poppins,Arial,sans-serif" font-size="12" font-weight="800" fill="#83254e">Made in India</text>
+</svg>

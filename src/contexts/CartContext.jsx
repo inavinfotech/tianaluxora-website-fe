@@ -22,7 +22,18 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("tiana_cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product) => {
+  const getMaxQty = (item) => {
+    const stock = item.stock ?? item.stock_quantity;
+    const n = Number(stock);
+    return Number.isFinite(n) && n > 0 ? n : Infinity;
+  };
+
+  /**
+   * Add a product to the bag.
+   * @param {object} product
+   * @param {{ quantity?: number, openDrawer?: boolean }} [opts]
+   */
+  const addToCart = (product, { quantity = 1, openDrawer = true } = {}) => {
     if (!product) return;
     const stock = product.stock ?? product.quantity ?? product.stock_quantity;
     const reserved = product.reserved ?? 0;
@@ -30,6 +41,7 @@ export const CartProvider = ({ children }) => {
       console.warn("Cannot add out-of-stock item to cart");
       return;
     }
+    const qty = Math.max(1, Number(quantity) || 1);
 
     setCartItems((prev) => {
       const existingItem = prev.find(
@@ -39,16 +51,17 @@ export const CartProvider = ({ children }) => {
       if (existingItem) {
         return prev.map((item) =>
           item.id === product.id && item.variant_id === product.variant_id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? {
+                ...item,
+                quantity: Math.min(item.quantity + qty, getMaxQty(item)),
+              }
             : item,
         );
       }
-      return [
-        ...prev,
-        { ...product, quantity: 1, addedAt: new Date().toISOString() },
-      ];
+      const item = { ...product, addedAt: new Date().toISOString() };
+      return [...prev, { ...item, quantity: Math.min(qty, getMaxQty(item)) }];
     });
-    setIsCartOpen(true);
+    if (openDrawer) setIsCartOpen(true);
   };
 
   const removeFromCart = (productId, variantId) => {
@@ -64,7 +77,7 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === productId && item.variant_id === variantId
-          ? { ...item, quantity }
+          ? { ...item, quantity: Math.min(quantity, getMaxQty(item)) }
           : item,
       ),
     );

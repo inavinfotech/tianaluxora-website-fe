@@ -169,10 +169,10 @@ const ProductCard = ({ product }) => {
 
       {/* Title & Price Header */}
       <div className="w-full mt-2.5 px-0.5">
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-2">
           <Link
             to={detailUrl}
-            className="hover:text-accent transition-colors flex-1 min-w-0 text-left"
+            className="hover:text-accent transition-colors flex-1 min-w-0 text-left w-full"
           >
             <h3
               style={{ color: THEME_COLORS.primary }}
@@ -182,10 +182,10 @@ const ProductCard = ({ product }) => {
               {displayName}
             </h3>
           </Link>
-          <div className="flex items-center gap-1.5 shrink-0 pt-0.5">
+          <div className="flex items-center flex-wrap gap-x-1.5 shrink-0 sm:pt-0.5">
             <p
               style={{ color: THEME_COLORS.primary }}
-              className="text-[0.98rem] sm:text-[1.08rem] font-bold font-serif whitespace-nowrap"
+              className="text-[0.98rem] sm:text-[1.08rem] font-bold price whitespace-nowrap"
             >
               {typeof currentPrice === "number" ? `₹${currentPrice}` : currentPrice}
             </p>

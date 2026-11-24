@@ -55,12 +55,12 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-portal min-h-screen min-h-[100dvh] w-full bg-bg-light flex flex-col items-center justify-center font-sans p-4 relative overflow-hidden text-slate-800">
+    <div className="admin-portal min-h-screen min-h-[100dvh] w-full flex flex-col items-center justify-start sm:justify-center font-sans px-5 pt-12 pb-8 sm:p-4 relative bg-white sm:bg-bg-light overflow-hidden text-slate-800">
       {/* Background ambient light effects */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full -ml-20 -mb-20 blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full -ml-20 -mb-20 blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-md bg-white border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] rounded-[2rem] overflow-hidden z-10 p-8 relative">
+      <div className="w-full max-w-md sm:bg-white sm:border sm:border-slate-200/80 sm:shadow-[0_20px_50px_rgba(0,0,0,0.06)] sm:rounded-[2rem] overflow-hidden z-10 sm:p-8 relative">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 shadow-sm border bg-primary/10 border-primary/20 text-primary">
             <ShieldCheck size={28} />
